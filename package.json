@@ -1,0 +1,17 @@
+{
+    "name": "config",
+    "version": "0.0.1",
+    "description": "",
+    "main": "lib/config.js",
+    "scripts": {
+        "test": "node_modules/.bin/atma test"        
+    },
+    "keywords": [
+        ""
+    ],
+    "author": "",
+    "license": "MIT",
+    "devDependencies": {
+        "atma": ">0.0.0"
+    }
+}

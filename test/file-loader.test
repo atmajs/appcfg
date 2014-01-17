@@ -1,0 +1,28 @@
+include
+	.inject('../lib/config.js')
+	.done(function(){
+
+
+		UTest({
+			'file': function(done){
+				
+				var config = new Config([{
+					path: 'test/config/foo.yml'
+				}]);
+				
+				config
+					.read()
+					.done(function(){
+						
+						eq(this.foo, 'foo');
+					})
+					.always(function(){
+						
+						eq(this._rejected, null);
+						
+						done();
+					})
+			}
+		})
+
+	})
