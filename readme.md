@@ -15,13 +15,13 @@ Sample:
 
 ```javascript
 	var config = Config([
-			// from file
+			// from file. (with Special Folder format syntax support)
 			{
-				path: 'config/config.yml'
+				path: '%APPDATA%/config.yml'
 			},
 			// directory
 			{
-				path: 'defaults/**.yml
+				path: 'defaults/**.yml'
 			},
 			// mongodb
 			{
