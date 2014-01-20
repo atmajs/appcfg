@@ -8,6 +8,10 @@ _Part of the Atma.js Project_
 - [About](#about)
 - [Api](#api)
 
+```bash
+$ npm install appcfg -save
+```
+
 ### About
 
 Load and Combine Configuration from many sources:
