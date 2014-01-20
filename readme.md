@@ -5,7 +5,7 @@ Node.js Configuration Library.
 
 _Part of the Atma.js Project_
 
-- [Anchor](#about)
+- [About](#about)
 - [Api](#api)
 
 ### About
@@ -91,14 +91,14 @@ And if `debug` property in configuration or over cli (`node app --debug`) is set
 
 #### Config
 
-** <static> **
-##### .read(Array<Source>) => Config Instance
+** static **
+##### `.read(Array<Source>)` => Config Instance
 Start loading the configuration from specified sources, returns new deferrable configuration instance
 
-** <methods> **
+** methods **
 
 ##### .done(callback)
-Fire callback when the configuration ends loading
+Fire the callback when the configuration ends loading
 
 #### Source
 ##### FileSource
@@ -126,13 +126,13 @@ Fire callback when the configuration ends loading
 It will be mapped to multiple FileSources
 ```javascript
 {
-	// Directory path with GLOB look-up
+	// Directory path with GLOB look-up, e.g. 'configs/**.json'
 	path: String
 }
 ```
 
 ##### MongoDBSource
-**Depends on ClassJS**
+_**Depends on ClassJS**_
 ```javascript
 {
 	// Collection name
