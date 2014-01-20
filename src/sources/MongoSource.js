@@ -34,6 +34,9 @@
 			
 			if (data.settings) 
 				Class.MongoStore.settings(data.settings);
+				
+			if (data.writable == null) 
+				data.writable = true;
 			
 			new (Class({
 				Base: MongoSourceProto,

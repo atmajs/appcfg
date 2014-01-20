@@ -48,11 +48,9 @@
 			var prop = this.data.getterProperty;
 			if (prop) 
 				this.config = obj_getProperty(this.config, prop);
-				
 			
-			if (this.data.conditional) {
-				cond_rewrite(this.config, rootConfig, cli_arguments().params);
-			}
+			cond_rewrite(this.config, rootConfig, cli_arguments().params);
+			
 			
 			return this.resolve();
 		},

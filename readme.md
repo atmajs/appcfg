@@ -30,7 +30,10 @@ Sample:
 		.read([
 			// from file. (with Special Folder format syntax support)
 			{
-				path: '%APPDATA%/.appName/config.yml'
+				path: '%APPDATA%/.appName/config.yml',
+				
+				// set this source as writable for configuration persistance
+				writable: true
 			},
 			// directory
 			{
@@ -38,15 +41,12 @@ Sample:
 			},
 			// mongodb
 			{
-				mongo: 'settings',
-				
-				// set this source as writable for configuration persistance
-				writable: true
+				mongo: 'barSettings'
 			},
 			// from file, but use only nested property
 			{
 				path: 'package.json',
-				property: 'atma'
+				getterProperty: 'atma'
 			}
 		])
 		.done(function(){
@@ -137,6 +137,10 @@ _**Depends on ClassJS**_
 {
 	// Collection name
 	mongo: String,
+	
+	// if source is writable
+	// @default: true
+	writable: Boolean
 	
 	// MongoDB Connection Settings
 	// It can be also specified in previous configuration source, under `mongodb` property
