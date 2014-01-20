@@ -55,16 +55,16 @@ Yaml conditions sample:
 ```yml
 
 port: 
-	'$if debug': 5000
-	'$if test': 5030
-	'$default': 8080
+	'#if debug': 5000
+	'#if test': 5030
+	'default': 8080
 
-'$if debug':
+'#if debug':
 	env: 'DEBUG'
 
 scipts:
 	- lib.js
-	- '$if debug'
+	- '#if debug'
 		- lib.debug-extension.js
 	
 ```

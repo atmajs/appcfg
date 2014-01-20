@@ -2,6 +2,8 @@ var cond_rewrite;
 
 (function(){
 	
+	var key_DEFAULT = 'default';
+	
 	var _cfg,
 		_params;
 	
@@ -86,11 +88,11 @@ var cond_rewrite;
 	
 	function isConditionProperty(prop){
 		
-		if (prop.charCodeAt(0) !== 36) 
-			// $
+		if (prop.charCodeAt(0) !== 35) 
+			// #
 			return false;
 		
-		return prop.indexOf('$if ') === 0;
+		return prop.indexOf('#if ') === 0;
 	}
 	
 	function isConditionObject(obj){
@@ -99,7 +101,7 @@ var cond_rewrite;
 			if (isConditionProperty(key))
 				continue;
 			
-			if (key === '$default') 
+			if (key === key_DEFAULT) 
 				continue;
 			
 			return false;
@@ -112,7 +114,7 @@ var cond_rewrite;
 	function evalConditionProperty(prop) {
 		
 		var code = prop
-			.replace('$if ', '')
+			.replace('#if ', '')
 			.replace(/\b[\w\d_$]+\b/g, function(full){
 				return 'getter("' + full + '")';
 			});
@@ -147,7 +149,7 @@ var cond_rewrite;
 		
 		for (var key in obj){
 			
-			if (key === '$default') 
+			if (key === key_DEFAULT) 
 				continue;
 			
 			if (evalConditionProperty(key)) {
@@ -155,7 +157,7 @@ var cond_rewrite;
 			}
 		}
 		
-		return obj['$default'];
+		return obj[key_DEFAULT];
 	}
 	
 }());

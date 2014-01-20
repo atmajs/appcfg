@@ -15,31 +15,31 @@ include
 			'conditions': function(){
 				
 				var obj = {
-					'$if debug': {
+					'#if debug': {
 						foo: 'foo'
 					},
-					'$if release': {
+					'#if release': {
 						foo: 'bar'
 					},
 					
 					a: {
-						'$if debug': 'foo',
-						'$if release': 'bar'
+						'#if debug': 'foo',
+						'#if release': 'bar'
 					},
 					
 					b: {
-						'$if debug': 'some',
-						'$default': 'bar'
+						'#if debug': 'some',
+						'default': 'bar'
 					},
 					
 					arr: [
 						'const',
 						{
-							'$if debug': [
+							'#if debug': [
 								'debug-foo-1',
 								'debug-foo-2',
 							],
-							'$if release': [
+							'#if release': [
 								'release-foo-1',
 								'release-foo-2',
 							]
@@ -47,8 +47,8 @@ include
 						
 						{
 							obj: {
-								'$if debug': 'debug-obj',
-								'$if release': 'release-obj'
+								'#if debug': 'debug-obj',
+								'#if release': 'release-obj'
 							}
 						}
 					]
