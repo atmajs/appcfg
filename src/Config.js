@@ -21,7 +21,7 @@ var Config = Class({
 			;
 		
 		this._sources = SourceFactory
-			.loadSources(arr)
+			.loadSources(arr, config)
 			.done(function(){
 				
 				this.each(function(source){

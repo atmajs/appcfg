@@ -28,7 +28,7 @@
 			data.path = path_handleSpecialFolder(data.path);
 		},
 		
-		read: function(){
+		read: function(rootConfig){
 			this.defer();
 			
 			var file = new io.File(this.data.path);
@@ -48,6 +48,11 @@
 			var prop = this.data.getterProperty;
 			if (prop) 
 				this.config = obj_getProperty(this.config, prop);
+				
+			
+			if (this.data.conditional) {
+				cond_rewrite(this.config, rootConfig, cli_arguments().params);
+			}
 			
 			return this.resolve();
 		},

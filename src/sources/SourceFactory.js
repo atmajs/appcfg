@@ -20,7 +20,7 @@ var Sources = Class.Collection(Object, {
 
 var SourceFactory = {
 	
-	loadSources: function(arr){
+	loadSources: function(arr, rootConfig){
 		
 		var imax = arr.length,
 			i = -1
@@ -52,7 +52,7 @@ var SourceFactory = {
 		while(--i > -1){
 			
 			sources[i]
-				.read()
+				.read(rootConfig)
 				.always(sources.delegate(null, false));
 		}
 		

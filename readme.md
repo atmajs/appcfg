@@ -2,8 +2,13 @@
 **_... in progress_**
 
 Node.js Configuration Library.
+
 _Part of the Atma.js Project_
 
+- [Anchor](#about)
+- [Api](#api)
+
+### About
 
 Load and Combine Configuration from many sources:
 
@@ -81,6 +86,77 @@ And if `debug` property in configuration or over cli (`node app --debug`) is set
 	]
 }
 ```
+
+### API
+
+#### Config
+
+** <static> **
+##### .read(Array<Source>) => Config Instance
+Start loading the configuration from specified sources, returns new deferrable configuration instance
+
+** <methods> **
+
+##### .done(callback)
+Fire callback when the configuration ends loading
+
+#### Source
+##### FileSource
+```javascript
+{
+	// File path
+	path: String,
+	
+	// Define specific property to extract SUB-JSON from the loaded configuration
+	// @default: null
+	getterProperty: String
+	
+	// Define specific property in the root configuration,
+	// where the loaded configuration should be inserted into
+	// @default: null
+	setterProperty: String
+	
+	// Specify if this file can be used for persistance
+	// @default: false
+	writable: Boolean
+}
+```
+
+##### DirectorySource
+It will be mapped to multiple FileSources
+```javascript
+{
+	// Directory path with GLOB look-up
+	path: String
+}
+```
+
+##### MongoDBSource
+**Depends on ClassJS**
+```javascript
+{
+	// Collection name
+	mongo: String,
+	
+	// MongoDB Connection Settings
+	// It can be also specified in previous configuration source, under `mongodb` property
+	// @default: null - 
+	settings: {
+		// connection string
+		connection: String
+		// or
+		
+		// Port, default 27017
+		port: Number,
+		// IP, default '127.0.0.1'
+		ip: String,
+		
+		// Database name, no default
+		db: String
+	}
+}
+```
+
 
 
 ----

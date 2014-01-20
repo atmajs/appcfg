@@ -2,8 +2,13 @@
 	
 	var MongoSourceProto = {
 		
-		read: function(){
-			return this.fetch()
+		read: function(rootConfig){
+			
+			var mongoSettings = rootConfig.mongodb;
+			if (mongoSettings) 
+				Class.MongoStore.settings(data.mongoSettings);
+			
+			return this.fetch();
 		},
 		
 		write: function(config){
@@ -26,6 +31,9 @@
 			}
 		},
 		Construct: function(data){
+			
+			if (data.settings) 
+				Class.MongoStore.settings(data.settings);
 			
 			new (Class({
 				Base: MongoSourceProto,
