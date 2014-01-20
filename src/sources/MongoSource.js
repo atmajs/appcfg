@@ -7,6 +7,10 @@
 		},
 		
 		write: function(config){
+			
+			if (this.data.writable !== true) 
+				return;
+			
 			obj_deepExtend(this, config);
 			
 			this.save();

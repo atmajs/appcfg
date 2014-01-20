@@ -2,27 +2,34 @@ include
 	.inject('../lib/config.js')
 	.done(function(){
 
+		function check(sources, checker, done){
+			Config
+				.fetch(sources)
+				.done(checker)
+				.always(function(){
+					
+					eq(this._rejected, null);
+					
+					done();
+				});
+		}
 
 		UTest({
 			'file': function(done){
 				
-				var config = new Config([{
+				check([{
 					path: 'test/config/foo.yml'
-				}]);
-				
-				config
-					.read()
-					.done(function(){
-						
-						eq(this.foo, 'foo');
-					})
-					.always(function(){
-						
-						eq(this._rejected, null);
-						
-						done();
-					})
+				},{
+					path: 'test/config/bar/bar.yml'
+				}], function(){
+					
+					eq(this.foo, 'foo');
+					eq(this.bar, 'bar');
+					eq(this.combi.foo, 'foo');
+					eq(this.combi.bar, 'bar');
+					
+				}, done);
 			}
-		})
+		});
 
 	})

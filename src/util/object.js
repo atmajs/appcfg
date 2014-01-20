@@ -3,7 +3,8 @@ var obj_getProperty,
 	obj_setProperty,
 	obj_defaults,
 	obj_extend,
-	obj_deepExtend
+	obj_deepExtend,
+	obj_ensureProperty
 	;
 
 (function(){
@@ -105,6 +106,22 @@ var obj_getProperty,
 		}
 		
 		return target;
+	};
+	
+	obj_ensureProperty = function(obj, property, defaultVal) {
+		
+		var current = obj_getProperty(obj, property);
+		if (current == null) 
+			return obj_setProperty(obj, property, defaultVal == null ? {} : defaultVal);
+		
+		if (typeof current !== typeof defaultVal) {
+			logger.error(
+				'<obj_ensureProperty> type missmatch',
+				typeof current,
+				typeof defaultVal,
+				new Error().stack
+			);
+		}
 	};
 	
 }());

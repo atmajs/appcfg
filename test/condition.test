@@ -1,0 +1,90 @@
+include
+	.inject(
+		'/src/util/is.js',
+		'/src/util/object.js',
+		'/src/util/cond_object.js'
+	)
+	.done(function(){
+		
+		function clone(obj){
+			return JSON.parse(JSON.stringify(obj));
+		}
+		
+		UTest({
+			
+			'conditions': function(){
+				
+				var obj = {
+					'$if debug': {
+						foo: 'foo'
+					},
+					'$if release': {
+						foo: 'bar'
+					},
+					
+					a: {
+						'$if debug': 'foo',
+						'$if release': 'bar'
+					},
+					
+					b: {
+						'$if debug': 'some',
+						'$default': 'bar'
+					},
+					
+					arr: [
+						'const',
+						{
+							'$if debug': [
+								'debug-foo-1',
+								'debug-foo-2',
+							],
+							'$if release': [
+								'release-foo-1',
+								'release-foo-2',
+							]
+						},
+						
+						{
+							obj: {
+								'$if debug': 'debug-obj',
+								'$if release': 'release-obj'
+							}
+						}
+					]
+				};
+				
+				var config;
+				
+				config = clone(obj);
+				cond_rewrite(config, { debug: true });
+				eq(config.foo, 'foo');
+				eq(config.a, 'foo');
+				eq(config.b, 'some');
+				
+				deepEq(config.arr, [
+					'const',
+					'debug-foo-1',
+					'debug-foo-2', {
+						obj: 'debug-obj'
+					}
+				]);
+				
+				config = clone(obj);
+				cond_rewrite(config, { release: true });
+				eq(config.foo, 'bar');
+				eq(config.a, 'bar');
+				eq(config.b, 'bar');
+				
+				deepEq(config.arr, [
+					'const',
+					'release-foo-1',
+					'release-foo-2', {
+						obj: 'release-obj'
+					}
+				]);
+			}
+			
+		})
+		
+	})

@@ -1,10 +1,10 @@
 {
     "name": "config",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "",
     "main": "lib/config.js",
     "scripts": {
-        "test": "node_modules/.bin/atma test"        
+        "test": "node_modules/.bin/atma test"
     },
     "keywords": [
         ""

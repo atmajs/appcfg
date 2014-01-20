@@ -24,6 +24,8 @@
 		
 		Construct: function(data){
 			this.data = data;
+			
+			data.path = path_handleSpecialFolder(data.path);
 		},
 		
 		read: function(){
@@ -43,13 +45,14 @@
 				this.config = module_eval(this.data.path, this.config);
 			}
 			
-			if (this.data.property) 
-				this.config = obj_getProperty(this.config, this.data.property);
+			var prop = this.data.getterProperty;
+			if (prop) 
+				this.config = obj_getProperty(this.config, prop);
 			
 			return this.resolve();
 		},
 		
-		write: function(){
+		write: function(config){
 			
 			if (this.data.writable !== true) 
 				return;
@@ -64,7 +67,8 @@
 		var module = {
 				exports: {}
 			},
-			exports = module.exports;
+			exports = module.exports
+			;
 			
 		try {
 			eval(script);

@@ -1,1 +1,3 @@
 foo: 'foo'
+combi:
+	foo: 'foo'
