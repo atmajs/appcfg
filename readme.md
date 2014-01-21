@@ -2,7 +2,7 @@
 
 Application Configuration Library for Node.js
 
-_Part of the Atma.js Project_
+_Part of the [Atma.js](http://atmajs.com) Project_
 
 - [About](#about)
 - [Api](#api)
@@ -95,7 +95,7 @@ And if `debug` property in configuration or over cli (`node app --debug`) is set
 #### Config
 
 ** static **
-##### `.read(Array<Source>)` => Config Instance
+##### `.fetch(Array<Source>)` => Config Instance
 Start loading the configuration from specified sources, returns new deferrable configuration instance
 
 ** methods **
@@ -121,7 +121,7 @@ Fire the callback when the configuration ends loading
 	
 	// Specify if this file can be used for persistance
 	// @default: false
-	writable: Boolea
+	writable: Boolean
 	
 	// Fires before source $read function is called
 	// (e.g. change this.path property or any other things)
