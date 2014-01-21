@@ -1,7 +1,7 @@
 {
     "name": "appcfg",
     "version": "0.1.3",
-    "description": "",
+    "description": "Application Configuration Library for Node.js",
     "main": "lib/config.js",
     "scripts": {
         "test": "node_modules/.bin/atma test"

@@ -26,7 +26,10 @@ var SourceFactory = {
 			i = -1
 			;
 		var sources = new Sources,
-			Handler, handlerName, data
+			Handler,
+			handlerName,
+			data,
+			source
 			;
 			
 		outer: while( ++i < imax ){
@@ -47,16 +50,36 @@ var SourceFactory = {
 			logger.error('<unhandled configuration source> :', data);
 		}
 		
+		var before,
+			after;
 		
 		i = sources.length;
 		while(--i > -1){
+			source = sources[i];
 			
-			sources[i]
+			before = source.data.beforeRead;
+			before &&
+				before(source, rootConfig);
+			
+			after = source.data.afterRead;
+			
+			source
 				.read(rootConfig)
-				.always(sources.delegate(null, false));
+				.done(afterDelegate(after, source, rootConfig))
+				.always(sources.delegate(null, false))
+				;
 		}
 		
-		
+		function afterDelegate(fn, source, rootConfig){
+			
+			if (fn == null) 
+				return null;
+			
+			return function(){
+				
+				fn(source, rootConfig);
+			};
+		}
 		
 		return sources;
 	},

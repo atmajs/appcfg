@@ -1,7 +1,6 @@
 
-**_... in progress_**
 
-Node.js Configuration Library.
+Application Configuration Library for Node.js
 
 _Part of the Atma.js Project_
 
@@ -122,7 +121,15 @@ Fire the callback when the configuration ends loading
 	
 	// Specify if this file can be used for persistance
 	// @default: false
-	writable: Boolean
+	writable: Boolea
+	
+	// Fires before source $read function is called
+	// (e.g. change this.path property or any other things)
+	beforeRead: Function<Source, RootConfig>
+	
+	// Fires after source complets reading
+	// (e.g. access config object in `Source.config`)
+	afterRead: Function<Source, RootConfig>
 }
 ```
 
