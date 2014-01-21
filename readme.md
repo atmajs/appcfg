@@ -171,7 +171,9 @@ _**Depends on ClassJS**_
 	}
 }
 ```
-##### MongoDBSource
+
+##### CustomSource
+This source type can suit any needs.
 
 ```javascript
 
