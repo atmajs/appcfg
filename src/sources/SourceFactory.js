@@ -57,14 +57,16 @@ var SourceFactory = {
 		while(--i > -1){
 			source = sources[i];
 			
-			before = source.data.beforeRead;
-			before &&
-				before(source, rootConfig);
+			before = source.data && source.data.beforeRead;
+			after = source.data && source.data.afterRead;
 			
-			after = source.data.afterRead;
+			if (before)
+				before(source, rootConfig);
 			
 			source
 				.read(rootConfig)
+				;
+			source
 				.done(afterDelegate(after, source, rootConfig))
 				.always(sources.delegate(null, false))
 				;

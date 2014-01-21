@@ -4,7 +4,7 @@ var SourceFactory = (function(){
 	// import FileSource.js
 	// import DirectorySource.js
 	// import MongoSource.js
-	
+	// import CustomSource.js
 	
 	return SourceFactory;
 }());

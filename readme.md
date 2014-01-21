@@ -127,7 +127,7 @@ Fire the callback when the configuration ends loading
 	// (e.g. change this.path property or any other things)
 	beforeRead: Function<Source, RootConfig>
 	
-	// Fires after source complets reading
+	// Fires after source completes reading
 	// (e.g. access config object in `Source.config`)
 	afterRead: Function<Source, RootConfig>
 }
@@ -171,7 +171,25 @@ _**Depends on ClassJS**_
 	}
 }
 ```
+##### MongoDBSource
 
+```javascript
+
+// Class Constructor with the Deferrable Interface and the method `read`
+Function 
+
+// e.g. using ClassJS
+
+Class({
+	Base: Class.Deferred,
+	read: function(){
+		// do any reads and calcs, after that resolve the source
+		this.config = fooConfig();
+		this.resolve();
+	}
+})
+
+```
 
 
 ----
