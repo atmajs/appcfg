@@ -30,7 +30,7 @@ Sample:
 
 ```javascript
 	var config = Config
-		.read([
+		.fetch([
 			// from file. (with Special Folder format syntax support)
 			{
 				path: '%APPDATA%/.appName/config.yml',
