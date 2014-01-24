@@ -3,8 +3,10 @@
 
 	// import /src/scope-vars.js
 	
+	// import /src/util/is.js
 	// import /src/util/cli.js
 	// import /src/util/object.js
+	// import /src/util/cond_object.js
 	// import /src/util/path.js
 	
 	// import /src/sources/exports.js

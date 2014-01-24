@@ -1,26 +1,25 @@
 var Config = Class({
 	Base: Class.Deferred,
 	
-	Construct: function(arr){
+	Construct: function(){
 		
-		this.data = arr;
 	},
 	
 	Static: {
 		
 		fetch: function(arr){
 			
-			return new Config(arr).$read();
+			return new Config().$read(arr);
 		}
 	},
 	
 	
-	$read: function(){
-		var config = this,
-			arr = this.data
-			;
+	$read: function(arr){
+		var config = this;
+			
 		
-		this._sources = SourceFactory
+		this.$cli = cli_arguments();
+		this.$sources = SourceFactory
 			.loadSources(arr, config)
 			.done(function(){
 				
@@ -37,8 +36,6 @@ var Config = Class({
 					
 					obj_deepExtend(target, source.config);
 				});
-				
-				config.$cli = cli_arguments();
 				
 				var overrides = config.$cli.params,
 					prop;
@@ -58,7 +55,7 @@ var Config = Class({
 	$write: function(config){
 		obj_deepExtend(config);
 		
-		var sources = this._sources,
+		var sources = this.$sources,
 			i = sources.length
 			;
 		while( --i > -1 ){

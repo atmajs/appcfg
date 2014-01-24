@@ -177,7 +177,7 @@ This source type can suit any needs.
 
 ```javascript
 
-// Class Constructor with the Deferrable Interface and the method `read`
+// Constructor with the Deferrable Interface and the method `read`
 Function 
 
 // e.g. using ClassJS

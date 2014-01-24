@@ -1,7 +1,9 @@
 src/
 test/
 builds/
+tools/
 
+.travis
 .komodotools
 .npmignore
 *.komodoproject

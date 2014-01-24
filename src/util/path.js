@@ -30,6 +30,11 @@ var path_handleSpecialFolder,
 		
 	};
 	
+	path_normalize = function(path){
+		return path
+			.replace(/\\/g, '/')
+			;
+	};
 	
 	// PRIVATE
 	
@@ -45,6 +50,9 @@ var path_handleSpecialFolder,
 			case 'TEMP':
 				path = env.TMP || env.TMPDIR;
 				break;
+			case 'APP':
+				// @TODO eliminate io.env dependency
+				return io.env.applicationDir.toLocalDir();
 		}
 		
 		if (path != null) 
