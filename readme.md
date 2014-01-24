@@ -1,8 +1,11 @@
 
 
-Application Configuration Library for Node.js
+#### Application Configuration Library for Node.js
 
 _Part of the [Atma.js](http://atmajs.com) Project_
+
+====
+[![Build Status](https://travis-ci.org/atmajs/appcfg.png?branch=master)](https://travis-ci.org/atmajs/appcfg)
 
 - [About](#about)
 - [Api](#api)
