@@ -33,6 +33,10 @@
 			
 			var file = new io.File(this.data.path);
 			if (file.exists() === false) {
+				
+				if (this.data.optional) 
+					return this.resolve();
+				
 				console.error('<config> Configuration file not found', this.data.path);
 				return this.reject();
 			}
@@ -60,7 +64,12 @@
 			if (this.data.writable !== true) 
 				return;
 			
-			new io.File(this.data.path).write(this.config);
+			this.config = obj_deepExtend(this.config, config);
+			
+			new io
+				.File(this.data.path)
+				.write(this.config)
+				;
 		}
 	}));
 	

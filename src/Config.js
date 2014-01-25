@@ -1,26 +1,33 @@
 var Config = Class({
 	Base: Class.Deferred,
 	
-	Construct: function(){
-		
+	Construct: function(data){
+		this.$data = data;
+		this.$sources = SourceFactory.create(data);
 	},
 	
 	Static: {
 		
 		fetch: function(arr){
 			
-			return new Config().$read(arr);
+			return new Config(arr).$read();
+		},
+		
+		create: function(arr){
+			return new Config(arr);
 		}
 	},
 	
 	
 	$read: function(arr){
-		var config = this;
-			
+		arr = arr || this.$data;
 		
+		var config = this;
+		
+		this.defer();
 		this.$cli = cli_arguments();
-		this.$sources = SourceFactory
-			.loadSources(arr, config)
+		this.$sources
+			.load(config)
 			.done(function(){
 				
 				this.each(function(source){
@@ -60,13 +67,34 @@ var Config = Class({
 			;
 		while( --i > -1 ){
 			if (sources[i].data.writable) {
-				sources[i].write(config);
+				
+				this.defer();
+				sources[i]
+					.write(config)
+					.always(this.resolveDelegate());
 				return this;
 			}
 		}
 		
-		logger.error('<config:write> Writable source not defined.');
-		return this;
+		var msg = '<config:write> Writable source not defined.';
+		logger.error(msg);
+		
+		return this.reject(msg);
+	},
+	
+	
+	Override: {
+		toJSON: function(){
+			var json = this.super(),
+				key;
+			
+			for(key in json){
+				if (key[0] === '$') 
+					delete json[key];
+			}
+			
+			return json;
+		}
 	}
 	
 });

@@ -14,44 +14,12 @@ var Sources = Class.Collection(Object, {
 		}
 		
 		this.push(mix);
-		
-	}
-});
-
-var SourceFactory = {
+	},
 	
-	loadSources: function(arr, rootConfig){
-		
-		var imax = arr.length,
-			i = -1
-			;
-		var sources = new Sources,
-			Handler,
-			handlerName,
-			data,
-			source
-			;
+	load: function(rootConfig){
+		var sources = this,
 			
-		outer: while( ++i < imax ){
-			
-			
-			data = arr[i];
-			
-			for(handlerName in Handlers) {
-				
-				Handler = Handlers[handlerName];
-				if (Handler.canHandle(data)) {
-					sources.add(new Handler(data));
-					
-					continue outer;
-				}
-			}
-			
-			logger.error('<unhandled configuration source> :', data);
-		}
-		
-		var before,
-			after;
+			source, i, before, after;
 		
 		i = sources.length;
 		while(--i > -1){
@@ -81,6 +49,41 @@ var SourceFactory = {
 				
 				fn(source, rootConfig);
 			};
+		}
+		
+		return sources;
+	}
+});
+
+var SourceFactory = {
+	
+	create: function(arr){
+		var imax = arr.length,
+			i = -1
+			;
+		var sources = new Sources,
+			Handler,
+			handlerName,
+			data,
+			source
+			;
+			
+		outer: while( ++i < imax ){
+			
+			
+			data = arr[i];
+			
+			for(handlerName in Handlers) {
+				
+				Handler = Handlers[handlerName];
+				if (Handler.canHandle(data)) {
+					sources.add(new Handler(data));
+					
+					continue outer;
+				}
+			}
+			
+			logger.error('<unhandled configuration source> :', data);
 		}
 		
 		return sources;

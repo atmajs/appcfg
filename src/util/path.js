@@ -52,14 +52,14 @@ var path_handleSpecialFolder,
 				break;
 			case 'APP':
 				// @TODO eliminate io.env dependency
-				return io.env.applicationDir.toLocalDir();
+				path = io.env.applicationDir.toLocalDir();
+				break;
 		}
 		
-		if (path != null) 
-			return path;
+		if (path == null)
+			logger.error('<config:special-folder> Not resolved', name);
 		
-		logger.error('<config:special-folder> Not resolved', name);
-		return env.HOME || name;
+		return path_normalize(path || env.HOME || name);
 	}
 	
 }());

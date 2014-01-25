@@ -58,7 +58,10 @@ var obj_getProperty,
 	};
 	
 	obj_deepExtend = function(target, source){
-				
+		
+		if (target == null)
+			target = {};
+			
 		if (source == null) 
 			return target;
 		
