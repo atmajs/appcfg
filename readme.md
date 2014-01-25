@@ -27,7 +27,35 @@ Additional features:
 - Command Line Overrides _(with dot notations)_: `node app --foo.bar barValue
 - Conditions
 - Special Folder
+- Interpolations
 
+When combining objects from many sources, **deep copy** is used:
+
+```javascript
+// a
+{ sub: { foo: 'foo' }, arr: [ 'foo' ] }
+// b
+{ sub: { bar: 'bar' }, arr: [ 'bar' ] }
+
+// combined (a + b)
+{
+    sub: { foo: 'foo', bar: 'bar'},
+    arr: ['foo', 'bar']
+}
+
+// E.g you want completely to overwrite `arr` property, then prefix the key's name with `!`
+
+// a
+{ sub: { foo: 'foo' }, arr: [ 'foo' ] }
+// b
+{ sub: { bar: 'bar' }, '!arr': [ 'bar' ] }
+
+// combined (a + b)
+{
+    sub: { foo: 'foo', bar: 'bar'},
+    arr: ['bar']
+}
+```
 
 Sample:
 

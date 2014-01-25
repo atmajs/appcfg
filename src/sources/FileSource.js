@@ -53,7 +53,7 @@
 			if (prop) 
 				this.config = obj_getProperty(this.config, prop);
 			
-			cond_rewrite(this.config, rootConfig, cli_arguments().params);
+			obj_conditions(this.config, rootConfig, cli_arguments().params);
 			
 			
 			return this.resolve();
@@ -86,6 +86,13 @@
 			eval(script);
 		} catch(error){
 			console.error('<config> Configuration evaluation error', path, error);
+		}
+		
+		if (Object.keys(module.exports).length === 0) {
+			logger
+				.error('<config> Define `module.exports = ` in a file to export configuration', path)
+				.log(' - (`global.config = ` support is removed)'.yellow)
+				;
 		}
 		
 		return module.exports;

@@ -1,4 +1,4 @@
-var cond_rewrite;
+var obj_conditions;
 
 (function(){
 	
@@ -7,7 +7,7 @@ var cond_rewrite;
 	var _cfg,
 		_params;
 	
-	cond_rewrite = function(obj, config, cliParams){
+	obj_conditions = function(obj, config, cliParams){
 		
 		_cfg = config;
 		_params = cliParams;
@@ -29,26 +29,28 @@ var cond_rewrite;
 	
 	
 	function rewriteObject(obj) {
-		for (var key in obj){
+		var key, val;
+		for (key in obj){
+			val = obj[key];
 			
-			if (is_Object(obj) === false) 
+			if (is_Object(val) === false) 
 				continue;
 			
 			if (isConditionProperty(key)) {
 				
 				if (evalConditionProperty(key)) {
-					obj_deepExtend(obj, obj[key]);
+					obj_deepExtend(obj, val);
 				}
 				
 				continue;
 			}
 			
-			if (isConditionObject(obj[key])) {
-				obj[key] = evalConditionObject(obj[key]);
+			if (isConditionObject(val)) {
+				obj[key] = evalConditionObject(val);
 				continue;
 			}
 			
-			rewrite(obj[key]);
+			rewrite(val);
 		}
 	}
 	

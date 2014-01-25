@@ -52,6 +52,7 @@ var Config = Class({
 				}
 				
 				
+				obj_interpolate(config);
 				
 				config.resolve()
 			});

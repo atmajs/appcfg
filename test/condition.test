@@ -2,7 +2,7 @@ include
 	.inject(
 		'/src/util/is.js',
 		'/src/util/object.js',
-		'/src/util/cond_object.js'
+		'/src/util/object_conditions.js'
 	)
 	.done(function(){
 		
@@ -57,7 +57,7 @@ include
 				var config;
 				
 				config = clone(obj);
-				cond_rewrite(config, { debug: true });
+				obj_conditions(config, { debug: true });
 				eq(config.foo, 'foo');
 				eq(config.a, 'foo');
 				eq(config.b, 'some');
@@ -71,7 +71,7 @@ include
 				]);
 				
 				config = clone(obj);
-				cond_rewrite(config, { release: true });
+				obj_conditions(config, { release: true });
 				eq(config.foo, 'bar');
 				eq(config.a, 'bar');
 				eq(config.b, 'bar');
