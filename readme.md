@@ -103,8 +103,16 @@ Start loading the configuration from specified sources, returns new deferrable c
 
 ** methods **
 
-##### .done(callback)
-Fire the callback when the configuration ends loading
+##### `<Constructor> (Array<Source>)`
+
+##### `.$read()`
+Start loading configuration from sources
+
+##### `.$write(config)`
+Update and save the configuration. Use first matched writable source.
+
+##### `.done(callback)`
+Fire the callback when the configuration ends loading or reading
 
 #### Source
 ##### FileSource
@@ -133,6 +141,10 @@ Fire the callback when the configuration ends loading
 	// Fires after source completes reading
 	// (e.g. access config object in `Source.config`)
 	afterRead: Function<Source, RootConfig>
+    
+    // If true, do not log any warning if the file not exists
+    // @default: false
+    optional: true
 }
 ```
 

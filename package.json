@@ -1,13 +1,14 @@
 {
     "name": "appcfg",
-    "version": "0.1.6",
+    "version": "0.1.8",
     "description": "Application Configuration Library for Node.js",
     "main": "lib/config.js",
     "scripts": {
         "test": "node_modules/.bin/atma test"
     },
     "keywords": [
-        ""
+        "config",
+        "settings"
     ],
     "author": "",
     "license": "MIT",
