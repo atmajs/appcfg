@@ -1,5 +1,5 @@
 include
-	.inject('/lib/config.js')
+	.inject('../../lib/config.js')
 	.done(function(){
 		
 		function check(sources, checker, done){
