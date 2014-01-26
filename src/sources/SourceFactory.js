@@ -1,6 +1,6 @@
 var Handlers = {};
 var Sources = Class.Collection(Object, {
-	Base: Class.Await,
+	Base: Class.Deferred,
 	
 	add: function(mix){
 		
@@ -16,14 +16,33 @@ var Sources = Class.Collection(Object, {
 		this.push(mix);
 	},
 	
-	load: function(rootConfig){
+	load: function(rootConfig, i){
 		var sources = this,
+			imax = sources.length,
 			
-			source, i, before, after;
+			source, before, after;
+			
+		if (i == null) 
+			i = -1;
 		
-		i = sources.length;
-		while(--i > -1){
+		var count = 0,
+			await = new Class.Await()
+			;
+		
+		while( ++i < imax ){
 			source = sources[i];
+			
+			if ( ++count > 1 ) {
+				
+				if (source.data.sync) {
+					
+					await.always(function(){
+						
+						sources.load(rootConfig, i - 1);
+					});
+					break;
+				}
+			}
 			
 			before = source.data && source.data.beforeRead;
 			after = source.data && source.data.afterRead;
@@ -36,18 +55,22 @@ var Sources = Class.Collection(Object, {
 				;
 			source
 				.done(afterDelegate(after, source, rootConfig))
-				.always(sources.delegate(null, false))
+				.always(await.delegate(null, false))
 				;
 		}
 		
+		if (i > imax - 1) 
+			await.always(sources.resolveDelegate())
+		
+		
 		function afterDelegate(fn, source, rootConfig){
-			
-			if (fn == null) 
-				return null;
-			
+		
 			return function(){
 				
-				fn(source, rootConfig);
+				cfg_merge(rootConfig, source);
+				
+				if (fn) 
+					fn(source, rootConfig);
 			};
 		}
 		

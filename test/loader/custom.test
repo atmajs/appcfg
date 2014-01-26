@@ -1,0 +1,31 @@
+include
+    .inject('/lib/config.js::Config')
+    .done(function(){
+        
+        UTest({
+            'sync load' : function(done){
+                
+                 Config
+                    .fetch([
+                        {
+                            path: 'test/config/foo.yml'
+                        },
+                        Class({
+                            Base: Class.Deferred,
+                            read: assert.callback(function(rootConfig){
+                                
+                                eq(rootConfig.foo, 'foo');
+                                done();
+                                
+                                this.resolve();
+                            }),
+                            
+                            data: {
+                                sync: true
+                            }
+                            
+                        })
+                    ]);
+            }
+        })
+    });

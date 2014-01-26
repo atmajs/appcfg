@@ -143,13 +143,11 @@ Update and save the configuration. Use first matched writable source.
 Fire the callback when the configuration ends loading or reading
 
 #### Source
-##### FileSource
+
+##### Common properties for all source types
 ```javascript
 {
-	// File path
-	path: String,
-	
-	// Define specific property to extract SUB-JSON from the loaded configuration
+    // Define specific property to extract SUB-JSON from the loaded configuration
 	// @default: null
 	getterProperty: String
 	
@@ -158,7 +156,7 @@ Fire the callback when the configuration ends loading or reading
 	// @default: null
 	setterProperty: String
 	
-	// Specify if this file can be used for persistance
+	// Specify if this file can be used for persistence
 	// @default: false
 	writable: Boolean
 	
@@ -173,6 +171,19 @@ Fire the callback when the configuration ends loading or reading
     // If true, do not log any warning if the file not exists
     // @default: false
     optional: true
+    
+    // If true, then wait until all previous sources are loaded
+    // @default: false
+    sync: true
+}
+```
+
+
+##### FileSource
+```javascript
+{
+	// File path
+	path: String
 }
 ```
 
@@ -236,6 +247,13 @@ Class({
 
 ```
 
+##### Embedded
+Include config direct into the source
+```javascript
+{
+    config: Object
+}
+```
 
 ----
 The MIT License

@@ -29,21 +29,7 @@ var Config = Class({
 		this.$sources
 			.load(config)
 			.done(function(){
-				
-				this.each(function(source){
-					
-					var target = config,
-						prop = source.data.setterProperty;
-					
-					if (prop) {
-						
-						obj_ensureProperty(config, prop, {});
-						target = obj_getProperty(config, prop);
-					}
-					
-					obj_deepExtend(target, source.config);
-				});
-				
+			
 				var overrides = config.$cli.params,
 					prop;
 				for(prop in overrides){
