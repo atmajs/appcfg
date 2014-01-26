@@ -69,6 +69,10 @@ var Config = Class({
 		return this.reject(msg);
 	},
 	
+	$extend: function(config){
+		
+		obj_deepExtend(this, config);
+	},
 	
 	Override: {
 		toJSON: function(){
