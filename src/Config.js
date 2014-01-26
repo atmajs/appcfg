@@ -57,7 +57,9 @@ var Config = Class({
 				
 				this.defer();
 				sources[i]
-					.write(config)
+					.write(config);
+				
+				sources
 					.always(this.resolveDelegate());
 				return this;
 			}

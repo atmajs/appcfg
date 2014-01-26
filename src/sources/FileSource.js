@@ -70,6 +70,8 @@
 				.File(this.data.path)
 				.write(this.config)
 				;
+				
+			this.resolve();
 		}
 	}));
 	
