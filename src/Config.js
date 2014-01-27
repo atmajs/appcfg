@@ -59,7 +59,7 @@ var Config = Class({
 				sources[i]
 					.write(config);
 				
-				sources
+				sources[i]
 					.always(this.resolveDelegate());
 				return this;
 			}

@@ -85,7 +85,9 @@
 			;
 			
 		try {
-			eval(script);
+			
+			(new Function('module', 'exports', script))(module, exports);
+			
 		} catch(error){
 			console.error('<config> Configuration evaluation error', path, error);
 		}
