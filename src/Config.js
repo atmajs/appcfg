@@ -18,6 +18,9 @@ var Config = Class({
 		}
 	},
 	
+	$get: function(path){
+		return obj_getProperty(this, path);
+	},
 	
 	$read: function(arr){
 		arr = arr || this.$data;
