@@ -95,6 +95,8 @@ var SourceFactory = {
 			
 			
 			data = arr[i];
+			if (data == null) 
+				continue;
 			
 			for(handlerName in Handlers) {
 				
