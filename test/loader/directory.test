@@ -1,0 +1,36 @@
+UTest({
+	'directory - yml': function(done){
+		
+		Config
+			.fetch([
+				{
+					path: 'test/config/**.yml'
+				}
+			])
+			.done(function(config){
+				
+				eq(config.foo, 'foo');
+				eq(config.bar, 'bar');
+				eq(config.combi.foo, 'foo');
+				eq(config.combi.bar, 'bar');
+				
+				done();
+			});
+	},
+	
+	'directory - js': function(done){
+		
+		Config
+			.fetch([
+				{
+					path: 'test/config/**.js'
+				}
+			])
+			.done(function(config){
+				
+				eq(config.combi.module, 'module');
+				done();
+			});
+	}
+	
+});

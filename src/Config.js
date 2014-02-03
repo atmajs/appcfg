@@ -43,7 +43,7 @@ var Config = Class({
 				
 				obj_interpolate(config);
 				
-				config.resolve()
+				config.resolve(config)
 			});
 			
 		return config;

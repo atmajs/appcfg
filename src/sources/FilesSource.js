@@ -1,31 +1,22 @@
 (function(){
 	
-	SourceFactory.register('file', Class({
+	SourceFactory.register('files', Class({
 		
 		Base: Class.Deferred,
 		
 		Static: {
 			canHandle: function(data){
-				var path = data.path;
-				if (typeof path !== 'string') 
-					return false;
 				
-				if (path.search(/[\*\?]/g) !== -1)
-					// wildcards - directory source
-					return false;
-				
-				if (path[path.length - 1] === '/')
-					// directory
-					return false;
-				
-				return true;
+				return Array.isArray(data.files)
 			},
 		},
 		
 		Construct: function(data){
-			this.data = data;
-			
-			data.path = path_handleSpecialFolder(data.path);
+			var FileHandler = Handlers.file;
+				
+			return data.files.map(function(file){
+				return new FileHandler({ path: file });
+			});
 		},
 		
 		read: function(rootConfig){
@@ -74,32 +65,5 @@
 			this.resolve();
 		}
 	}));
-	
-	
-	function module_eval(path, script){
-		
-		var module = {
-				exports: {}
-			},
-			exports = module.exports
-			;
-			
-		try {
-			
-			(new Function('module', 'exports', script))(module, exports);
-			
-		} catch(error){
-			console.error('<config> Configuration evaluation error', path, error);
-		}
-		
-		if (Object.keys(module.exports).length === 0) {
-			logger
-				.error('<config> Define `module.exports = ` in a file to export configuration', path)
-				.log(' - (`global.config = ` support is removed)'.yellow)
-				;
-		}
-		
-		return module.exports;
-	}
 	
 }());

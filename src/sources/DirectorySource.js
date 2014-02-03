@@ -12,7 +12,7 @@
 				if (typeof path !== 'string') 
 					return false;
 				
-				if (path.search(/\*\?/g) !== -1)
+				if (path.search(/[\*\?]/g) !== -1)
 					return true;
 				
 				if (path[path.length - 1] === '/')
@@ -24,7 +24,7 @@
 		
 		Construct: function(data){
 			var path = data.path.replace(/\\/g, '/'),
-				wildCardIndex = path.search(/\*\?/g),
+				wildCardIndex = path.search(/[\*\?]/g),
 				index = path.lastIndexOf('/', wildCardIndex),
 				
 				base, pattern;
@@ -33,12 +33,11 @@
 				base = path;
 			} else{
 				
-				base = path.substring(0, index);
+				base = path.substring(0, index + 1);
 				pattern = path.substring(index + 1);
 			}
 			
-			
-			return new io
+			var files = new io
 				.Directory(base)
 				.readFiles(pattern)
 				.files
@@ -47,8 +46,11 @@
 					return file.uri.toLocalFile();
 				});
 			
+			return SourceFactory
+				.create([{
+					files: files
+				}])
+				.toArray();
 		}
 	}));
-	
-	
 }());
