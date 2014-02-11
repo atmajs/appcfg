@@ -71,6 +71,9 @@ var obj_getProperty,
 			for (var i = 0, x, imax = source.length; i < imax; i++){
 				x = source[i];
 				
+				if (x == null) 
+					continue;
+				
 				if (is_Object(x)) {
 					target.push(obj_deepExtend({}, x));
 					continue;
@@ -89,12 +92,14 @@ var obj_getProperty,
 		for(key in source){
 			val = source[key];
 			
-			
 			if (key.charCodeAt(0) === 33) {
 				// !
 				target[key.substring(1)] = val;
 				continue;
 			}
+			
+			if (val == null) 
+				continue;
 			
 			if (target[key] == null) {
 				target[key] = val;
