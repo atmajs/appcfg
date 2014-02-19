@@ -22,6 +22,15 @@ var Config = Class({
 		return obj_getProperty(this, path);
 	},
 	
+	$set: function(path, value){
+		obj_setProperty(this, path, value);
+	},
+	
+	$extend: function(config){
+		
+		obj_deepExtend(this, config);
+	},
+	
 	$read: function(arr){
 		arr = arr || this.$data;
 		
@@ -74,10 +83,6 @@ var Config = Class({
 		return this.reject(msg);
 	},
 	
-	$extend: function(config){
-		
-		obj_deepExtend(this, config);
-	},
 	
 	Override: {
 		toJSON: function(){
