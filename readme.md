@@ -133,7 +133,12 @@ Start loading the configuration from specified sources, returns new deferrable c
 
 ##### `<Constructor> (Array<Source>)`
 
-##### `.$read()`
+##### `.$read(?Mix)`
+- Mix:
+	- String: File/Directory/Glob path
+	- Source: Source object
+	- Array<Source>
+	- `@default` - Array<Source> taken from constructor
 Start loading configuration from sources
 
 ##### `.$write(config)`
@@ -156,7 +161,7 @@ Fire the callback when the configuration ends loading or reading
 	// @default: null
 	setterProperty: String
 	
-	// Specify if this file can be used for persistence
+	// Specify if this source can be used for persistence
 	// @default: false
 	writable: Boolean
 	
@@ -168,11 +173,11 @@ Fire the callback when the configuration ends loading or reading
 	// (e.g. access config object in `Source.config`)
 	afterRead: Function<Source, RootConfig>
     
-    // If true, do not log any warning if the file not exists
+    // If true, do not log any warning if the source returns 404
     // @default: false
     optional: true
     
-    // If true, then wait until all previous sources are loaded
+    // If true, then waits until all previous sources are loaded
     // @default: false
     sync: true
 }

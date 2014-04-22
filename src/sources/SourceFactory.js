@@ -81,6 +81,15 @@ var Sources = Class.Collection(Object, {
 var SourceFactory = {
 	
 	create: function(arr){
+		if (typeof arr === 'string') {
+			// file/directory/glob source
+			arr = [ {path: arr} ]
+		}
+		if (Array.isArray(arr) === false) {
+			// single source
+			arr = [ arr ];
+		}
+		
 		var imax = arr.length,
 			i = -1
 			;

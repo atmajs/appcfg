@@ -2,8 +2,12 @@ var cli_arguments;
 
 
 (function(){
+	var cache__;
 	
 	cli_arguments = function(){
+		
+		if (cache__ != null) 
+			return cache__;
 		
 		var argv = process.argv,
 			imax = argv.length,
@@ -33,7 +37,7 @@ var cli_arguments;
 			args.push(x);
 		}
 		
-		return {
+		return cache__ = {
 			params: params,
 			args: args
 		};		

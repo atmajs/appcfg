@@ -31,14 +31,17 @@ var Config = Class({
 		obj_deepExtend(this, config);
 	},
 	
-	$read: function(arr){
-		arr = arr || this.$data;
-		
+	$read: function(mix){
 		var config = this;
+		var sources = mix == null
+			? this.$sources
+			: SourceFactory.create(mix)
+			;
 		
 		this.defer();
 		this.$cli = cli_arguments();
-		this.$sources
+		
+		sources
 			.load(config)
 			.done(function(){
 			
