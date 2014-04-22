@@ -9,10 +9,10 @@ UTest({
 			])
 			.done(function(config){
 				
-				eq(config.foo, 'foo');
-				eq(config.bar, 'bar');
-				eq(config.combi.foo, 'foo');
-				eq(config.combi.bar, 'bar');
+				eq_(config.foo, 'foo');
+				eq_(config.bar, 'bar');
+				eq_(config.combi.foo, 'foo');
+				eq_(config.combi.bar, 'bar');
 				
 				done();
 			});
@@ -28,9 +28,30 @@ UTest({
 			])
 			.done(function(config){
 				
-				eq(config.combi.module, 'module');
+				eq_(config.combi.module, 'module');
 				done();
 			});
+	},
+	
+	'directory - read many': function(done){
+		var config = new Config;
+		
+		config
+			.$read('test/config/foo.yml')
+			.$read('test/config/bar/*.yml')
+			.$read('test/config/module.js')
+			;
+		
+		config.done(function(){
+			
+			eq_(config.foo, 'foo');
+			eq_(config.bar, 'bar');
+			eq_(config.combi.foo, 'foo');
+			eq_(config.combi.bar, 'bar');
+			eq_(config.combi.module, 'module');
+			
+			done();
+		})
 	}
 	
 });

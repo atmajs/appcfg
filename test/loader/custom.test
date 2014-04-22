@@ -12,13 +12,13 @@ include
                         },
                         Class({
                             Base: Class.Deferred,
-                            read: assert.callback(function(rootConfig){
+                            read: function(rootConfig){
                                 
-                                eq(rootConfig.foo, 'foo');
-                                done();
+                                eq_(rootConfig.foo, 'foo');
                                 
                                 this.resolve();
-                            }),
+                                done();
+                            },
                             
                             data: {
                                 sync: true

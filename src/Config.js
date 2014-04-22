@@ -1,9 +1,10 @@
 var Config = Class({
-	Base: Class.Deferred, //Class.Await,
 	
+	Base: Class.Deferred,
 	Construct: function(data){
 		this.$data = data;
 		this.$sources = SourceFactory.create(data);
+		this.$parallelReads = new Class.Await;
 	},
 	
 	Static: {
@@ -17,6 +18,12 @@ var Config = Class({
 		}
 	},
 	
+	// Properties
+	$parallelReads: null,
+	$sources: null,
+	$cli: null,
+	
+	// Methods
 	$get: function(path){
 		return obj_getProperty(this, path);
 	},
@@ -32,13 +39,16 @@ var Config = Class({
 	
 	$read: function(mix){
 		var config = this,
-			//resume = this.delegate(null, false),
+			resume = this.$parallelReads.delegate(null, false),
 			sources = mix == null
 				? this.$sources
 				: SourceFactory.create(mix)
 				;
-			
+		
+		this.$parallelReads._always = null;
+		this.$parallelReads.always(this._onComplete);
 		this.$cli = cli_arguments();
+		this.defer();
 		
 		sources
 			.load(config)
@@ -50,13 +60,19 @@ var Config = Class({
 				}
 				
 				obj_interpolate(config);
-				//resume();
-				config.resolve(config);
+				resume();
 			});
+		
+		
 		
 		return config;
 	},
 	
+	Self: {
+		_onComplete: function(){
+			this.resolve(this);
+		}
+	},
 	$write: function(config){
 		obj_deepExtend(config);
 		
