@@ -1,5 +1,5 @@
 var Config = Class({
-	Base: Class.Deferred,
+	Base: Class.Deferred, //Class.Await,
 	
 	Construct: function(data){
 		this.$data = data;
@@ -9,7 +9,6 @@ var Config = Class({
 	Static: {
 		
 		fetch: function(arr){
-			
 			return new Config(arr).$read();
 		},
 		
@@ -32,32 +31,29 @@ var Config = Class({
 	},
 	
 	$read: function(mix){
-		var config = this;
-		var sources = mix == null
-			? this.$sources
-			: SourceFactory.create(mix)
-			;
-		
-		this.defer();
+		var config = this,
+			//resume = this.delegate(null, false),
+			sources = mix == null
+				? this.$sources
+				: SourceFactory.create(mix)
+				;
+			
 		this.$cli = cli_arguments();
 		
 		sources
 			.load(config)
 			.done(function(){
-			
 				var overrides = config.$cli.params,
 					prop;
 				for(prop in overrides){
-					
 					obj_setProperty(config, prop, overrides[prop]);
 				}
 				
-				
 				obj_interpolate(config);
-				
-				config.resolve(config)
+				//resume();
+				config.resolve(config);
 			});
-			
+		
 		return config;
 	},
 	

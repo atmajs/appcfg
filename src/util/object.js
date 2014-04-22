@@ -172,6 +172,9 @@ var obj_getProperty,
 			if (val == null) 
 				continue;
 			
+			if (key[0] === '_') 
+				continue;
+			
 			if (is_Object(val)){
 				obj_interpolate(val, root);
 				continue;
