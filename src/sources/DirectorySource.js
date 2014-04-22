@@ -43,7 +43,7 @@
 				.files
 				.map(function(file){
 					
-					return file.uri.toLocalFile();
+					return file.uri.toString();
 				});
 			
 			return SourceFactory

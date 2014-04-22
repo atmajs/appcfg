@@ -4,7 +4,7 @@ var path_handleSpecialFolder,
 
 (function(){
 	
-	var rgx_specialFolder = /%([^%]+)%/g,
+	var rgx_specialFolder = /^%(\w+)%/,
 		rgx_dblSlash = /[\/]{2,}/g,
 		folders = {}
 		;
@@ -15,7 +15,7 @@ var path_handleSpecialFolder,
 			return path;
 		
 		
-		return path_normalize(path)
+		path = path_normalize(path)
 			.replace(rgx_specialFolder, function(full, name){
 				
 				name = name.toUpperCase();
@@ -28,6 +28,7 @@ var path_handleSpecialFolder,
 			.replace(rgx_dblSlash, '/')
 			;
 		
+		return 'file://' + path;
 	};
 	
 	path_normalize = function(path){
