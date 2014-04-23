@@ -31,32 +31,16 @@
 		read: function(rootConfig){
 			this.defer();
 			
-			var file = new io.File(this.data.path);
-			if (file.exists() === false) {
-				
-				if (this.data.optional) 
-					return this.resolve();
-				
-				console.error('<config> Configuration file not found', this.data.path);
-				return this.reject();
-			}
+			this.config = file_readSource(
+				rootConfig,
+				this.data.path,
+				this.data
+			);
 			
-			
-			this.config = file.read();
-			
-			if (typeof this.config === 'string') {
-				this.data.writable = false;
-				this.config = module_eval(this.data.path, this.config);
-			}
-			
-			var prop = this.data.getterProperty;
-			if (prop) 
-				this.config = obj_getProperty(this.config, prop);
-			
-			obj_conditions(this.config, rootConfig, cli_arguments().params);
-			
-			
-			return this.resolve();
+			return this[ this.config == null
+				? 'reject'
+				: 'resolve'
+			]();
 		},
 		
 		write: function(config){
@@ -75,31 +59,5 @@
 		}
 	}));
 	
-	
-	function module_eval(path, script){
-		
-		var module = {
-				exports: {}
-			},
-			exports = module.exports
-			;
-			
-		try {
-			
-			(new Function('module', 'exports', script))(module, exports);
-			
-		} catch(error){
-			console.error('<config> Configuration evaluation error', path, error);
-		}
-		
-		if (Object.keys(module.exports).length === 0) {
-			logger
-				.error('<config> Define `module.exports = ` in a file to export configuration', path)
-				.log(' - (`global.config = ` support is removed)'.yellow)
-				;
-		}
-		
-		return module.exports;
-	}
 	
 }());
