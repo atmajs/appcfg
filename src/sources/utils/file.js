@@ -19,7 +19,12 @@ var file_readSource;
 		}
 		
 		if (file == null) {
-			logger.error('<config> Configuration file not found', path);
+			if (data.optional !== true)
+				logger
+					.error('<config> Configuration file not found', path)
+					.warn('Set `optional:true`, if configuration is not strict required')
+					;
+				
 			return null;
 		}
 		
