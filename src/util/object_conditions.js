@@ -89,11 +89,9 @@ var obj_conditions;
 	
 	
 	function isConditionProperty(prop){
-		
 		if (prop.charCodeAt(0) !== 35) 
 			// #
 			return false;
-		
 		return prop.indexOf('#if ') === 0;
 	}
 	
@@ -102,7 +100,6 @@ var obj_conditions;
 			
 			if (isConditionProperty(key))
 				continue;
-			
 			if (key === key_DEFAULT) 
 				continue;
 			
@@ -117,8 +114,14 @@ var obj_conditions;
 		
 		var code = prop
 			.replace('#if ', '')
-			.replace(/\b[\w\d_$]+\b/g, function(full){
-				return 'getter("' + full + '")';
+			.replace(/\b[\w\d_$]+\b/g, function(match, index, str){
+				if (isInQuotes(str, index))
+					return match;
+				if (str[index - 1] === '.')
+					// skip property accessor
+					return match;
+				
+				return 'getter("' + match + '")';
 			});
 			
 		var fn = new Function('getter', 'return !!(' + code + ')');
@@ -126,7 +129,6 @@ var obj_conditions;
 		try {
 			return fn(evalGetter);
 		} catch(error){
-			
 			logger.error('<config:condition-object> Evalulation error', prop, error);
 		}
 		
@@ -134,9 +136,7 @@ var obj_conditions;
 	}
 	
 	function evalGetter(prop) {
-		var r;
-		
-		r = obj_getProperty(_params, prop);
+		var r = obj_getProperty(_params, prop);
 		if (r != null)
 			return r;
 		
@@ -146,20 +146,36 @@ var obj_conditions;
 		
 		return null;
 	}
-	
 	function evalConditionObject(obj) {
-		
 		for (var key in obj){
-			
 			if (key === key_DEFAULT) 
 				continue;
-			
-			if (evalConditionProperty(key)) {
+			if (evalConditionProperty(key)) 
 				return obj[key];
-			}
 		}
-		
 		return obj[key_DEFAULT];
 	}
-	
+	function isInQuotes(str, index){
+		var isInDouble = false,
+			isInSingle = false,
+			c;
+		while (--index > -1) {
+			c = str.charCodeAt(index);
+			if (34 === c) {
+				if (isInSingle)
+					continue;
+				if (isInDouble && str[index - 1] === '\\') 
+					continue;
+				isInDouble = !isInDouble;
+			}
+			if (39 === c) {
+				if (isInDouble)
+					continue;
+				if (isInSingle && str[index - 1] === '\\') 
+					continue;
+				isInSingle = !isInSingle;
+			}
+		}
+		return isInSingle || isInDouble;
+	}	
 }());

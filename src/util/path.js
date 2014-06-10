@@ -55,6 +55,9 @@ var path_handleSpecialFolder,
 				// @TODO eliminate io.env dependency
 				path = io.env.applicationDir.toLocalDir();
 				break;
+			case 'APPDATA':
+				path = env.HOME;
+				break;
 		}
 		
 		if (path == null)
