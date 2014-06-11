@@ -1,6 +1,6 @@
 {
     "name": "appcfg",
-    "version": "0.1.30",
+    "version": "0.1.31",
     "description": "Application Configuration Library for Node.js",
     "main": "lib/config.js",
     "scripts": {
@@ -13,7 +13,9 @@
     "author": "",
     "license": "MIT",
     "devDependencies": {
-        "atma": "latest"
+        "atma": "latest",
+        "mongodb": "latest",
+        "atma-logger": "latest"
     },
     "dependencies": {
         "atma-io": "latest",

@@ -2,7 +2,8 @@
 
 var io,
 	net,
-	Class;
+	Class,
+	logger;
 
 (function(){
 	var atma = global;
@@ -11,9 +12,10 @@ var io,
 	
 	if (atma.Class == null) 
 		atma = require('atma-libs/exports');
+		
 	
 	Class = atma.Class;
 	net = atma.net;
 	io = global.io || require('atma-io');
-	
+	logger = global.logger || require('atma-logger');
 }());

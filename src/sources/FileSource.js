@@ -44,18 +44,27 @@
 		},
 		
 		write: function(config){
+			this.defer();
 			
 			if (this.data.writable !== true) 
-				return;
+				return this.reject('Not writable');
 			
 			this.config = obj_deepExtend(this.config, config);
 			
-			new io
-				.File(this.data.path)
-				.write(this.config)
-				;
-				
-			this.resolve();
+			
+			try {
+				io
+					.File
+					.writeAsync(
+						this.data.path,
+						JSON.stringify(this.config)
+					)
+					.pipe(this);
+			} catch(error) {
+				this.reject('JSON.serialization ' + String(error));
+			}
+			
+			return this;
 		}
 	}));
 	
