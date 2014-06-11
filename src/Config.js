@@ -60,6 +60,7 @@ var Config = Class({
 				}
 				
 				obj_interpolate(config);
+				cfg_conditions(config, config, config.$cli.params);
 				resume();
 			});
 		

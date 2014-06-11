@@ -41,8 +41,6 @@ var file_readSource;
 		if (prop) 
 			config = obj_getProperty(config, prop);
 		
-		obj_conditions(config, rootConfig, cli_arguments().params);
-		
 		return config;
 	};
 	

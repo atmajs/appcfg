@@ -1,13 +1,6 @@
-var obj_conditions;
-
+var cfg_conditions;
 (function(){
-	
-	var key_DEFAULT = 'default';
-	
-	var _cfg,
-		_params;
-	
-	obj_conditions = function(obj, config, cliParams){
+	cfg_conditions = function(obj, config, cliParams){
 		
 		_cfg = config;
 		_params = cliParams;
@@ -16,6 +9,9 @@ var obj_conditions;
 	};
 	
 	
+	var key_DEFAULT = 'default';
+	var _cfg,
+		_params;
 	
 	function rewrite(obj) {
 		
@@ -27,11 +23,18 @@ var obj_conditions;
 		
 	}
 	
-	
 	function rewriteObject(obj) {
-		var key, val;
+		var key, val, c;
 		for (key in obj){
+			c = key.charCodeAt(0);
+			
+			if (c === 36) {
+				// $ - utility properties
+				continue;
+			}
+			
 			val = obj[key];
+			
 			
 			if (is_Object(val) === false) 
 				continue;
@@ -96,17 +99,18 @@ var obj_conditions;
 	}
 	
 	function isConditionObject(obj){
+		var has = false;
 		for(var key in obj){
-			
-			if (isConditionProperty(key))
+			if (isConditionProperty(key)){
+				has = true;
 				continue;
+			}
 			if (key === key_DEFAULT) 
 				continue;
 			
 			return false;
 		}
-		
-		return true;
+		return has === true;
 	}
 	
 	
