@@ -3,7 +3,7 @@ test/
 builds/
 tools/
 
-.travis
+.travis.yml
 .komodotools
 .npmignore
 *.komodoproject

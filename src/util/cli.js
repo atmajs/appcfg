@@ -30,7 +30,7 @@ var cli_arguments;
 					val = true;
 				}
 				
-				params[key] = val;
+				obj_setProperty(params, key, val);
 				continue;
 			}
 			

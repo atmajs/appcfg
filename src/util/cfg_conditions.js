@@ -148,6 +148,21 @@ var cfg_conditions;
 		if (r != null) 
 			return r;
 		
+		if (typeof process !== 'undefined') {
+			var env = process.env;
+			r = env[prop];
+			if (r != null) 
+				return r;
+			
+			r = env['NODE_' + prop];
+			if (r != null) 
+				return r;
+			
+			var ENV = env.NODE_ENV || env.ENV;
+			if (ENV != null && ENV.toUpperCase() === prop.toUpperCase()) 
+				return true;
+		}
+		
 		return null;
 	}
 	function evalConditionObject(obj) {
