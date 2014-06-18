@@ -30,17 +30,21 @@
 		
 		read: function(rootConfig){
 			this.defer();
+			var self = this;
 			
-			this.config = file_readSource(
-				rootConfig,
-				this.data.path,
-				this.data
-			);
 			
-			return this[ this.config == null
-				? 'reject'
-				: 'resolve'
-			]();
+			file_readSourceAsync(
+					rootConfig,
+					this.data.path,
+					this.data
+				)
+				.fail(this.rejectDelegate())
+				.done(function(config){
+					self.config = config;
+					self.resolve(config);
+				});
+			
+			return this;
 		},
 		
 		write: function(config){
