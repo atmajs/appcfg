@@ -1,14 +1,20 @@
-include
-    .inject('/lib/config.js::Config')
-    .done(function(){
-        
-        var cfg = Config
-            .fetch([{
-                config: {
-                    foo: 'fooVal',
-                    bar: '#[foo]'
-                }
-            }]);
-        
-        eq(cfg.bar, 'fooVal');
-    });
+// embedded source
+Config
+    .fetch({
+        config: {
+            foo: 'fooVal',
+            bar: '#[foo]',
+            sub: {
+                val: '#[bar]'
+            }
+        }
+    })
+    .done(config => deepEq_(config.toJSON(), {
+        foo: 'fooVal',
+        bar: 'fooVal',
+        sub: {
+            val: 'fooVal'
+        }
+    }));
+    
+    

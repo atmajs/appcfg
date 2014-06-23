@@ -58,11 +58,11 @@ include
 				
 				config = clone(obj);
 				cfg_conditions(config, { debug: true });
-				eq(config.foo, 'foo');
-				eq(config.a, 'foo');
-				eq(config.b, 'some');
+				eq_(config.foo, 'foo');
+				eq_(config.a, 'foo');
+				eq_(config.b, 'some');
 				
-				deepEq(config.arr, [
+				deepEq_(config.arr, [
 					'const',
 					'debug-foo-1',
 					'debug-foo-2', {
@@ -72,11 +72,11 @@ include
 				
 				config = clone(obj);
 				cfg_conditions(config, { release: true });
-				eq(config.foo, 'bar');
-				eq(config.a, 'bar');
-				eq(config.b, 'bar');
+				eq_(config.foo, 'bar');
+				eq_(config.a, 'bar');
+				eq_(config.b, 'bar');
 				
-				deepEq(config.arr, [
+				deepEq_(config.arr, [
 					'const',
 					'release-foo-1',
 					'release-foo-2', {

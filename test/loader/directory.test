@@ -1,57 +1,56 @@
 UTest({
-	'directory - yml': function(done){
-		
-		Config
-			.fetch([
-				{
-					path: 'test/config/**.yml'
+	'should load yml': function(){
+		return Config
+			.fetch({
+				path: 'test/config/**.yml'
+			})
+			.done(config => has_(config, {
+				foo: 'foo',
+				bar: 'bar',
+				combi: {
+					foo: 'foo',
+					bar: 'bar'
 				}
-			])
-			.done(function(config){
-				
-				eq_(config.foo, 'foo');
-				eq_(config.bar, 'bar');
-				eq_(config.combi.foo, 'foo');
-				eq_(config.combi.bar, 'bar');
-				
-				done();
-			});
+			}));
 	},
 	
-	'directory - js': function(done){
-		
-		Config
-			.fetch([
-				{
-					path: 'test/config/**.js'
-				}
-			])
-			.done(function(config){
-				
-				eq_(config.combi.module, 'module');
-				done();
-			});
+	'should load CommonJS modules': function(){
+		return Config
+			.fetch(
+				{ path: 'test/config/**.js' }
+			)
+			.done(config =>  eq_(config.combi.module, 'module'));
 	},
 	
-	'directory - read many': function(done){
-		var config = new Config;
-		
-		config
+	'should support many sources': function(){
+		return Config
+			.fetch([
+				{ path: 'test/config/**.js' },
+				{ path: 'test/config/**.yml' }
+			])
+			.done(config => has_(config, {
+				foo: 'foo',
+				bar: 'bar',
+				combi: {
+					foo: 'foo',
+					bar: 'bar',
+					module: 'module'
+				}
+			}));
+	},
+	'should support many `$read` calls': function(){
+		return new Config()
 			.$read('test/config/foo.yml')
 			.$read('test/config/bar/*.yml')
 			.$read('test/config/module.js')
-			;
-		
-		config.done(function(){
-			
-			eq_(config.foo, 'foo');
-			eq_(config.bar, 'bar');
-			eq_(config.combi.foo, 'foo');
-			eq_(config.combi.bar, 'bar');
-			eq_(config.combi.module, 'module');
-			
-			done();
-		})
+			.done(config => has_(config, {
+				foo: 'foo',
+				bar: 'bar',
+				combi: {
+					foo: 'foo',
+					bar: 'bar',
+					module: 'module'
+				}
+			}));
 	}
-	
 });
