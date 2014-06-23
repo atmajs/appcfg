@@ -95,7 +95,7 @@ var Config = Class({
 		}
 		
 		var msg = '<config:write> Writable source not defined.';
-		logger.error(msg);
+		log_error(msg);
 		
 		return this.reject(msg);
 	},

@@ -3,6 +3,7 @@
 
 	// import /src/scope-vars.js
 	
+	// import /src/util/log.js
 	// import /src/util/is.js
 	// import /src/util/cli.js
 	// import /src/util/object.js

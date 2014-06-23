@@ -7,7 +7,7 @@
 		Static: {
 			canHandle: function(data){
 				
-				return Array.isArray(data.files)
+				return Array.isArray(data.files);
 			},
 		},
 		

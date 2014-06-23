@@ -35,11 +35,7 @@ var Sources = Class.Collection(Object, {
 			if ( ++count > 1 ) {
 				
 				if (source.data.sync) {
-					
-					await.always(function(){
-						
-						sources.load(rootConfig, i - 1);
-					});
+					await.always(resume);
 					break;
 				}
 			}
@@ -58,9 +54,12 @@ var Sources = Class.Collection(Object, {
 				.always(await.delegate(null, false))
 				;
 		}
+		function resume(){						
+			sources.load(rootConfig, i - 1);
+		}
 		
 		if (i > imax - 1) 
-			await.always(sources.resolveDelegate())
+			await.always(sources.resolveDelegate());
 		
 		
 		function afterDelegate(fn, source, rootConfig){
@@ -85,7 +84,7 @@ var SourceFactory = {
 	create: function(arr){
 		if (typeof arr === 'string') {
 			// file/directory/glob source
-			arr = [ {path: arr} ]
+			arr = [ {path: arr} ];
 		}
 		if (Array.isArray(arr) === false) {
 			// single source
@@ -119,7 +118,7 @@ var SourceFactory = {
 				}
 			}
 			
-			logger.error('<unhandled configuration source> :', data);
+			log_error('<unhandled configuration source> :', data);
 		}
 		
 		return sources;

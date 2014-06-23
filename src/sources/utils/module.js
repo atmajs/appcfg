@@ -15,11 +15,11 @@ var module_eval;
 			(new Function('module', 'exports', code))(module, exports);
 			
 		} catch(error){
-			logger.error('<config> Configuration evaluation error', path, error);
+			log_error('<config> Configuration evaluation error', path, error);
 		}
 		
 		if (module.exports === exports && Object.keys(module.exports).length === 0) {
-			logger.error(
+			log_error(
 				'<config> Define `module.exports = ` in a file to export configuration'
 				, path)
 				;

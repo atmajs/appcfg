@@ -14,7 +14,7 @@
 		Static: {
 			canHandle: function(data){
 				
-				return 'mongo' in data
+				return 'mongo' in data;
 			}
 		},
 		Construct: function(data){

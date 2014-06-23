@@ -63,11 +63,8 @@ var file_readSource,
 		}
 		
 		if (isOptional !== true)
-			logger
-				.error('<config> Configuration file not found', path)
-				.warn('Set `optional:true`, if configuration is not strict required')
-				;
-			
+			log_error('<config> Configuration file not found', path);
+			log_warn('Set `optional:true`, if configuration is not strict required');
 		return null;
 	}
 }());

@@ -78,7 +78,7 @@ var obj_getProperty,
 		}
 		
 		if (!is_Object(source) && !is_Object(target)) {
-			logger.warn('<object:deepExtend> not an object or type missmatch - Dismiss');
+			log_warn('<object:deepExtend> not an object or type missmatch - Dismiss');
 			return target;
 		}
 		
@@ -102,7 +102,7 @@ var obj_getProperty,
 			
 			if (is_Array(val)) {
 				if (is_Array(target[key]) === false) {
-					logger.warn('<object:deepExtend> type missmatch %s %s %s - Overwrite', key, val, target[key]);
+					log_warn('<object:deepExtend> type missmatch %s %s %s - Overwrite', key, val, target[key]);
 					
 					target[key] = val;
 					continue;
@@ -128,7 +128,7 @@ var obj_getProperty,
 			return obj_setProperty(obj, property, defaultVal == null ? {} : defaultVal);
 		
 		if (typeof current !== typeof defaultVal) {
-			logger.error(
+			log_error(
 				'<obj_ensureProperty> type missmatch',
 				typeof current,
 				typeof defaultVal,

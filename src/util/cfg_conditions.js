@@ -133,7 +133,7 @@ var cfg_conditions;
 		try {
 			return fn(evalGetter);
 		} catch(error){
-			logger.error('<config:condition-object> Evalulation error', prop, error);
+			log_error('<config:condition-object> Evalulation error', prop, error);
 		}
 		
 		return false;

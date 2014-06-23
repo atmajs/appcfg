@@ -77,7 +77,7 @@
 			return config;
 		
 		try {
-			return JSON.stringify(config)
+			return JSON.stringify(config);
 		} catch(error) {
 			return config;
 		}

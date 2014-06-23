@@ -5,7 +5,7 @@
 		Static: {
 			canHandle: function(data){
 				
-				return typeof data === 'function'
+				return typeof data === 'function';
 			}
 		},
 		Construct: function(Ctor){

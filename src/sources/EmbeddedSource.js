@@ -6,7 +6,7 @@
 		Static: {
 			canHandle: function(data){
 				
-				return is_Object(data.config)
+				return is_Object(data.config);
 			}
 		},
 		Construct: function(data){

@@ -2,8 +2,7 @@
 var _Array_slice = Array.prototype.slice;
 var io,
 	net,
-	Class,
-	logger;
+	Class;
 
 (function(){
 	var atma = global;
@@ -17,5 +16,4 @@ var io,
 	Class = atma.Class;
 	net = atma.net;
 	io = global.io || require('atma-io');
-	logger = global.logger || require('atma-logger');
 }());

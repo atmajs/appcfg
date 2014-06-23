@@ -61,7 +61,7 @@ var path_handleSpecialFolder,
 		}
 		
 		if (path == null)
-			logger.error('<config:special-folder> Not resolved', name);
+			log_error('<config:special-folder> Not resolved', name);
 		
 		return path_normalize(path || env.HOME || name);
 	}
