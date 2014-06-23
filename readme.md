@@ -1,33 +1,28 @@
-
-
 #### Application Configuration Library for Node.js
 
-_Part of the [Atma.js](http://atmajs.com) Project_
-
-====
 [![Build Status](https://travis-ci.org/atmajs/appcfg.png?branch=master)](https://travis-ci.org/atmajs/appcfg)
+[![NPM version](https://badge.fury.io/js/appcfg.svg)](http://badge.fury.io/js/appcfg)
 
 - [About](#about)
 - [Api](#api)
 
-```bash
-$ npm install appcfg -save
-```
 
 ### About
 
 Load and Combine Configuration from many sources:
-
-- File (JavaScript Module, JSON, Yaml)
-- Directory
+- Files
+	- JavaScript Module
+	- JSON
+	- Yaml
+- Directory (_combine files_)
 - MongoDB
 
 Additional features:
 
-- Command Line Overrides _(with dot notations)_: `node app --foo.bar barValue
-- Conditions
-- Special Folder
-- Interpolations
+- [Command Line overrides](#command-line-overrides)
+- [Conditions](#conditions)
+- [Special Folder](#special-folder)
+- [Interpolations](#interpolations)
 
 When combining objects from many sources, **deep copy** is used:
 
@@ -57,7 +52,7 @@ When combining objects from many sources, **deep copy** is used:
 }
 ```
 
-Sample:
+Example:
 
 ```javascript
 	var config = Config
@@ -83,37 +78,63 @@ Sample:
 				getterProperty: 'atma'
 			}
 		])
-		.done(function(){
-			
-			this === config // > true
+		.done(function(cfg){
+			// config === cfg === this;
+			// ...
 		})
 ```
 
-Yaml conditions sample:
+##### Command Line overrides
+Command line arguments are parsed and also set to the configuration object.
+```bash
+> node app --foo.bar barValue --debug
+```
+```javascript
+Config
+	.fetch(someSources)
+	.done(function(config){
+		assert.has(config, {
+			foo: {
+				bar: 'barValue'
+			},
+			debug: true
+		})
+	})
+```
+
+##### Conditions
+Yaml conditions example. (_same is also for json format_)
 
 ```yml
-
+# conditional property example
 port: 
 	'#if debug': 5000
 	'#if test': 5030
 	'default': 8080
 
-'#if debug':
-	env: 'DEBUG'
-
+# conditional array item example
 scipts:
 	- lib.js
-	- '#if debug'
+	- '#if debug || test'
 		- lib.debug-extension.js
 	
 ```
+Arguments lookup:
+- in configuration object
+- in cli overrides
+- in `process.env`
+- compare value as string from `process.env.ENV`
+```bash
+# from cli example
+> node app --debug
 
-And if `debug` property in configuration or over cli (`node app --debug`) is set to `true` this source results to:
-
+# from environment
+> set ENV=DEBUG
+> node app
+```
 ```javascript
 {
 	port: 5000,
-	env: "DEBUG",
 	scripts: [
 		"lib.js",
 		"lib.debug-extension.js"
@@ -121,15 +142,51 @@ And if `debug` property in configuration or over cli (`node app --debug`) is set
 }
 ```
 
+##### Special Folder
+Use special folders for loading/writing configurations, like `%APPDATA%` or `%HOME%`.
+Is system agnostic and is parsed from the environment variables.
+```javascript
+Config
+	.fetch({
+		path: '%APPDATA%/.myApplication/global.yml',
+		writable: true
+	})
+```
+
+#### Interpolations
+Sometimes to not repeat the configuration it is convinient to use interpolations.
+It will embed configuration from itself.
+```javascript
+# someConfig.yml
+name: 'Foo'
+A:
+	lorem: '#[name]'
+B:
+	ipsum: '#[A.lorem]'
+```
+```
+Config
+	.fetch({
+		path: 'someConfig.yml'
+	})
+	.done(function(config){
+		assert.has(config, {
+			name: 'Foo',
+			A: { lorem: 'Foo' },
+			B: { ipsum: 'Foo' }
+		});
+	})
+```
+
 ### API
 
 #### Config
 
-** static **
+**static**
 ##### `.fetch(Array<Source>)` => Config Instance
 Start loading the configuration from specified sources, returns new deferrable configuration instance
 
-** methods **
+**methods**
 
 ##### `<Constructor> (Array<Source>)`
 
@@ -141,8 +198,10 @@ Start loading the configuration from specified sources, returns new deferrable c
 	- `@default` - Array<Source> taken from constructor
 Start loading configuration from sources
 
-##### `.$write(config)`
+##### `.$write(config:Object [, ?deepExtend:Boolean, ?setterPath:String):Deferred`
 Update and save the configuration. Use first matched writable source.
+- `deepExtend`: complex objects and arrays are merged
+- `setterPath`: define nested object in current configuration
 
 ##### `.done(callback)`
 Fire the callback when the configuration ends loading or reading
@@ -260,5 +319,11 @@ Include config direct into the source
 }
 ```
 
+
+#### Test
+```bash
+> npm install
+> npm test
+```
 ----
-The MIT License
+(c) 2014 MIT License

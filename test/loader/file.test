@@ -1,46 +1,40 @@
-include
-	.inject('../../lib/config.js')
-	.done(function(){
-		
-		function check(sources, checker, done){
-			Config
-				.fetch(sources)
-				.done(checker)
-				.always(function(){
-					eq(this._rejected, null);
-					
-					done();
-				});
-		}
-
-		UTest({
-			'file': function(done){
-				
-				check([{
-					path: 'test/config/foo.yml',
-					
-					beforeRead: assert.callback(function(source){
-						eq(source.config, null);
-					}),
-					
-					afterRead: assert.callback(function(source, rootConfig){
-						eq(source.config.foo, 'foo');
-						eq(source.config.combi.foo, 'foo');
-					})
-				},{
-					path: 'test/config/bar/bar.yml'
-				}, {
-					path: 'test/config/module.js'
-				}], function(){
-		
-					eq(this.foo, 'foo');
-					eq(this.bar, 'bar');
-					eq(this.combi.foo, 'foo');
-					eq(this.combi.bar, 'bar');
-					eq(this.combi.module, 'module');
-					
-				}, done);
-			}
+function check(sources, checker, done){
+	Config
+		.fetch(sources)
+		.done(checker)
+		.always(function(){
+			eq_(this._rejected, null);
+			
+			done();
 		});
+}
 
-	})
+UTest({
+	'file': function(done){
+		
+		check([{
+			path: 'test/config/foo.yml',
+			
+			beforeRead: assert.callback(function(source){
+				deepEq_(source.config, {});
+			}),
+			
+			afterRead: assert.callback(function(source, rootConfig){
+				eq_(source.config.foo, 'foo');
+				eq_(source.config.combi.foo, 'foo');
+			})
+		},{
+			path: 'test/config/bar/bar.yml'
+		}, {
+			path: 'test/config/module.js'
+		}], function(){
+
+			eq_(this.foo, 'foo');
+			eq_(this.bar, 'bar');
+			eq_(this.combi.foo, 'foo');
+			eq_(this.combi.bar, 'bar');
+			eq_(this.combi.module, 'module');
+			
+		}, done);
+	}
+});

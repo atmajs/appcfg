@@ -19,6 +19,7 @@
 		},
 		Construct: function(data){
 			this.data = data;
+			this.config = {};
 			
 			if (data.settings) 
 				Class.MongoStore.settings(data.settings);
@@ -53,12 +54,11 @@
 			return source;
 		},
 		
-		write: function(config){
+		write: function(config, deepExtend, path){
 			
-			this.config = obj_deepExtend(this.config, config);
+			cfg_extend(this.config, config, deepExtend, path);
 			
 			var source = this;
-				
 			Class
 				.MongoStore
 				.resolveCollection(this.data.mongo)

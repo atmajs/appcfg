@@ -74,23 +74,24 @@ var Config = Class({
 			this.resolve(this);
 		}
 	},
-	$write: function(config){
-		obj_deepExtend(config);
+	$write: function(config, deepExtend, path){
+		cfg_extend(this, config, deepExtend, path);
 		
 		var sources = this.$sources,
 			i = sources.length
 			;
 		while( --i > -1 ){
-			if (sources[i].data.writable) {
+			if (sources[i].data.writable !== true)
+				continue;
 				
-				this.defer();
-				sources[i]
-					.write(config);
-				
-				sources[i]
-					.always(this.resolveDelegate());
-				return this;
-			}
+			this.defer();
+			
+			config = obj_clone(config);
+			sources[i]
+				.write(config);
+			sources[i]
+				.pipe(this);
+			return this;
 		}
 		
 		var msg = '<config:write> Writable source not defined.';

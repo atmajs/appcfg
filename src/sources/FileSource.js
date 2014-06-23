@@ -24,7 +24,7 @@
 		
 		Construct: function(data){
 			this.data = data;
-			
+			this.config = {};
 			data.path = path_handleSpecialFolder(data.path);
 		},
 		
@@ -47,30 +47,39 @@
 			return this;
 		},
 		
-		write: function(config){
+		write: function(config, deepExtend, setterProperty){
 			this.defer();
 			
 			if (this.data.writable !== true) 
 				return this.reject('Not writable');
 			
-			this.config = obj_deepExtend(this.config, config);
+			cfg_extend(this.config, config, deepExtend, setterProperty);
 			
-			
-			try {
-				io
-					.File
-					.writeAsync(
-						this.data.path,
-						JSON.stringify(this.config)
-					)
-					.pipe(this);
-			} catch(error) {
-				this.reject('JSON.serialization ' + String(error));
-			}
+			var filename = this.data.path,
+				cfg = getContent(this.config, filename);
+			io
+				.File
+				.writeAsync(filename, cfg)
+				.pipe(this);
 			
 			return this;
 		}
 	}));
 	
 	
+	function getContent(config, path) {
+		var hooks = io
+			.File
+			.getHookHandler()
+			.getHooksForPath(path, 'write');
+		
+		if (hooks.length !== 0) 
+			return config;
+		
+		try {
+			return JSON.stringify(config)
+		} catch(error) {
+			return config;
+		}
+	}
 }());

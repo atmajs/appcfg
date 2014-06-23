@@ -1,10 +1,10 @@
 {
     "name": "appcfg",
-    "version": "0.1.32",
+    "version": "0.1.33",
     "description": "Application Configuration Library for Node.js",
     "main": "lib/config.js",
     "scripts": {
-        "test": "node_modules/.bin/atma test"
+        "test": "atma test"
     },
     "keywords": [
         "config",
@@ -19,6 +19,19 @@
     },
     "dependencies": {
         "atma-io": "latest",
-        "atma-libs": "latest"
+        "atma-libs": "latest",
+        "atma-loader-traceur": ">0.0.0"
+    },
+    "atma": {
+        "plugins": [
+            "atma-loader-traceur"
+        ],
+        "settings": {
+            "atma-loader-traceur": {
+                "extensions": [
+                    "test"
+                ]
+            }
+        }
     }
 }

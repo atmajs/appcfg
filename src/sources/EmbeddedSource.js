@@ -12,7 +12,6 @@
 		Construct: function(data){
 			this.data = data;
             this.data.writable = false;
-            
 			this.config = data.config;
 		},
         

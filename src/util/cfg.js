@@ -1,22 +1,32 @@
-var cfg_merge;
+var cfg_merge,
+    cfg_extend;
+
 
 (function(){
     
-    cfg_merge = function(target, source){
+    /* target - config object
+     * source - source config object
+     */
+    cfg_merge = function(target, config, setterProperty){
         
-        if (source.config == null) 
+        if (config == null) 
             return;
         
-        var prop = source.data.setterProperty;
-        if (prop) {
-            
-            obj_ensureProperty(config, prop, {});
-            target = obj_getProperty(config, prop);
-        }
+        if (setterProperty) 
+            target = obj_ensureProperty(target, setterProperty, {});
         
-        obj_deepExtend(target, source.config);
-        
+        config = obj_clone(config);
+        obj_deepExtend(target, config);
     };
     
+    cfg_extend = function(target, source, deepExtend, path){
+        if (path) 
+            target = obj_ensureProperty(target, path, {});
+        
+        var fn = deepExtend !== false
+            ? obj_deepExtend
+            : obj_extend;        
+        fn(target, source);
+    };
     
 }());

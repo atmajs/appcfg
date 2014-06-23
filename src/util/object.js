@@ -5,8 +5,8 @@ var obj_getProperty,
 	obj_extend,
 	obj_deepExtend,
 	obj_ensureProperty,
-	
-	obj_interpolate
+	obj_interpolate,
+	obj_clone
 	;
 
 (function(){
@@ -23,8 +23,6 @@ var obj_getProperty,
 		}
 		return obj;
 	};
-	
-	
 	obj_setProperty = function(obj, property, value) {
 		var chain = property.split('.'),
 			imax = chain.length,
@@ -42,7 +40,6 @@ var obj_getProperty,
 	
 		obj[chain[i]] = value;
 	};
-	
 	obj_defaults = function(target, defaults) {
 		for (var key in defaults) {
 			if (target[key] == null) 
@@ -50,7 +47,6 @@ var obj_getProperty,
 		}
 		return target;
 	};
-	
 	obj_extend = function(target, source) {
 		for (var key in source) {
 			if (source[key] != null) 
@@ -58,9 +54,7 @@ var obj_getProperty,
 		}
 		return target;
 	};
-	
 	obj_deepExtend = function(target, source){
-		
 		if (target == null)
 			target = {};
 			
@@ -127,7 +121,6 @@ var obj_getProperty,
 		
 		return target;
 	};
-	
 	obj_ensureProperty = function(obj, property, defaultVal) {
 		
 		var current = obj_getProperty(obj, property);
@@ -142,10 +135,8 @@ var obj_getProperty,
 				new Error().stack
 			);
 		}
+		return current;
 	};
-	
-		
-		
 	obj_interpolate = function(obj, root){
 		if (obj == null) 
 			return;
@@ -197,7 +188,13 @@ var obj_getProperty,
 				}
 			}
 		}
-	
-	}
-	
+	};
+	obj_clone = function(obj){
+		try {
+			return JSON.parse(JSON.stringify(obj));
+		} catch(error){
+			console.error('<config> obj_clone failed', error);
+			return obj;
+		}
+	};
 }());

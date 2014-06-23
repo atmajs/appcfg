@@ -64,11 +64,13 @@ var Sources = Class.Collection(Object, {
 		
 		
 		function afterDelegate(fn, source, rootConfig){
-		
 			return function(){
 				
-				cfg_merge(rootConfig, source);
-				
+				cfg_merge(
+					rootConfig
+					, source.config
+					, source.data.setterProperty
+				);
 				if (fn) 
 					fn(source, rootConfig);
 			};

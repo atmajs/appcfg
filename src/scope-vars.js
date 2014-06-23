@@ -1,5 +1,5 @@
 // library global variables
-
+var _Array_slice = Array.prototype.slice;
 var io,
 	net,
 	Class,
