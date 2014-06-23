@@ -1,6 +1,6 @@
 {
     "name": "appcfg",
-    "version": "0.1.34",
+    "version": "0.1.35",
     "description": "Application Configuration Library for Node.js",
     "main": "lib/config.js",
     "scripts": {

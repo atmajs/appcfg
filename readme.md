@@ -106,6 +106,14 @@ Config
 Yaml conditions example. (_same is also for json format_)
 
 ```yml
+# conditional root configuration example
+'#if debug':
+	name: Foo
+	host: dev.example.com
+'#if test':
+	name: Baz
+	host: localhost
+
 # conditional property example
 port: 
 	'#if debug': 5000
@@ -134,6 +142,8 @@ Arguments lookup:
 ```
 ```javascript
 {
+	name: 'Foo',
+	host: 'localhost',
 	port: 5000,
 	scripts: [
 		"lib.js",
