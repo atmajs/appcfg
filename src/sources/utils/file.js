@@ -62,9 +62,10 @@ var file_readSource,
 				return new io.File(uri);
 		}
 		
-		if (isOptional !== true)
-			log_error('<config> Configuration file not found', path);
-			log_warn('Set `optional:true`, if configuration is not strict required');
+		if (isOptional !== true) {
+			log_error('Configuration file not found', path);
+			log_warn('To dismiss this warning, set `optional:true` in source, if configuration is not strict required');
+		}
 		return null;
 	}
 }());
