@@ -189,12 +189,40 @@ var obj_getProperty,
 			}
 		}
 	};
+	
+	// deep clone object and arrays
 	obj_clone = function(obj){
-		try {
-			return JSON.parse(JSON.stringify(obj));
-		} catch(error){
-			console.error('<config> obj_clone failed', error);
+		if (obj == null || typeof obj !== 'object') 
+			return obj;
+		
+		var Ctor = obj.constructor,
+			clone;
+			
+		if (Array === Ctor) {
+			clone = [];
+			var i = -1,
+				imax = obj.length;
+			while(++i < imax){
+				clone[i] = obj_clone(obj[i]);
+			}
+			return clone;
+		}
+		if (Object === Ctor) {
+			clone = {};
+			for(var key in obj){
+				clone[key] = obj_clone(obj[key]);
+			}
+			return clone;
+		}
+		if (Date === Ctor
+			|| RegExp === Ctor
+			|| String === Ctor
+			|| Number === Ctor) {
+			
 			return obj;
 		}
+		
+		log_warn('Configuration contains not clonable object', obj);
+		return obj;
 	};
 }());
