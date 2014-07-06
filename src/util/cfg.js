@@ -1,5 +1,7 @@
 var cfg_merge,
-    cfg_extend;
+    cfg_extend,
+    cfg_resolvePath,
+    cfg_handlePaths;
 
 
 (function(){
@@ -29,4 +31,29 @@ var cfg_merge,
         fn(target, source);
     };
     
+    cfg_handlePaths = function(config){
+        var base = config.base;
+        obj_visitStrings(config, function(str, key, parent){
+            if (str.charCodeAt(0) !== 126 /* ~ */) 
+                return null;
+            
+            if (str.charCodeAt(1) !== 47 /* / */) 
+                return null;
+            
+            return resolvePath(str, base);
+        });
+    };
+    
+    cfg_resolvePath = function(path, config){
+        if (path.charCodeAt(0) !== 126) {
+            // ~
+            return path;
+        }
+        return resolvePath(path, config.base);
+    }
+    
+    
+    function resolvePath(path, base){
+        return net.Uri.combine(base, path.substring(1));
+    }
 }());

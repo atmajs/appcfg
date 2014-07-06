@@ -6,7 +6,8 @@ var obj_getProperty,
 	obj_deepExtend,
 	obj_ensureProperty,
 	obj_interpolate,
-	obj_clone
+	obj_clone,
+	obj_visitStrings
 	;
 
 (function(){
@@ -138,56 +139,75 @@ var obj_getProperty,
 		return current;
 	};
 	obj_interpolate = function(obj, root){
-		if (obj == null) 
-			return;
+		root = root || obj;
 		
-		if (root == null) 
-			root = obj;
-		
-		if (is_Array(obj)){
-			var i = obj.length;
-			while( --i > -1 )
-				obj_interpolate(obj[i], root);
+		obj_visitStrings(obj, function(str, key, parent){
+			str = str.trim();
+			if (str.charCodeAt(0) !== 35 /* # */) 
+                return null;
+            
+            if (str.charCodeAt(1) !== 91 /* [ */) 
+                return null;
+            
+			str = str.substring(2, str.length - 1).trim();
 				
-			return;
-		}
+			var val = obj_getProperty(root, str);
+			if (val == null)
+				log_warn('<config: obj_interpolate: property not exists in root', str);
+			
+			return val;
+		});
 		
-		if (!is_Object(obj)) 
-			return;
-	
-		
-		var key, val;
-		for(key in obj){
-			val = obj[key];
-			
-			if (val == null) 
-				continue;
-			
-			if (key[0] === '_') 
-				continue;
-			
-			if (is_Object(val)){
-				obj_interpolate(val, root);
-				continue;
-			}
-
-			if (typeof val === 'string'){
-
-				var str = val.trim();
-
-				if (str.substring(0,2) !== '#[')
-					continue;
-				
-
-				str = str.substring(2, str.length - 1).trim();
-				
-				obj[key] = obj_getProperty(root, str);
-				if (obj[key] == null){
-					console.warn('<config: obj_interpolate: property not exists in root', val);
-					continue;
-				}
-			}
-		}
+		////if (obj == null) 
+		////	return;
+		////
+		////if (root == null) 
+		////	root = obj;
+		////
+		////if (is_Array(obj)){
+		////	var i = obj.length;
+		////	while( --i > -1 )
+		////		obj_interpolate(obj[i], root);
+		////		
+		////	return;
+		////}
+		////
+		////if (!is_Object(obj)) 
+		////	return;
+		////
+		////
+		////var key, val;
+		////for(key in obj){
+		////	val = obj[key];
+		////	
+		////	if (val == null) 
+		////		continue;
+		////	
+		////	if (key[0] === '_') 
+		////		continue;
+		////	
+		////	if (is_Object(val)){
+		////		obj_interpolate(val, root);
+		////		continue;
+		////	}
+		////
+		////	if (typeof val === 'string'){
+		////
+		////		var str = val.trim();
+		////
+		////		if (str.substring(0,2) !== '#[')
+		////			continue;
+		////		
+		////
+		////		str = str.substring(2, str.length - 1).trim();
+		////		
+		////		obj[key] = obj_getProperty(root, str);
+		////		if (obj[key] == null){
+		////			console.warn('<config: obj_interpolate: property not exists in root', val);
+		////			continue;
+		////		}
+		////	}
+		////}
 	};
 	
 	// deep clone object and arrays
@@ -225,4 +245,48 @@ var obj_getProperty,
 		log_warn('Configuration contains not clonable object', obj);
 		return obj;
 	};
+	
+	
+	(function(){
+		obj_visitStrings = function(obj, fn){
+			if (obj == null) 
+				return;
+			
+			if (typeof obj !== 'object') 
+				return;
+			
+			var val, r;
+			if (is_Array(obj)) {
+				var i = -1,
+					imax = obj.length;
+				while ( ++i < imax ){
+					visit(fn, obj[i], i, obj);
+				}
+				return;
+			}
+			
+			for(var key in obj){
+				visit(fn, obj[key], key, obj);
+			}
+		};
+		
+		function visit(fn, val, key, parent){
+			if (val == null) 
+				return;
+			
+			if (typeof val === 'string') {
+				parent[key] = fn(val, key, parent) || val;
+				return;
+			}
+			
+			if (typeof val === 'object') {
+				
+				if (typeof key === 'string' && key.charCodeAt(0) === 95) 
+					return;
+					
+				obj_visitStrings(val, fn);
+			}
+		}
+	}());
+	
 }());
