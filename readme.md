@@ -230,26 +230,27 @@ Start loading the configuration from specified sources, returns new deferrable c
 - **`.$is(name:String):Boolean`**
 
 	Check conditional environment variable, e.g.: `config.$is('debug')`
-	Ways to define the variables, example defines DEBUG **and** TEST flags.
 	
-		- directly in the configuration
-			```yml
-			// foo.yml
-			debug: true
-			test: true
-			```
-		- from the command line:
-			```bash
-			> node index --debug --test
-			```
-		- using environment configuration(_comma delimited_)
-			```bash
-			> set ENV=DEBUG,TEST
-			# also
-			> set NODE_ENV=DEBUG,TEST
-			> node index
-			```
-		
+	Ways to define the variables. (_Example defines DEBUG **and** TEST flags_)
+	
+	- directly in the configuration
+		```yml
+		// foo.yml
+		debug: true
+		test: true
+		```
+	- from the command line:
+		```bash
+		> node index --debug --test
+		```
+	- using environment configuration(_comma delimited_)
+		```bash
+		> set ENV=DEBUG,TEST
+		# also
+		> set NODE_ENV=DEBUG,TEST
+		> node index
+		```
+
 - **`.toJSON():Object`**
 
 	Returns clean json configuration object.
