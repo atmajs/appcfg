@@ -201,21 +201,62 @@ Start loading the configuration from specified sources, returns new deferrable c
 
 ##### `<Constructor> (Array<Source>)`
 
-##### `.$read(?Mix)`
-- Mix:
-	- String: File/Directory/Glob path
-	- Source: Source object
-	- Array<Source>
-	- `@default` - Array<Source> taken from constructor
-Start loading configuration from sources
+- **`.$read(?Mix)`**
+	- `Mix`:
+		- `String`: File/Directory/Glob path
+		- `Source`: Source object
+		- `Array<Source>`
+		- `@default` - Array<Source> taken from constructor
+	- `@return`: `self`. Is deferrable, so you can attach `done` callbacks to it.
+	
+	Load configuration from sources
 
-##### `.$write(config:Object [, ?deepExtend:Boolean, ?setterPath:String):Deferred`
-Update and save the configuration. Use first matched writable source.
-- `deepExtend`: complex objects and arrays are merged
-- `setterPath`: define nested object in current configuration
+- **`.$write(config:Object [, ?deepExtend:Boolean, ?setterPath:String):Deferred`**
 
-##### `.done(callback)`
-Fire the callback when the configuration ends loading or reading
+	Update and save the configuration. Use first matched writable source.
+	- `deepExtend`: complex objects and arrays are merged
+	- `setterPath`: define nested object in current configuration
+
+- **`.$get(property:String)`**
+
+	- `property`: Dot delimited accessor `config.$get('foo.bar.quux')`
+	
+		```javascript
+		// is the same as you if you would write null-check expressions yourself:
+		var quuxVal = config.foo && config.foo.bar && config.foo.bar.quux;
+		```
+	- `@return`: null or value
+
+- **`.$is(name:String):Boolean`**
+
+	Check conditional environment variable, e.g.: `config.$is('debug')`
+	Ways to define the variables, example defines DEBUG **and** TEST flags.
+	
+		- directly in the configuration
+			```yml
+			// foo.yml
+			debug: true
+			test: true
+			```
+		- from the command line:
+			```bash
+			> node index --debug --test
+			```
+		- using environment configuration(_comma delimited_)
+			```bash
+			> set ENV=DEBUG,TEST
+			# also
+			> set NODE_ENV=DEBUG,TEST
+			> node index
+			```
+		
+- **`.toJSON():Object`**
+
+	Returns clean json configuration object.
+	
+- **`.done(callback)`**
+
+	Fire the callback when the configuration is loaded
 
 #### Source
 

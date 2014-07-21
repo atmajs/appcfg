@@ -1,6 +1,6 @@
 {
     "name": "appcfg",
-    "version": "0.1.40",
+    "version": "0.1.41",
     "description": "Application Configuration Library for Node.js",
     "repository": {
         "type": "git",

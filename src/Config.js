@@ -101,6 +101,9 @@ var Config = Class({
 		return this.reject(msg);
 	},
 	
+	$is: function(name){
+		return cfg_getEnvironmentVar(this, name);
+	},
 	
 	Override: {
 		toJSON: function(){

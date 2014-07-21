@@ -1,4 +1,6 @@
-var cfg_conditions;
+var cfg_conditions,
+	cfg_getEnvironmentVar;
+	
 (function(){
 	cfg_conditions = function(obj, config, cliParams){
 		
@@ -7,8 +9,36 @@ var cfg_conditions;
 		
 		rewrite(obj);
 	};
-	
-	
+	cfg_getEnvironmentVar = function(config, prop){
+		if (envCache.hasOwnProperty(prop)) 
+			return envCache[prop];
+		
+		var r = obj_getProperty(config, prop);
+		if (r != null)
+			return (envCache[prop] = r);
+		
+		if (typeof process !== 'undefined') {
+			var env = process.env;
+			r = env[prop];
+			if (r != null) 
+				return (envCache[prop] = r);
+			
+			r = env['NODE_' + prop.toUpperCase()];
+			if (r != null) 
+				return (envCache[prop] = r);
+			
+			var ENV = env.NODE_ENV || env.ENV;
+			if (ENV != null) {
+				
+				r = new RegExp('\\b' + prop + '\\b', 'i').test(ENV);
+				return (envCache[prop] = r);
+			}
+		}
+		
+		return (envCache[prop] = false);
+	};
+	// === private
+	var envCache = {};
 	var key_DEFAULT = 'default';
 	var _cfg,
 		_params;
