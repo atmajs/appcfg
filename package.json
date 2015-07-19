@@ -1,41 +1,42 @@
 {
-    "name": "appcfg",
-    "version": "0.1.41",
-    "description": "Application Configuration Library for Node.js",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/atmajs/appcfg.git"
-    },
-    "main": "lib/config.js",
-    "scripts": {
-        "test": "atma test"
-    },
-    "keywords": [
-        "config",
-        "settings"
+  "name": "appcfg",
+  "version": "0.2.41",
+  "description": "Application Configuration Library for Node.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atmajs/appcfg.git"
+  },
+  "main": "lib/config.js",
+  "scripts": {
+    "test": "atma test"
+  },
+  "keywords": [
+    "config",
+    "settings"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "atma": "latest",
+    "mongodb": "latest",
+    "atma-logger": "latest",
+    "atma-loader-traceur": ">0.0.0"
+  },
+  "dependencies": {
+    "atma-class": "^1.1.70",
+    "atma-io": "^0.2.12",
+    "atma-utils": "^0.1.6"
+  },
+  "atma": {
+    "plugins": [
+      "atma-loader-traceur"
     ],
-    "author": "",
-    "license": "MIT",
-    "devDependencies": {
-        "atma": "latest",
-        "mongodb": "latest",
-        "atma-logger": "latest",
-        "atma-loader-traceur": ">0.0.0"
-    },
-    "dependencies": {
-        "atma-io": "latest",
-        "atma-libs": "latest"
-    },
-    "atma": {
-        "plugins": [
-            "atma-loader-traceur"
-        ],
-        "settings": {
-            "atma-loader-traceur": {
-                "extensions": [
-                    "test"
-                ]
-            }
-        }
+    "settings": {
+      "atma-loader-traceur": {
+        "extensions": [
+          "test"
+        ]
+      }
     }
+  }
 }

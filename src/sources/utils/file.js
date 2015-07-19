@@ -2,13 +2,13 @@ var file_readSource,
 	file_readSourceAsync;
 
 (function(){
-	
+
 	file_readSourceAsync = function(rootConfig, path, data){
 		var dfr = new Class.Deferred;
 		var file = resolveFile(rootConfig, path, data.optional);
-		if (file == null) 
+		if (file == null)
 			return dfr.reject({ code: 404 });
-		
+
 		file
 			.readAsync()
 			.fail(dfr.rejectDelegate())
@@ -17,51 +17,51 @@ var file_readSource,
 					data.writable = false;
 					config = module_eval(file.uri.toLocalFile(), config);
 				}
-				
+
 				var prop = data.getterProperty;
-				if (prop) 
+				if (prop)
 					config = obj_getProperty(config, prop);
-				
+
 				dfr.resolve(config);
 			});
 		return dfr;
 	};
-	
+
 	//@obsolete
 	file_readSource = function(rootConfig, path, data){
-		
+
 		var file = resolveFile(rootConfig, path, data.optional);
-		if (file == null) 
+		if (file == null)
 			return null;
-			
-			
+
+
 		var config = file.read();
 		if (typeof config === 'string') {
 			data.writable = false;
 			config = module_eval(file.uri.toLocalFile(), config);
 		}
-			
+
 		var prop = data.getterProperty;
-		if (prop) 
+		if (prop)
 			config = obj_getProperty(config, prop);
-		
+
 		return config;
 	};
-	
-	
+
+
 	function resolveFile(rootConfig, path, isOptional){
-		var uri = new net.Uri(path),
+		var uri = new Uri(path),
 			file
 			;
 		if (io.File.exists(uri))
 			return new io.File(uri);
-			
+
 		if (uri.isRelative() && typeof include !== 'undefined') {
-			uri = (new net.Uri(include.location)).combine(path);
-			if (io.File.exists(uri)) 
+			uri = (new Uri(include.location)).combine(path);
+			if (io.File.exists(uri))
 				return new io.File(uri);
 		}
-		
+
 		if (isOptional !== true) {
 			log_error('Configuration file not found', path);
 			log_warn('To dismiss this warning, set `optional:true` in source, if configuration is not strict required');
