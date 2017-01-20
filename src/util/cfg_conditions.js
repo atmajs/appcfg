@@ -6,6 +6,8 @@ var cfg_conditions,
 		
 		_cfg = config;
 		_params = cliParams;
+		_refCount = 0;
+		_refs = [];
 		
 		rewrite(obj);
 	};
@@ -41,7 +43,9 @@ var cfg_conditions,
 	var envCache = {};
 	var key_DEFAULT = 'default';
 	var _cfg,
-		_params;
+		_params,
+		_refs,
+		_refCount;
 	
 	function rewrite(obj) {
 		
@@ -54,6 +58,14 @@ var cfg_conditions,
 	}
 	
 	function rewriteObject(obj) {
+		var MAX_CALL_STACK = 100;
+		if (++_refCount > MAX_CALL_STACK) {
+			if (_refs.indexOf(obj) !== -1) {
+				return;
+			}
+			_refs.push(obj);
+		}
+
 		var key, val, c;
 		for (key in obj){
 			c = key.charCodeAt(0);
