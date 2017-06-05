@@ -27,5 +27,20 @@ UTest({
 					module: 'module'
 				}
 			}));
+	},
+	'file synchronous' () {
+		var config = Config.fetch([
+			{ path: 'test/config/foo-sync.yml' },
+			{ path: 'test/config/bar/bar.yml' }
+		], { sync: true });
+
+		has_(config.toJSON(), {
+			foo: 'foo-sync',
+			bar: 'bar',
+			combi: {
+				foo: 'foo-sync',
+				bar: 'bar'
+			}
+		});
 	}
 });

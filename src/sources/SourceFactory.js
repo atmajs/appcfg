@@ -15,6 +15,39 @@ var Sources = Class.Collection(Object, {
 		
 		this.push(mix);
 	},
+
+	loadSync: function (rootConfig) {
+		var sources = this;
+		
+		var i = -1,
+			imax = sources.length,
+			count = 0,
+			await = new Class.Await()
+			;
+		
+		while( ++i < imax ){
+			var source = sources[i];					
+			var before = source.data && source.data.beforeRead;
+			var after = source.data && source.data.afterRead;
+			
+			if (before)
+				before(source, rootConfig);
+
+			if (source.readSync == null) {
+				throw new Error('Source not supports sync config loader');
+			}
+			
+			source.readSync(rootConfig);
+			cfg_merge(
+				rootConfig
+				, source.config
+				, source.data.setterProperty
+			);
+			if (after) 
+				after(source, rootConfig);
+		}
+		return sources;
+	},
 	
 	load: function(rootConfig, i){
 		var sources = this,
@@ -73,8 +106,7 @@ var Sources = Class.Collection(Object, {
 				if (fn) 
 					fn(source, rootConfig);
 			};
-		}
-		
+		}		
 		return sources;
 	}
 });

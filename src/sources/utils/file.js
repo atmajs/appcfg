@@ -1,4 +1,4 @@
-var file_readSource,
+var file_readSourceSync,
 	file_readSourceAsync;
 
 (function(){
@@ -27,14 +27,13 @@ var file_readSource,
 		return dfr;
 	};
 
-	//@obsolete
-	file_readSource = function(rootConfig, path, data){
+	file_readSourceSync = function(rootConfig, path, data){
 
 		var file = resolveFile(rootConfig, path, data.optional);
-		if (file == null)
+		if (file == null) {
 			return null;
-
-
+		}
+		
 		var config = file.read();
 		if (typeof config === 'string') {
 			data.writable = false;

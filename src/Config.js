@@ -1,16 +1,17 @@
 var Config = Class({
 	
 	Base: Class.Deferred,
-	Construct: function(data){
+	Construct: function(data, opts){
 		this.$data = data;
 		this.$sources = SourceFactory.create(data);
 		this.$parallelReads = new Class.Await;
+		this.$self = opts;
 	},
 	
 	Static: {
 		
-		fetch: function(arr){
-			return new Config(arr).$read();
+		fetch: function(arr, opts){
+			return new Config(arr, opts).$read();
 		},
 		
 		create: function(arr){
@@ -50,23 +51,26 @@ var Config = Class({
 		this.$cli = cli_arguments();
 		this.defer();
 		
-		sources
-			.load(config)
-			.done(function(){
-				var overrides = config.$cli.params,
-					prop;
-				for(prop in overrides){
-					obj_setProperty(config, prop, overrides[prop]);
-				}
-				
-				obj_interpolate(config);
-				cfg_conditions(config, config, config.$cli.params);
-				cfg_handlePaths(config);
-				resume();
-			});
-		
-		
-		
+		if (this.$self && this.$self.sync) {
+			sources.loadSync(config);
+			onComplete();
+		} else {
+			sources
+				.load(config)
+				.done(onComplete);
+		}
+		function onComplete () {
+			var overrides = config.$cli.params,
+				prop;
+			for(prop in overrides){
+				obj_setProperty(config, prop, overrides[prop]);
+			}
+			
+			obj_interpolate(config);
+			cfg_conditions(config, config, config.$cli.params);
+			cfg_handlePaths(config);
+			resume();
+		}
 		return config;
 	},
 	

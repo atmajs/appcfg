@@ -46,6 +46,14 @@
 			
 			return this;
 		},
+
+		readSync: function (rootConfig) {
+			return this.config = file_readSourceSync(
+				rootConfig,
+				this.data.path,
+				this.data
+			);
+		},
 		
 		write: function(config, deepExtend, setterProperty){
 			this.defer();

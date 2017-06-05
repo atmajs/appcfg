@@ -26,17 +26,5 @@
     "atma-class": "^1.1.70",
     "atma-io": "^0.2.12",
     "atma-utils": "^0.1.6"
-  },
-  "atma": {
-    "plugins": [
-      "atma-loader-traceur"
-    ],
-    "settings": {
-      "atma-loader-traceur": {
-        "extensions": [
-          "test"
-        ]
-      }
-    }
   }
 }
