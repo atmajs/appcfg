@@ -144,7 +144,7 @@ var obj_getProperty,
 		obj_visitStrings(obj, function(str, key, parent){
 			str = str.trim();
 			var c0 = str.charCodeAt(0),
-				c1 = str.charCodeAt(0),
+				c1 = str.charCodeAt(1),
 				has = false;
 			
 			if (c0 === 35 && c1 === 91) {
