@@ -12,39 +12,19 @@ var file_readSourceSync,
 		file
 			.readAsync()
 			.fail(dfr.rejectDelegate())
-			.done(function(config){
-				if (typeof config === 'string') {
-					data.writable = false;
-					config = module_eval(file.uri.toLocalFile(), config);
-				}
-
-				var prop = data.getterProperty;
-				if (prop)
-					config = obj_getProperty(config, prop);
-
-				dfr.resolve(config);
+			.done(function(fileContent){
+				dfr.resolve(prepairConfig(data, file, fileContent));				
 			});
 		return dfr;
 	};
 
 	file_readSourceSync = function(rootConfig, path, data){
-
 		var file = resolveFile(rootConfig, path, data.optional);
 		if (file == null) {
 			return null;
 		}
-		
-		var config = file.read();
-		if (typeof config === 'string') {
-			data.writable = false;
-			config = module_eval(file.uri.toLocalFile(), config);
-		}
-
-		var prop = data.getterProperty;
-		if (prop)
-			config = obj_getProperty(config, prop);
-
-		return config;
+		var content = file.read();
+		return prepairConfig(data, file, content);
 	};
 
 
@@ -66,5 +46,21 @@ var file_readSourceSync,
 			log_warn('To dismiss this warning, set `optional:true` in source, if configuration is not strict required');
 		}
 		return null;
+	}
+	function prepairConfig (data, file, fileContent) {
+		var config;
+		if (typeof fileContent === 'string') {
+			data.writable = false;
+			config = module_eval(file.uri.toLocalFile(), fileContent);
+		} else {
+			config = fileContent;
+		}
+
+		obj_interpolate(config, config, true);
+		var prop = data.getterProperty;
+		if (prop) {
+			config = obj_getProperty(config, prop);
+		}
+		return config;
 	}
 }());

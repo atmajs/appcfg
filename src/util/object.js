@@ -138,76 +138,35 @@ var obj_getProperty,
 		}
 		return current;
 	};
-	obj_interpolate = function(obj, root){
+	obj_interpolate = function(obj, root, isOptional){
 		root = root || obj;
 		
 		obj_visitStrings(obj, function(str, key, parent){
 			str = str.trim();
-			if (str.charCodeAt(0) !== 35 /* # */) 
-                return null;
-            
-            if (str.charCodeAt(1) !== 91 /* [ */) 
-                return null;
-            
-			str = str.substring(2, str.length - 1).trim();
-				
+			var c0 = str.charCodeAt(0),
+				c1 = str.charCodeAt(0),
+				has = false;
+			
+			if (c0 === 35 && c1 === 91) {
+				// #[
+				log_warn('<APPCFG: OBSOLETE: config interpolation will be changed to ${}', str);
+				has = true;
+			}
+			if (c0 === 36 && c1 === 123) {
+				// ${				
+				has = true;
+			}
+			if (has === false) {
+				return null;
+			}
+			
+			str = str.substring(2, str.length - 1).trim();				
 			var val = obj_getProperty(root, str);
-			if (val == null)
+			if (val == null && isOptional !== true)
 				log_warn('<config: obj_interpolate: property not exists in root', str);
 			
 			return val;
-		});
-		
-		////if (obj == null) 
-		////	return;
-		////
-		////if (root == null) 
-		////	root = obj;
-		////
-		////if (is_Array(obj)){
-		////	var i = obj.length;
-		////	while( --i > -1 )
-		////		obj_interpolate(obj[i], root);
-		////		
-		////	return;
-		////}
-		////
-		////if (!is_Object(obj)) 
-		////	return;
-		////
-		////
-		////var key, val;
-		////for(key in obj){
-		////	val = obj[key];
-		////	
-		////	if (val == null) 
-		////		continue;
-		////	
-		////	if (key[0] === '_') 
-		////		continue;
-		////	
-		////	if (is_Object(val)){
-		////		obj_interpolate(val, root);
-		////		continue;
-		////	}
-		////
-		////	if (typeof val === 'string'){
-		////
-		////		var str = val.trim();
-		////
-		////		if (str.substring(0,2) !== '#[')
-		////			continue;
-		////		
-		////
-		////		str = str.substring(2, str.length - 1).trim();
-		////		
-		////		obj[key] = obj_getProperty(root, str);
-		////		if (obj[key] == null){
-		////			console.warn('<config: obj_interpolate: property not exists in root', val);
-		////			continue;
-		////		}
-		////	}
-		////}
+		});		
 	};
 	
 	// deep clone object and arrays
