@@ -29,8 +29,10 @@ var file_readSourceSync,
 
 
     function resolveFile(rootConfig, path, isOptional, lookupAncestors) {
-        var uri = new Uri(path),
-            file;
+        var uri = new Uri(path);
+        if (uri.extension === 'yml' && ('yml' in io.File.middleware) === false) {
+            require('atma-io-middleware-yml');
+        }
         if (io.File.exists(uri))
             return new io.File(uri);
 
