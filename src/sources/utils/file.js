@@ -45,7 +45,7 @@ var file_readSourceSync,
             if (uri.isRelative() === false) {
                 uri = (new Uri(global.process.cwd())).combine(uri);
             }
-            var path = uri.path();
+            var path = uri.path;
             while (uri.cdUp() && uri.path !== path) {
                 path = uri.path;
                 if (io.File.exists(uri)) {
