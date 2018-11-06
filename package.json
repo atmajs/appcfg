@@ -18,10 +18,10 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "atma": "latest",
-    "mongodb": "latest",
+    "atma": "^0.11.12",
+    "atma-loader-traceur": ">0.0.0",
     "atma-logger": "latest",
-    "atma-loader-traceur": ">0.0.0"
+    "mongodb": "latest"
   },
   "dependencies": {
     "atma-class": "^1.1.70",
