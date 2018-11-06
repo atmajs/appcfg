@@ -36,13 +36,14 @@
 				base = path.substring(0, index + 1);
 				pattern = path.substring(index + 1);
 			}
-			
-			var files = new io
-				.Directory(base)
-				.readFiles(pattern)
+            
+            var dir = new io.Directory(base);
+
+            dir.readFiles(pattern);
+
+			var files = dir
 				.files
-				.map(function(file){
-					
+				.map(function(file){					
 					return file.uri.toString();
 				});
 			
