@@ -106,7 +106,11 @@ var Config = Class({
 	},
 	
 	$is: function(name){
-		return cfg_getEnvironmentVar(this, name);
+        let r =  cfg_getEnvironmentVar(this, name);
+        if (r == null || r === '0' || r.toLowerCase() === 'false') {
+            return false;
+        }
+        return true;
 	},
 	
 	Override: {

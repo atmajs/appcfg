@@ -17,7 +17,7 @@ UTest({
 			var config = new Config;
 			
 			process.env.NODE_ENV = 'DEBUG,TEST';
-			
+            
 			[
 				['debug', true],
 				['test', true],
