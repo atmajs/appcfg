@@ -13,7 +13,7 @@ var file_readSourceSync,
             .readAsync()
             .fail(dfr.rejectDelegate())
             .done(function(fileContent) {
-                dfr.resolve(prepairConfig(data, file, fileContent));
+                dfr.resolve(prepairConfig(data, file, fileContent, rootConfig));
             });
         return dfr;
     };
@@ -24,7 +24,7 @@ var file_readSourceSync,
             return null;
         }
         var content = file.read();
-        return prepairConfig(data, file, content);
+        return prepairConfig(data, file, content, rootConfig);
     };
 
 
@@ -61,7 +61,7 @@ var file_readSourceSync,
         return null;
     }
 
-    function prepairConfig(data, file, fileContent) {
+    function prepairConfig(data, file, fileContent, rootConfig) {
         var config;
         if (typeof fileContent === 'string') {
             data.writable = false;
@@ -71,6 +71,7 @@ var file_readSourceSync,
         }
 
         obj_interpolate(config, config, true);
+        cfg_conditions(config, config, rootConfig.$cli.params);
         var prop = data.getterProperty;
         if (prop) {
             config = obj_getProperty(config, prop);
