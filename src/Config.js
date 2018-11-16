@@ -107,6 +107,9 @@ var Config = Class({
 	
 	$is: function(name){
         let r =  cfg_getEnvironmentVar(this, name);
+        if (typeof r === 'boolean') {
+            return r;
+        }
         if (r == null || r === '0' || r.toLowerCase() === 'false') {
             return false;
         }
