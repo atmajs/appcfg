@@ -1,6 +1,6 @@
 {
   "name": "appcfg",
-  "version": "0.2.55",
+  "version": "0.2.56",
   "description": "Application Configuration Library for Node.js",
   "repository": {
     "type": "git",
@@ -9,7 +9,8 @@
   "main": "lib/config.js",
   "scripts": {
     "test": "atma test",
-    "build": "atma"
+    "build": "atma",
+    "release": "atma bump && npm run build && git add -A && git commit -am \"bump\" && npm publish && git push"
   },
   "keywords": [
     "config",

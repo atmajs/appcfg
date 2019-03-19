@@ -19,7 +19,7 @@ var file_readSourceSync,
     };
 
     file_readSourceSync = function(rootConfig, path, data) {
-        var file = resolveFile(rootConfig, path, data.optional);
+        var file = resolveFile(rootConfig, path, data.optional, data.lookupAncestors);
         if (file == null) {
             return null;
         }
@@ -42,8 +42,8 @@ var file_readSourceSync,
                 return new io.File(uri);
         }
         if (lookupAncestors) {
-            if (uri.isRelative() === false) {
-                uri = (new Uri(global.process.cwd())).combine(uri);
+            if (uri.isRelative()) {
+                uri = (new Uri('file://' + global.process.cwd() + '/')).combine(path);
             }
             var path = uri.path;
             while (uri.cdUp() && uri.path !== path) {
