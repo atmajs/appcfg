@@ -1,0 +1,3 @@
+qux: 'qux-sync'
+combi:
+	qux: 'qux-sync'

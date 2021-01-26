@@ -1,16 +1,18 @@
 {
   "name": "appcfg",
-  "version": "0.2.56",
+  "version": "0.3.01",
   "description": "Application Configuration Library for Node.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/atmajs/appcfg.git"
   },
-  "main": "lib/config.js",
+  "main": "lib/appcfg.js",
+  "types": "./lib/appcfg.d.ts",
   "scripts": {
     "test": "atma test",
-    "build": "atma",
-    "release": "atma bump && npm run build && git add -A && git commit -am \"bump\" && npm publish && git push"
+    "build": "app-bundler",
+    "dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
+    "release": "atma bump && npm run build && npm run dts && git add -A && git commit -am \"bump\" && npm publish && git push"
   },
   "keywords": [
     "config",
@@ -19,24 +21,97 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "app-bundler": "0.0.93",
     "atma": "^0.11.12",
     "atma-io-middleware-importer": "^1.1.36",
     "atma-io-middleware-yml": "^1.1.25",
     "atma-loader-babel": "^1.1.30",
     "atma-logger": "latest",
+    "dts-bundle": "^0.7.3",
     "mongodb": "latest"
   },
   "dependencies": {
+    "@types/node": "^14.14.22",
     "atma-class": "^1.1.70",
     "atma-io": "^1.1.7",
+    "atma-loader-ts": "^1.1.12",
     "atma-utils": "^0.1.6"
+  },
+  "app-bundler": {
+    "apps": {
+      "node": {
+        "file": "src/export-node.ts",
+        "outputMain": "lib/appcfg.js"
+      },
+      "browser": {
+        "file": "src/export-browser-umd.ts",
+        "outputMain": "lib/appcfg-browser.js",
+        "package": {
+          "module": "commonjs",
+          "moduleName": "appcfg",
+          "moduleWrapper": "umd",
+          "commonjs": {
+            "output": "simplified"
+          }
+        }
+      }
+    },
+    "common": {
+      "package": {
+        "module": "commonjs",
+        "commonjs": {
+          "output": "simplified"
+        }
+      },
+      "defaultExtensions": {
+        "js": "ts"
+      },
+      "middlewares": {
+        "js": [],
+        "ts": [
+          "atma-loader-ts:read"
+        ]
+      },
+      "dynamicDependencies": [
+        "atma-io"
+      ]
+    }
   },
   "atma": {
     "plugins": [
+      "atma-loader-ts",
       "atma-io-middleware-condcomments",
       "atma-io-middleware-importer",
       "atma-io-middleware-yml"
     ],
-    "settings": {}
+    "settings": {
+      "include": {
+        "amd": true,
+        "extentionDefault": {
+          "js": "ts"
+        },
+        "lazy": {
+          "src/AlotProto.ts": [
+            "streams/*"
+          ]
+        }
+      },
+      "atma-loader-ts": {
+        "extensions": [
+          "test",
+          "ts"
+        ],
+        "typescript": {
+          "compilerOptions": {
+            "#if (TEST)": {
+              "module": "AMD"
+            },
+            "#if (!TEST)": {
+              "module": "CommonJS"
+            }
+          }
+        }
+      }
+    }
   }
 }

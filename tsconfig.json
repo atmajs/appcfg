@@ -1,0 +1,11 @@
+{
+    "exclude": ["node_modules"],
+    "compilerOptions": {
+        "outDir": "ts-temp",
+        "declaration": true,
+        "target": "es5",
+        "module": "commonjs",
+        "sourceMap": false,
+        "experimentalDecorators": true
+    }
+}

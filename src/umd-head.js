@@ -1,31 +1,31 @@
 (function(root, factory){
-	"use strict";
+    "use strict";
 
-	var _global = typeof window === 'undefined' || window.navigator == null
-			? global
-			: window
-			,
-		_exports
-		;
+    var _global = typeof window === 'undefined' || window.navigator == null
+            ? global
+            : window
+            ,
+        _exports
+        ;
 
-    
-	_exports = root || _global;
-    
+
+    _exports = root || _global;
+
 
     function construct(){
         return factory(_global, _exports);
     }
 
-    
+
     if (typeof define === 'function' && define.amd) {
         return define(construct);
     }
-    
-	// Browser OR Node
+
+    // Browser OR Node
     construct();
-	
-	if (typeof module !== 'undefined') 
-		module.exports = _exports.Config;
-	
+
+    if (typeof module !== 'undefined')
+        module.exports = _exports.Config;
+
 }(this, function(global, exports){
-	"use strict";
+    "use strict";

@@ -1,44 +1,44 @@
-include
-	.inject('../../lib/config.js')
-	.done(function(){
-		
-        Class.MongoStore.settings({
-            db: 'test-appcfg'
-        });
-		
-        
-        var foo;
-		
-		UTest({
-			'mongo-write': function(done){
-				
-				foo = Date.now();
-                Config
-					.create([{
-						mongo: 'settings'
-					}])
-					.$write({ foo: foo })
-					.always(function(){
-						
-						eq(this._rejected, null);
-						done();
-					});
-			},
-			
-			'mongo-read': function(done){
-				
-				Config
-					.fetch([{
-						mongo: 'settings'
-					}])
-					.always(function(){
-						
-						eq(this._rejected, null);
-						eq(this.foo, foo);
-						done();
-					});
-			}
-			
-		});
+// include
+// 	.inject('../../lib/config.js')
+// 	.done(function(){
 
-	})
+//         Class.MongoStore.settings({
+//             db: 'test-appcfg'
+//         });
+
+
+//         var foo;
+
+// 		UTest({
+// 			'mongo-write': function(done){
+
+// 				foo = Date.now();
+//                 Config
+// 					.create([{
+// 						mongo: 'settings'
+// 					}])
+// 					.$write({ foo: foo })
+// 					.always(function(){
+
+// 						eq(this._rejected, null);
+// 						done();
+// 					});
+// 			},
+
+// 			'mongo-read': function(done){
+
+// 				Config
+// 					.fetch([{
+// 						mongo: 'settings'
+// 					}])
+// 					.always(function(){
+
+// 						eq(this._rejected, null);
+// 						eq(this.foo, foo);
+// 						done();
+// 					});
+// 			}
+
+// 		});
+
+// 	})

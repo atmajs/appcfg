@@ -1,0 +1,23 @@
+{
+    "files": [
+        "src/export-node.ts"
+      ],
+    "exclude": [
+        "node_modules"
+    ],
+    "compilerOptions": {
+        "outDir": "ts-temp",
+        "typeRoots": [
+          "./node_modules/@types",
+          "./typings/"
+        ],
+        "types": [
+          "node"
+        ],
+        "declaration": true,
+        "target":"es5",
+        "module": "commonjs",
+        "sourceMap": false,
+        "experimentalDecorators": true
+    }
+}
