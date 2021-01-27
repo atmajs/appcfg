@@ -2,21 +2,21 @@
 // Dependencies for this module:
 //   ../atma-utils
 
-declare module 'ruta' {
-    import { Config } from 'ruta/ConfigNode';
+declare module 'appcfg' {
+    import { Config } from 'appcfg/ConfigNode';
     export = Config;
 }
 
-declare module 'ruta/ConfigNode' {
+declare module 'appcfg/ConfigNode' {
     
-    export { Config } from 'ruta/Config';
+    export { Config } from 'appcfg/Config';
 }
 
-declare module 'ruta/Config' {
+declare module 'appcfg/Config' {
     import { class_Dfr } from 'atma-utils';
-    import { IConfigParams } from 'ruta/sources/ISource';
-    import { Sources } from 'ruta/sources/SourceFactory';
-    import { class_Await } from 'ruta/util/Await';
+    import { IConfigParams } from 'appcfg/sources/ISource';
+    import { Sources } from 'appcfg/sources/SourceFactory';
+    import { class_Await } from 'appcfg/util/Await';
     export class Config<T = any> {
         /** Exports */
         static default: typeof Config;
@@ -41,7 +41,7 @@ declare module 'ruta/Config' {
     }
 }
 
-declare module 'ruta/sources/ISource' {
+declare module 'appcfg/sources/ISource' {
     export type ISourceCtor = {
         canHandle(data: IConfigParams): boolean;
         create(data: IConfigParams): ISource | ISource[];
@@ -77,10 +77,10 @@ declare module 'ruta/sources/ISource' {
     export type IConfigParams = IDataDirectory | IDataCustom | IDataEmbedded | IDataFile | IDataFiles | any;
 }
 
-declare module 'ruta/sources/SourceFactory' {
+declare module 'appcfg/sources/SourceFactory' {
     import { class_Dfr } from 'atma-utils';
-    import { Config } from 'ruta/Config';
-    import { IConfigParams, ISource, ISourceCtor } from 'ruta/sources/ISource';
+    import { Config } from 'appcfg/Config';
+    import { IConfigParams, ISource, ISourceCtor } from 'appcfg/sources/ISource';
     export const Handlers: {
         [name: string]: ISourceCtor;
     };
@@ -99,7 +99,7 @@ declare module 'ruta/sources/SourceFactory' {
     };
 }
 
-declare module 'ruta/util/Await' {
+declare module 'appcfg/util/Await' {
     import { class_Dfr } from 'atma-utils';
     export class class_Await {
         promise: class_Dfr;

@@ -9,7 +9,7 @@ async function process () {
     }
 
     dts.bundle(<any> {
-        name: 'ruta',
+        name: 'appcfg',
         main: './ts-temp/export-node.d.ts',
         out: './typings/index.d.ts'
     });
