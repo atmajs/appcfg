@@ -6,9 +6,9 @@ UTest({
         let config = await Config.fetch({
             config: {
                 foo: 'fooVal',
-                bar: '#[foo]',
+                bar: '${foo}',
                 sub: {
-                    val: '#[bar]'
+                    val: '${bar}'
                 }
             }
         });
