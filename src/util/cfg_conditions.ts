@@ -17,12 +17,12 @@ export function cfg_getEnvironmentVar(config: Config, prop) {
     if (envCache.hasOwnProperty(prop))
         return envCache[prop];
 
-    var r = obj_getProperty(config, prop);
+    let r = obj_getProperty(config, prop);
     if (r != null)
         return (envCache[prop] = r);
 
     if (typeof process !== 'undefined') {
-        var env = process.env;
+        let env = process.env;
         r = env[prop];
         if (r != null)
             return (envCache[prop] = r);
@@ -31,7 +31,7 @@ export function cfg_getEnvironmentVar(config: Config, prop) {
         if (r != null)
             return (envCache[prop] = r);
 
-        var ENV = env.NODE_ENV || env.ENV;
+        let ENV = env.NODE_ENV || env.ENV;
         if (ENV != null) {
 
             r = new RegExp('\\b' + prop + '\\b', 'i').test(ENV);
@@ -42,12 +42,12 @@ export function cfg_getEnvironmentVar(config: Config, prop) {
     return (envCache[prop] = false);
 };
 // === private
-var envCache = {};
-var key_DEFAULT = 'default';
-var _cfg,
-    _params,
-    _refs,
-    _refCount;
+let envCache = {};
+let key_DEFAULT = 'default';
+let _cfg;
+let _params;
+let _refs;
+let _refCount;
 
 function rewrite(obj) {
 
@@ -60,7 +60,7 @@ function rewrite(obj) {
 }
 
 function rewriteObject(obj) {
-    var MAX_CALL_STACK = 100;
+    let MAX_CALL_STACK = 100;
     if (++_refCount > MAX_CALL_STACK) {
         if (_refs.indexOf(obj) !== -1) {
             return;
@@ -68,7 +68,7 @@ function rewriteObject(obj) {
         _refs.push(obj);
     }
 
-    var key, val, c;
+    let key, val, c;
     for (key in obj) {
         c = key.charCodeAt(0);
 
@@ -102,7 +102,7 @@ function rewriteObject(obj) {
 }
 
 function rewriteArray(arr) {
-    var imax = arr.length,
+    let imax = arr.length,
         i = -1,
         x,
         extArr;
@@ -143,8 +143,8 @@ function isConditionProperty(prop) {
 }
 
 function isConditionObject(obj) {
-    var has = false;
-    for (var key in obj) {
+    let has = false;
+    for (let key in obj) {
         if (isConditionProperty(key)) {
             has = true;
             continue;
@@ -160,7 +160,7 @@ function isConditionObject(obj) {
 
 function evalConditionProperty(prop) {
 
-    var code = prop
+    let code = prop
         .replace('#if ', '')
         .replace(/\b[\w\d_$]+\b/g, function (match, index, str) {
             if (isInQuotes(str, index))
@@ -172,7 +172,7 @@ function evalConditionProperty(prop) {
             return 'getter("' + match + '")';
         });
 
-    var fn = new Function('getter', 'return !!(' + code + ')');
+    let fn = new Function('getter', 'return !!(' + code + ')');
 
     try {
         return fn(evalGetter);
@@ -184,7 +184,7 @@ function evalConditionProperty(prop) {
 }
 
 function evalGetter(prop) {
-    var r = obj_getProperty(_params, prop);
+    let r = obj_getProperty(_params, prop);
     if (r != null)
         return r;
 
@@ -193,7 +193,7 @@ function evalGetter(prop) {
         return r;
 
     if (typeof process !== 'undefined') {
-        var env = process.env;
+        let env = process.env;
         r = env[prop];
         if (r != null)
             return r;
@@ -202,7 +202,7 @@ function evalGetter(prop) {
         if (r != null)
             return r;
 
-        var ENV = env.NODE_ENV || env.ENV;
+        let ENV = env.NODE_ENV || env.ENV;
         if (ENV != null && ENV.toUpperCase() === prop.toUpperCase())
             return true;
     }
@@ -210,7 +210,7 @@ function evalGetter(prop) {
     return null;
 }
 function evalConditionObject(obj) {
-    for (var key in obj) {
+    for (let key in obj) {
         if (key === key_DEFAULT)
             continue;
         if (evalConditionProperty(key))
@@ -219,7 +219,7 @@ function evalConditionObject(obj) {
     return obj[key_DEFAULT];
 }
 function isInQuotes(str, index) {
-    var isInDouble = false,
+    let isInDouble = false,
         isInSingle = false,
         c;
     while (--index > -1) {

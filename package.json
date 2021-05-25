@@ -1,6 +1,6 @@
 {
   "name": "appcfg",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Application Configuration Library for Node.js",
   "repository": {
     "type": "git",
@@ -53,6 +53,9 @@
           "commonjs": {
             "output": "simplified"
           }
+        },
+        "vars": {
+          "NODE": false
         }
       }
     },
@@ -69,6 +72,8 @@
       "middlewares": {
         "js": [],
         "ts": [
+          "atma-io-middleware-condcomments:read",
+          "atma-io-middleware-importer:read",
           "atma-loader-ts:read"
         ]
       },
@@ -85,6 +90,7 @@
       "atma-io-middleware-yml"
     ],
     "settings": {
+
       "include": {
         "amd": true,
         "extentionDefault": {

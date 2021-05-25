@@ -4,6 +4,7 @@ import { obj_interpolate } from '../../util/object';
 import { cfg_conditions } from '../../util/cfg_conditions';
 import { log_error, log_warn } from '../../util/log';
 import { module_eval } from './module';
+import { cfg_imports } from '../../util/cfg_imports';
 
 declare var include;
 
@@ -27,9 +28,7 @@ export function file_readSourceSync(rootConfig, path, data) {
     if (file == null) {
         return null;
     }
-    console.log('FILE', file.uri.toLocalFile());
     var content = file.read();
-    console.log('FILE content', content);
     return prepairConfig(data, file, content, rootConfig);
 };
 
@@ -80,6 +79,7 @@ function prepairConfig(data, file, fileContent, rootConfig) {
 
     obj_interpolate(config, config, true);
     cfg_conditions(config, config, rootConfig.$cli.params);
+    cfg_imports(config);
 
     var prop = data.getterProperty;
     if (prop) {

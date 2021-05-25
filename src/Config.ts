@@ -4,9 +4,16 @@ import { SourceFactory, Sources } from './sources/SourceFactory';
 import { class_Await } from './util/Await';
 import { cfg_extend, cfg_handlePaths } from './util/cfg';
 import { cfg_conditions, cfg_getEnvironmentVar } from './util/cfg_conditions';
+
+//#if (NODE)
+import { cfg_imports } from './util/cfg_imports';
+//#endif
+
 import { cli_arguments } from './util/cli';
 import { log_error } from './util/log';
 import { obj_clone, obj_deepExtend, obj_interpolate } from './util/object';
+
+
 
 export class Config<T = any> {
 
@@ -80,6 +87,10 @@ export class Config<T = any> {
             obj_interpolate(config);
             cfg_conditions(config, config, config.$cli.params);
             cfg_handlePaths(config);
+
+            //#if (NODE)
+            cfg_imports(config);
+            //#endif
 
             dfr.resolve(config);
         }
