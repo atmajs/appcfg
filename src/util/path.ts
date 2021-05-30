@@ -50,7 +50,7 @@ function getSpecialFolder(name) {
             break;
         case 'APP':
             // @TODO eliminate io.env dependency
-            path = env.currentDir.toLocalDir();
+            path = env.applicationDir.toLocalDir();
             break;
         case 'APPDATA':
             path = nodeEnv.HOME;
