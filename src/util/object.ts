@@ -182,7 +182,7 @@ export function obj_clone(obj) {
         }
         return clone;
     }
-    if (Object === Ctor || null === Ctor) {
+    if (Object === Ctor || null == Ctor) {
         clone = Object.create(null);
         for (let key in obj) {
             clone[key] = obj_clone(obj[key]);
