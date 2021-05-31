@@ -95,9 +95,10 @@ export class Sources {
             let onAlways = $awaits.delegate({ errorable: false });
             let onComplete = afterDelegate(after, source, rootConfig);
 
-            source
-                .read(rootConfig)
-                .then(
+            // Backward-compat in-case the source itself is deferable
+            let promise: PromiseLike<any> = source.read(rootConfig) ?? (<any>source);
+
+            promise.then(
                     res => {
                         onComplete();
                         onAlways(null);
