@@ -1,5 +1,2 @@
-.komodotools
-*.komodoproject
 ts-temp/
 node_modules/
-

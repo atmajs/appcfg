@@ -2,6 +2,7 @@ src/
 test/
 builds/
 tools/
+ts-temp/
 
 .travis.yml
 .komodotools

@@ -1,7 +1,7 @@
 
 
 // export function obj_getProperty(obj, property) {
-//     var chain = property.split('.'),
+//     let chain = property.split('.'),
 //         imax = chain.length,
 //         i = -1;
 //     while (++i < imax) {
@@ -17,7 +17,7 @@ import { log_error, log_warn } from './log';
 //     return obj;
 // };
 // export function obj_setProperty(obj, property, value) {
-//     var chain = property.split('.'),
+//     let chain = property.split('.'),
 //         imax = chain.length,
 //         i = -1,
 //         key;
@@ -34,14 +34,14 @@ import { log_error, log_warn } from './log';
 //     obj[chain[i]] = value;
 // };
 export function obj_defaults(target, defaults) {
-    for (var key in defaults) {
+    for (let key in defaults) {
         if (target[key] == null)
             target[key] = defaults[key];
     }
     return target;
 };
 export function obj_extend(target, source) {
-    for (var key in source) {
+    for (let key in source) {
         if (source[key] != null)
             target[key] = source[key];
     }
@@ -55,7 +55,7 @@ export function obj_deepExtend(target, source) {
         return target;
 
     if (is_Array(target) && is_Array(source)) {
-        for (var i = 0, x, imax = source.length; i < imax; i++) {
+        for (let i = 0, x, imax = source.length; i < imax; i++) {
             x = source[i];
 
             if (x == null)
@@ -75,7 +75,7 @@ export function obj_deepExtend(target, source) {
         return target;
     }
 
-    var key, val;
+    let key, val;
     for (key in source) {
         val = source[key];
 
@@ -116,7 +116,7 @@ export function obj_deepExtend(target, source) {
 };
 export function obj_ensureProperty(obj, property, defaultVal) {
 
-    var current = obj_getProperty(obj, property);
+    let current = obj_getProperty(obj, property);
     if (current == null) {
         let val = defaultVal == null ? {} : defaultVal;
 
@@ -139,9 +139,9 @@ export function obj_interpolate(obj, root?: Config, isOptional?: boolean) {
 
     obj_visitStrings(obj, function (str, key, parent) {
         str = str.trim();
-        var c0 = str.charCodeAt(0),
-            c1 = str.charCodeAt(1),
-            has = false;
+        let c0 = str.charCodeAt(0);
+        let c1 = str.charCodeAt(1);
+        let has = false;
 
         if (c0 === 35 && c1 === 91) {
             // #[
@@ -157,7 +157,7 @@ export function obj_interpolate(obj, root?: Config, isOptional?: boolean) {
         }
 
         str = str.substring(2, str.length - 1).trim();
-        var val = obj_getProperty(root, str);
+        let val = obj_getProperty(root, str);
         if (val == null && isOptional !== true)
             log_warn('<config: obj_interpolate: property not exists in root', str);
 
@@ -170,21 +170,21 @@ export function obj_clone(obj) {
     if (obj == null || typeof obj !== 'object')
         return obj;
 
-    var Ctor = obj.constructor,
+    let Ctor = obj.constructor,
         clone;
 
     if (Array === Ctor) {
         clone = [];
-        var i = -1,
-            imax = obj.length;
+        let i = -1;
+        let imax = obj.length;
         while (++i < imax) {
             clone[i] = obj_clone(obj[i]);
         }
         return clone;
     }
-    if (Object === Ctor) {
-        clone = {};
-        for (var key in obj) {
+    if (Object === Ctor || null === Ctor) {
+        clone = Object.create(null);
+        for (let key in obj) {
             clone[key] = obj_clone(obj[key]);
         }
         return clone;
@@ -208,7 +208,7 @@ export function obj_visitStrings(obj, visitorFn: (str: string, key?: string, par
         return;
     }
 
-    var val, r;
+    let val, r;
     if (is_Array(obj)) {
         let arr = obj;
         for (let i = 0; i < arr.length; i++) {
