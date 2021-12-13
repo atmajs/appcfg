@@ -1,6 +1,6 @@
 {
   "name": "appcfg",
-  "version": "0.4.54",
+  "version": "0.4.58",
   "description": "Application Configuration Library for Node.js",
   "repository": {
     "type": "git",
@@ -22,13 +22,13 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^14.14.22",
-    "app-bundler": "0.0.93",
+    "app-bundler": "^0.0.99",
     "atma": "^0.12.28",
-    "atma-io": "^1.2.34",
+    "atma-io": "^1.2.44",
     "atma-io-middleware-importer": "^1.1.36",
     "atma-io-middleware-yml": "^1.1.25",
-    "atma-loader-ts": "^1.1.12",
     "atma-loader-babel": "^1.1.30",
+    "atma-loader-ts": "^1.1.16",
     "atma-logger": "latest",
     "dts-bundle": "^0.7.3",
     "mongodb": "latest"
@@ -90,7 +90,6 @@
       "atma-io-middleware-yml"
     ],
     "settings": {
-
       "include": {
         "amd": true,
         "extentionDefault": {
