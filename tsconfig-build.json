@@ -1,7 +1,7 @@
 {
     "files": [
         "src/export-node.ts"
-      ],
+    ],
     "exclude": [
         "node_modules"
     ],

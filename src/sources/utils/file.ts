@@ -5,36 +5,35 @@ import { cfg_conditions } from '../../util/cfg_conditions';
 import { log_error, log_warn } from '../../util/log';
 import { module_eval } from './module';
 import { cfg_imports } from '../../util/cfg_imports';
+import type { Config } from '../../Config';
+import { ISource } from '../ISource';
 
-declare var include;
+declare let include;
 
-export function file_readSourceAsync(rootConfig, path, data) {
-    var dfr = new class_Dfr;
-    var file = resolveFile(rootConfig, path, data.optional, data.lookupAncestors);
-    if (file == null)
-        return dfr.reject({ code: 404 });
+export async function file_readSourceAsync(rootConfig: Config, path: string, data) {
+    let dfr = new class_Dfr;
+    let file = resolveFile(rootConfig, path, data.optional, data.lookupAncestors);
+    if (file == null) {
+        throw new Error(`${path} file not found`);
+    }
 
-    file
-        .readAsync()
-        .fail(dfr.rejectDelegate())
-        .done(function (fileContent) {
-            dfr.resolve(prepairConfig(data, file, fileContent, rootConfig));
-        });
-    return dfr;
+    let fileContent = await file.readAsync();
+    let config = prepairConfig(data, file, fileContent, rootConfig);
+    return config;
 };
 
 export function file_readSourceSync(rootConfig, path, data) {
-    var file = resolveFile(rootConfig, path, data.optional, data.lookupAncestors);
+    let file = resolveFile(rootConfig, path, data.optional, data.lookupAncestors);
     if (file == null) {
         return null;
     }
-    var content = file.read();
+    let content = file.read();
     return prepairConfig(data, file, content, rootConfig);
 };
 
 
 function resolveFile(rootConfig, path, isOptional, lookupAncestors) {
-    var uri = new class_Uri(path);
+    let uri = new class_Uri(path);
     if (uri.extension === 'yml' && ('yml' in File.middleware) === false) {
         require('atma-io-middleware-yml');
     }
@@ -51,7 +50,7 @@ function resolveFile(rootConfig, path, isOptional, lookupAncestors) {
         if (uri.isRelative()) {
             uri = (new class_Uri('file://' + global.process.cwd() + '/')).combine(path);
         }
-        var folder = uri.path;
+        let folder = uri.path;
         while (uri.cdUp() && uri.path !== folder) {
             folder = uri.path;
             if (File.exists(uri.toString())) {
@@ -67,8 +66,8 @@ function resolveFile(rootConfig, path, isOptional, lookupAncestors) {
     return null;
 }
 
-function prepairConfig(data, file, fileContent, rootConfig) {
-    var config;
+function prepairConfig(data: ISource, file: InstanceType<typeof File>, fileContent, rootConfig: Config) {
+    let config;
     if (typeof fileContent === 'string') {
         data.writable = false;
         config = module_eval(file.uri.toLocalFile(), fileContent);
@@ -81,7 +80,7 @@ function prepairConfig(data, file, fileContent, rootConfig) {
     cfg_conditions(config, config, rootConfig.$cli.params);
     cfg_imports(config);
 
-    var prop = data.getterProperty;
+    let prop = data.getterProperty;
     if (prop) {
         config = obj_getProperty(config, prop);
     }

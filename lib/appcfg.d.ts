@@ -52,6 +52,8 @@ declare module 'appcfg/sources/ISource' {
         read(rootConfig?: any): Promise<this>;
         readSync?(rootConfig?: any): this;
         write?(config: any, deepExtend?: boolean, setterProperty?: string): Promise<this>;
+        writable?: boolean;
+        getterProperty?: string;
     }
     export interface IDataCustom {
         new (): ISource;

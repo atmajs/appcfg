@@ -10,6 +10,9 @@ export interface ISource {
     read(rootConfig?): Promise<this>
     readSync?(rootConfig?): this
     write? (config, deepExtend?: boolean, setterProperty?: string): Promise<this>
+    writable?: boolean
+
+    getterProperty?: string
 }
 
 export interface IDataCustom {
