@@ -1,4 +1,4 @@
-import { class_Dfr, class_Uri, obj_getProperty } from 'atma-utils';
+import { class_Uri, obj_getProperty } from 'atma-utils';
 import { File } from 'atma-io';
 import { obj_interpolate } from '../../util/object';
 import { cfg_conditions } from '../../util/cfg_conditions';
@@ -11,7 +11,6 @@ import { ISource } from '../ISource';
 declare let include;
 
 export async function file_readSourceAsync(rootConfig: Config, path: string, data) {
-    let dfr = new class_Dfr;
     let file = resolveFile(rootConfig, path, data.optional, data.lookupAncestors);
     if (file == null) {
         throw new Error(`${path} file not found`);
