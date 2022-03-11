@@ -25,6 +25,9 @@ export class class_Await {
                 this.promise.reject(error);
                 return;
             }
+            if (error) {
+                console.log(error.message);
+            }
             if (--this.wait < 1) {
                 this.completed = true;
                 this.promise.resolve();

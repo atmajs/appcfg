@@ -27,13 +27,13 @@ export class Config<T = any> {
     $parallelReads = new class_Await
     $sync = false
 
-    constructor (data?, opts?){
+    constructor (data?: IConfigParams | IConfigParams[], opts?: { sync?: boolean }){
         if (data != null) {
             this.$data = data;
             this.$sources = SourceFactory.create(data);
             this.$sources.read(this);
         }
-        this.$sync = opts?.sync;
+        this.$sync = opts?.sync ?? false;
     }
 
     static fetch <T = { [key: string]: any }> (arr: IConfigParams | IConfigParams[], opts?): Promise<Config & T> {
@@ -103,9 +103,8 @@ export class Config<T = any> {
         cfg_extend(this, config, deepExtend, setterPath);
 
         let dfr = new class_Dfr;
-        var sources = this.$sources.toArray(),
-            i = sources.length
-            ;
+        let sources = this.$sources.toArray();
+        let i = sources.length;
         while( --i > -1 ){
             if (sources[i].data.writable !== true) {
                 continue;
@@ -119,7 +118,7 @@ export class Config<T = any> {
             return dfr;
         }
 
-        var msg = '<config:write> Writable source not defined.';
+        let msg = '<config:write> Writable source not defined.';
         log_error(msg);
 
         return dfr.reject(msg);

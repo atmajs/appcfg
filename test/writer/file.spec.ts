@@ -46,7 +46,7 @@ UTest({
 
         await config.$write({ qux: 'quux', arr: [3] });
 
-        var cfg = File.read<any>(path_JSON);
+        let cfg = File.read<any>(path_JSON);
         deepEq_(cfg, {
             qux: 'quux',
             foo: 'baz',
@@ -55,7 +55,7 @@ UTest({
 
     },
     // async 'should write yaml'() {
-    //     var config = new Config({
+    //     let config = new Config({
     //         path: path_YML,
     //         writable: true
     //     });
@@ -64,13 +64,13 @@ UTest({
     //         foo: 'baz'
     //     })
 
-    //     var txt = File.read(path_YML, { skipHooks: true });
+    //     let txt = File.read(path_YML, { skipHooks: true });
 
     //     has_(txt, 'foo: baz');
 
     // },
     async 'should write json to any generic extension'() {
-        var config = new Config({
+        let config = new Config({
             path: path_TXT,
             writable: true
         });
@@ -79,13 +79,13 @@ UTest({
                 foo: 'baz'
             });
 
-        var txt = File.read(path_TXT, { skipHooks: true });
+        let txt = File.read(path_TXT, { skipHooks: true });
 
         has_(txt, '{"foo":"baz"}');
     }
 })
 
-var path_JSON = 'test/bin/write.json',
+let path_JSON = 'test/bin/write.json',
     path_YML = 'test/bin/write.yml',
     path_TXT = 'test/bin/write.txt'
 

@@ -1,7 +1,7 @@
 import { cfg_extend } from '../util/cfg';
 import { path_handleSpecialFolder } from '../util/path';
 import { SourceFactory } from './SourceFactory';
-import { file_readSourceAsync, file_readSourceSync } from './utils/file';
+import { file_readSourceAsync, file_readSourceSync, file_writeSourceAsync } from './utils/file';
 import { File } from 'atma-io';
 import { IDataFile, IDataFiles, ISource } from './ISource';
 
@@ -31,14 +31,12 @@ SourceFactory.register('file', {
 
 
 class FileSource implements ISource {
-    data
-    config
+    config = {}
 
-    constructor(data: IDataFile) {
-        this.data = data;
-        this.config = {};
+    constructor(public data: IDataFile) {
         data.path = path_handleSpecialFolder(data.path);
     }
+
     promise: Promise<this>;
 
 
@@ -48,7 +46,6 @@ class FileSource implements ISource {
             this.data.path,
             this.data
         );
-
         this.config = config;
         return this;
     }
@@ -72,7 +69,8 @@ class FileSource implements ISource {
         let filename = this.data.path;
         let cfg = getContent(this.config, filename);
 
-        await File.writeAsync(filename, cfg);
+
+        await file_writeSourceAsync(filename, cfg, this.data);
         return this;
     }
 }

@@ -89,9 +89,9 @@ export class Sources {
             let before = source.data?.beforeRead;
             let after = source.data?.afterRead;
 
-            if (before)
+            if (before) {
                 before(source, rootConfig);
-
+            }
             let onAlways = $awaits.delegate({ errorable: false });
             let onComplete = afterDelegate(after, source, rootConfig);
 

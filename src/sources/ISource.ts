@@ -5,14 +5,15 @@ export type ISourceCtor = {
 export interface ISource {
 
     data?
-    config
+    config?
 
-    read(rootConfig?): Promise<this>
+    read?(rootConfig?): Promise<this>
     readSync?(rootConfig?): this
     write? (config, deepExtend?: boolean, setterProperty?: string): Promise<this>
     writable?: boolean
 
     getterProperty?: string
+    lookupAncestors?: boolean
 }
 
 export interface IDataCustom {
@@ -21,8 +22,10 @@ export interface IDataCustom {
 export interface IDataEmbedded {
     config: any
 }
-export interface IDataFile {
+export interface IDataFile extends ISource {
     path: string
+    secret?: string
+    optional?: boolean
 }
 export type IDataFiles = { files: string[] }
 
