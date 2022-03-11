@@ -14,7 +14,7 @@ declare let include;
 export async function file_readSourceAsync(rootConfig: Config, path: string, data: IDataFile) {
     let file = resolveFile(path, data);
     if (file == null) {
-        throw new Error(`${path} file not found`);
+        return null;
     }
     let fileContent = await file.readAsync();
     let config = prepairConfig(data, file, fileContent, rootConfig);
