@@ -99,8 +99,10 @@ export class Config<T = any> {
         return dfr as any as Promise<Config & T>;
     }
 
-    $write (config, deepExtend?: boolean, setterPath?: string){
-        cfg_extend(this, config, deepExtend, setterPath);
+    $write (config?, deepExtend?: boolean, setterPath?: string){
+        if (config != null) {
+            cfg_extend(this, config, deepExtend, setterPath);
+        }
 
         let dfr = new class_Dfr;
         let sources = this.$sources.toArray();
@@ -109,8 +111,9 @@ export class Config<T = any> {
             if (sources[i].data.writable !== true) {
                 continue;
             }
-
-            config = obj_clone(config);
+            if (config != null) {
+                config = obj_clone(config);
+            }
             sources[i]
                 .write(config)
                 .then(dfr.resolveDelegate(), dfr.rejectDelegate());

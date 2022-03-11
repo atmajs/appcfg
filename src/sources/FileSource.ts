@@ -66,26 +66,11 @@ class FileSource implements ISource {
 
         cfg_extend(this.config, config, deepExtend, setterProperty);
 
-        let filename = this.data.path;
-        let cfg = getContent(this.config, filename);
 
+        let filename = this.data.path;
+        let cfg = this.data.serializer?.(this.config) ?? this.config;
 
         await file_writeSourceAsync(filename, cfg, this.data);
         return this;
-    }
-}
-
-function getContent(config, path) {
-    var hooks = File
-        .getHookHandler()
-        .getHooksForPath(path, 'write');
-
-    if (hooks.length !== 0) {
-        return config;
-    }
-    try {
-        return JSON.stringify(config);
-    } catch (error) {
-        return config;
     }
 }

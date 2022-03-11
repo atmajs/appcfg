@@ -11,6 +11,7 @@ export interface ISource {
     readSync?(rootConfig?): this
     write? (config, deepExtend?: boolean, setterProperty?: string): Promise<this>
     writable?: boolean
+    serializer? (config): string
 
     getterProperty?: string
     lookupAncestors?: boolean

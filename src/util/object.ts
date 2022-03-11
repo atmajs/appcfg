@@ -94,13 +94,7 @@ export function obj_deepExtend(target, source) {
         }
 
         if (is_Array(val)) {
-            if (is_Array(target[key]) === false) {
-                log_warn('<object:deepExtend> type missmatch %s %s %s - Overwrite', key, val, target[key]);
-
-                target[key] = val;
-                continue;
-            }
-            obj_deepExtend(target[key], val);
+            target[key] = val;
             continue;
         }
 

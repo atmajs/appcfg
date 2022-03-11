@@ -23,7 +23,7 @@ export async function file_readSourceAsync(rootConfig: Config, path: string, dat
 
 
 export async function file_writeSourceAsync(path: string, content, data: IDataFile) {
-    let file = resolveFile(path, data);
+    let file = resolveFile(path, data, 'write');
     await file.writeAsync(content);
 };
 
@@ -37,10 +37,11 @@ export function file_readSourceSync(rootConfig, path, data) {
 };
 
 
-function resolveFile(path: string, data: Pick<IDataFile, 'optional' | 'lookupAncestors' | 'secret'>, checkExists: boolean = true) {
+function resolveFile(path: string, data: Pick<IDataFile, 'optional' | 'lookupAncestors' | 'secret'>,  method: 'write' | 'read' = 'read') {
     let uri = new class_Uri(path);
-    if (uri.extension === 'yml' && ('yml' in File.middleware) === false) {
-        require('atma-io-middleware-yml');
+    if (uri.extension === 'yml') {
+        // ensure we have the middleware
+        File.getHookHandler().register('yml', method, 'atma-io-middleware-yml');
     }
     let settings:IFileSettings = {
         cached: false
@@ -48,7 +49,7 @@ function resolveFile(path: string, data: Pick<IDataFile, 'optional' | 'lookupAnc
     if (data.secret != null) {
         settings.aes256 = { secret: data.secret };
     }
-    if (checkExists === false || File.exists(uri.toString())) {
+    if (method === 'write' || File.exists(uri.toString())) {
         return new File(uri, settings);
     }
     if (uri.isRelative() && typeof include !== 'undefined') {
@@ -79,7 +80,7 @@ function prepairConfig(data: IDataFile , file: InstanceType<typeof File>, fileCo
 
     let config;
     if (typeof fileContent === 'string') {
-        if (/\.(js|ts)/i.test(file.uri.extension) === false) {
+        if (/(js|ts)/i.test(file.uri.extension) === false) {
             throw new Error(`Content in "${file.uri.file}" loaded as script to be evaluated. But file extension was not "js|ts". File loader middleware, which should resolve the content to object, failed.`);
         }
         data.writable = false;
