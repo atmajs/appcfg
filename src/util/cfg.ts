@@ -6,14 +6,14 @@ import { obj_clone, obj_deepExtend, obj_ensureProperty, obj_extend, obj_visitStr
  */
 export function cfg_merge(target, config, setterProperty) {
 
-    if (config == null)
+    if (config == null) {
         return;
-
-    if (setterProperty)
+    }
+    if (setterProperty) {
         target = obj_ensureProperty(target, setterProperty, {});
-
+    }
     config = obj_clone(config);
-    obj_deepExtend(target, config);
+    obj_deepExtend(target, config, { extendArrays: true });
 };
 
 export function cfg_extend(target, source, deepExtend, path) {

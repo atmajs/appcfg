@@ -2,7 +2,7 @@ import { Config } from '../src/ConfigNode';
 
 UTest({
     '$is': {
-        'from configuration': function(){
+        'from configuration' (){
 
             var config = new Config ({
                 config: {
@@ -16,7 +16,7 @@ UTest({
             eq_(config.$is('debug'), true);
             eq_(config.$is('foo.baz'), true);
         },
-        'from environment': function(){
+        'from environment' (){
             var config = new Config;
 
             process.env.NODE_ENV = 'DEBUG,TEST';

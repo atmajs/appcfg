@@ -47,7 +47,7 @@ export function obj_extend(target, source) {
     }
     return target;
 };
-export function obj_deepExtend(target, source) {
+export function obj_deepExtend(target, source, opts?: { extendArrays: boolean }) {
     if (target == null)
         target = {};
 
@@ -62,7 +62,7 @@ export function obj_deepExtend(target, source) {
                 continue;
 
             if (is_Object(x)) {
-                target.push(obj_deepExtend({}, x));
+                target.push(obj_deepExtend({}, x, opts));
                 continue;
             }
             target.push(x);
@@ -94,12 +94,22 @@ export function obj_deepExtend(target, source) {
         }
 
         if (is_Array(val)) {
-            target[key] = val;
+            if (opts?.extendArrays === true) {
+                if (is_Array(target[key]) === false) {
+                    log_warn('<object:deepExtend> type missmatch %s %s %s - Overwrite', key, val, target[key]);
+
+                    target[key] = val;
+                    continue;
+                }
+                obj_deepExtend(target[key], val, opts);
+            } else {
+                target[key] = val;
+            }
             continue;
         }
 
         if (is_Object(val) && is_Object(target[key])) {
-            target[key] = obj_deepExtend(target[key], val);
+            target[key] = obj_deepExtend(target[key], val, opts);
             continue;
         }
 

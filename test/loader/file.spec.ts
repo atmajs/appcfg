@@ -43,5 +43,15 @@ UTest({
                 bar: 'bar'
             }
         });
+    },
+    async 'should merge arrays '() {
+        const config = await Config.fetch([
+            { path: 'test/config/array1.yml' },
+            { path: 'test/config/array2.yml' }
+        ], { sync: true });
+
+        has_(config.toJSON(), {
+            plugins: ['arr1', 'arr2']
+        });
     }
 });
