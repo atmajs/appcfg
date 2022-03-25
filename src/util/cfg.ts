@@ -4,7 +4,7 @@ import { obj_clone, obj_deepExtend, obj_ensureProperty, obj_extend, obj_visitStr
 /* target - config object
  * source - source config object
  */
-export function cfg_merge(target, config, setterProperty) {
+export function cfg_merge(target, config, setterProperty: string, extendArrays: boolean) {
 
     if (config == null) {
         return;
@@ -13,7 +13,7 @@ export function cfg_merge(target, config, setterProperty) {
         target = obj_ensureProperty(target, setterProperty, {});
     }
     config = obj_clone(config);
-    obj_deepExtend(target, config, { extendArrays: true });
+    obj_deepExtend(target, config, { extendArrays: extendArrays !== false });
 };
 
 export function cfg_extend(target, source, deepExtend, path) {

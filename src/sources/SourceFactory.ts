@@ -40,13 +40,13 @@ export class Sources {
         let i = -1;
         let imax = sources.length;
         while( ++i < imax ){
-            var source = sources[i];
-            var before = source.data?.beforeRead;
-            var after = source.data?.afterRead;
+            let source = sources[i];
+            let before = source.data?.beforeRead;
+            let after = source.data?.afterRead;
 
-            if (before)
+            if (before) {
                 before(source, rootConfig);
-
+            }
             if (source.readSync == null) {
                 throw new Error('Source not supports sync config loader');
             }
@@ -56,6 +56,7 @@ export class Sources {
                 rootConfig
                 , source.config
                 , source.data.setterProperty
+                , source.data.extendArrays
             );
             if (after) {
                 after(source, rootConfig);
@@ -125,6 +126,7 @@ export class Sources {
                     rootConfig
                     , source.config
                     , source.data.setterProperty
+                    , source.data.extendArrays
                 );
                 if (fn)
                     fn(source, rootConfig);

@@ -3,8 +3,8 @@ export type ISourceCtor = {
     create (data: IConfigParams): ISource | ISource[]
 }
 export interface ISource {
-
-    data?
+    name?: string
+    data?: ISource
     config?
 
     read?(rootConfig?): Promise<this>
@@ -13,8 +13,14 @@ export interface ISource {
     writable?: boolean
     serializer? (config): string
 
+    beforeRead?(config, rootConfig)
+    afterRead?(config, rootConfig)
+
     getterProperty?: string
+    setterProperty?: string
     lookupAncestors?: boolean
+    extendArrays?: boolean
+    sync?: boolean
 }
 
 export interface IDataCustom {
