@@ -1,6 +1,6 @@
 {
   "name": "appcfg",
-  "version": "0.4.64",
+  "version": "0.4.65",
   "description": "Application Configuration Library for Node.js",
   "repository": {
     "type": "git",
@@ -8,6 +8,7 @@
   },
   "main": "lib/appcfg.js",
   "types": "./lib/appcfg.d.ts",
+  "browser": "lib/appcfg-browser.js",
   "scripts": {
     "test": "atma test",
     "build": "app-bundler",
