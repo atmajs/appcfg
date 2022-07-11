@@ -122,15 +122,13 @@ export class Config<T = any> {
             setterPath = arg1;
         }
 
-
         if (config != null) {
             cfg_extend(this, config, deepExtend, setterPath);
         }
 
         let dfr = new class_Dfr;
         let sources = this.$sources.toArray();
-        let i = sources.length;
-        while( --i > -1 ){
+        for(let i = 0; i < sources.length; i++){
             if (sources[i].data.writable !== true) {
                 continue;
             }
@@ -149,7 +147,6 @@ export class Config<T = any> {
 
         let msg = '<config:write> Writable source not defined.';
         log_error(msg);
-
         return dfr.reject(msg);
     }
 
