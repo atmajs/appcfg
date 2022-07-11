@@ -99,7 +99,30 @@ export class Config<T = any> {
         return dfr as any as Promise<Config & T>;
     }
 
-    $write (config?, deepExtend?: boolean, setterPath?: string){
+    /**
+     * @param config any json object
+     * @param deepExtend Otherwise per default shallow copy is used.
+     * @param setterPath
+     * @returns
+     */
+    $write (config?, deepExtend?: boolean, setterPath?: string)
+    $write (config?, opts?: { deepExtend?: boolean, setterPath?: string, sourceName?: string })
+    $write (config?, mix?: boolean | { deepExtend?: boolean, setterPath?: string, sourceName?: string }, arg1?: string) {
+
+        let deepExtend = false;
+        let setterPath: string = null;
+        let sourceName: string = null;
+        if (mix != null && typeof mix === 'object') {
+            deepExtend = mix.deepExtend;
+            setterPath = mix.setterPath;
+            sourceName = mix.sourceName;
+        } else {
+            // boolean or null
+            deepExtend = mix as boolean;
+            setterPath = arg1;
+        }
+
+
         if (config != null) {
             cfg_extend(this, config, deepExtend, setterPath);
         }
@@ -111,11 +134,14 @@ export class Config<T = any> {
             if (sources[i].data.writable !== true) {
                 continue;
             }
+            if (sourceName != null && sources[i].data?.name !== sourceName) {
+                continue;
+            }
             if (config != null) {
                 config = obj_clone(config);
             }
             sources[i]
-                .write(config)
+                .write(config, deepExtend, setterPath)
                 .then(dfr.resolveDelegate(), dfr.rejectDelegate());
 
             return dfr;

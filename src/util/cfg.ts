@@ -17,9 +17,9 @@ export function cfg_merge(target, config, setterProperty: string, extendArrays: 
 };
 
 export function cfg_extend(target, source, deepExtend, path) {
-    if (path)
+    if (path) {
         target = obj_ensureProperty(target, path, {});
-
+    }
     var fn = deepExtend !== false
         ? obj_deepExtend
         : obj_extend;
