@@ -62,13 +62,14 @@ class FileSource implements ISource {
         if (this.data.writable !== true) {
             throw new Error('Not writable');
         }
+        if (this.config == null) {
+            this.config = {};
+        }
 
         cfg_extend(this.config, config, deepExtend, setterProperty);
 
-
         let filename = this.data.path;
         let cfg = this.data.serializer?.(this.config) ?? this.config;
-
         await file_writeSourceAsync(filename, cfg, this.data);
         return this;
     }
