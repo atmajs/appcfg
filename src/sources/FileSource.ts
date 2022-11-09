@@ -29,7 +29,7 @@ SourceFactory.register('file', {
 });
 
 
-class FileSource implements ISource {
+export class FileSource implements ISource {
     config = {}
 
     constructor(public data: IDataFile) {

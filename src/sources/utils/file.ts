@@ -16,7 +16,10 @@ export async function file_readSourceAsync(rootConfig: Config, path: string, dat
     if (file == null) {
         return null;
     }
-    let fileContent = await file.readAsync();
+    let fileContent: any = await file.readAsync();
+    if (typeof data.deserializer === 'function') {
+        fileContent = await data.deserializer(fileContent);
+    }
     let config = prepairConfig(data, file, fileContent, rootConfig);
     return config;
 };
@@ -32,8 +35,11 @@ export function file_readSourceSync(rootConfig, path, data) {
     if (file == null) {
         return null;
     }
-    let content = file.read();
-    return prepairConfig(data, file, content, rootConfig);
+    let fileContent = file.read();
+    if (typeof data.deserializer === 'function') {
+        fileContent = data.deserializer(fileContent);
+    }
+    return prepairConfig(data, file, fileContent, rootConfig);
 };
 
 

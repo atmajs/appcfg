@@ -16,7 +16,7 @@ SourceFactory.register('embedded', {
 });
 
 
-class EmbeddedSource implements ISource {
+export class EmbeddedSource implements ISource {
     constructor(data) {
 
         this.data = data;

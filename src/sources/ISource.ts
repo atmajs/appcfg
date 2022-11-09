@@ -12,6 +12,7 @@ export interface ISource {
     write? (config, deepExtend?: boolean, setterProperty?: string): Promise<this>
     writable?: boolean
     serializer? (config): string
+    deserializer? (content): Record<string, any>
 
     beforeRead?(config, rootConfig)
     afterRead?(config, rootConfig)

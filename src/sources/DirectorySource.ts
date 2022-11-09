@@ -6,7 +6,7 @@ SourceFactory.register('directory', {
 
     canHandle(data: IDataDirectory) {
 
-        var path = data.path;
+        let path = data.path;
         if (typeof path !== 'string')
             return false;
 
@@ -21,11 +21,12 @@ SourceFactory.register('directory', {
     },
 
     create(data: IDataDirectory) {
-        var path = data.path.replace(/\\/g, '/'),
-            wildCardIndex = path.search(/[\*\?]/g),
-            index = path.lastIndexOf('/', wildCardIndex),
+        let path = data.path.replace(/\\/g, '/');
+        let wildCardIndex = path.search(/[\*\?]/g);
+        let index = path.lastIndexOf('/', wildCardIndex);
 
-            base, pattern;
+        let base: string;
+        let pattern: string;
 
         if (wildCardIndex === -1) {
             base = path;
@@ -35,13 +36,13 @@ SourceFactory.register('directory', {
             pattern = path.substring(index + 1);
         }
 
-        var dir = new Directory(base);
+        let dir = new Directory(base);
 
         dir.readFiles(pattern);
 
-        var files = dir
+        let files = dir
             .files
-            .map(function (file) {
+            .map(file => {
                 return file.uri.toString();
             });
 

@@ -1,4 +1,4 @@
-#### Application Configuration Library for Node.js
+#### Application Configuration Library for Node.js and Browser
 
 [![Build Status](https://api.travis-ci.com/atmajs/appcfg.svg?branch=master)](https://app.travis-ci.com/github/atmajs/appcfg)
 [![NPM version](https://badge.fury.io/js/appcfg.svg)](http://badge.fury.io/js/appcfg)
@@ -14,6 +14,7 @@ Load and Combine Configuration from many sources:
     - JavaScript Module
     - JSON
     - Yaml
+    - ENV + `.env`
     - S3 Storage
 - Directory (_combine files_)
 - MongoDB
@@ -66,6 +67,12 @@ const config = await AppCfg.fetch([
         // set this source as writable for configuration persistance
         writable: true
     },
+    // ENV + .env
+    {
+        dotenv: true,
+        // per default CWD is checked, can be overriden
+        path: './foo/bar/'
+    },
     // directory
     {
         path: 'defaults/**.yml'
@@ -92,10 +99,10 @@ $ node app --foo.bar barValue --debug
 let config = await Config.fetch(someSources);
 
 assert.has(config, {
-	foo: {
-		bar: 'barValue'
-	},
-	debug: true
+    foo: {
+        bar: 'barValue'
+    },
+    debug: true
 })
 
 ```
@@ -156,8 +163,8 @@ Use special folders for loading/writing configurations, like `%APPDATA%` or `%HO
 Is system agnostic and is parsed from the environment variables.
 ```javascript
 Config.fetch({
-	path: '%APPDATA%/.myApplication/global.yml',
-	writable: true
+    path: '%APPDATA%/.myApplication/global.yml',
+    writable: true
 });
 ```
 
@@ -174,13 +181,13 @@ B:
 ```
 ```
 let config = await Config.fetch({
-	path: 'someConfig.yml'
+    path: 'someConfig.yml'
 });
 
 assert.has(config, {
-	name: 'Foo',
-	A: { lorem: 'Foo' },
-	B: { ipsum: 'Foo' }
+    name: 'Foo',
+    A: { lorem: 'Foo' },
+    B: { ipsum: 'Foo' }
 });
 ```
 
@@ -346,11 +353,11 @@ This source type can suit any needs.
 Function
 
 class Foo {
-	config: any
-	async read (){
-		// do any reads and calcs, after that resolve the source
-		this.config = await loadConfig();
-	}
+    config: any
+    async read (){
+        // do any reads and calcs, after that resolve the source
+        this.config = await loadConfig();
+    }
 }
 
 ```
