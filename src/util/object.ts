@@ -48,11 +48,12 @@ export function obj_extend(target, source) {
     return target;
 };
 export function obj_deepExtend(target, source, opts?: { extendArrays: boolean }) {
-    if (target == null)
+    if (target == null) {
         target = {};
-
-    if (source == null)
+    }
+    if (source == null) {
         return target;
+    }
 
     if (is_Array(target) && is_Array(source)) {
         for (let i = 0, x, imax = source.length; i < imax; i++) {
@@ -75,9 +76,8 @@ export function obj_deepExtend(target, source, opts?: { extendArrays: boolean })
         return target;
     }
 
-    let key, val;
-    for (key in source) {
-        val = source[key];
+    for (let key in source) {
+        let val = source[key];
 
         if (key.charCodeAt(0) === 33) {
             // !
@@ -162,9 +162,12 @@ export function obj_interpolate(obj, root?: Config, isOptional?: boolean) {
 
         str = str.substring(2, str.length - 1).trim();
         let val = obj_getProperty(root, str);
-        if (val == null && isOptional !== true)
+        if (val == null && typeof process !== 'undefined' && process.env != null) {
+            val = obj_getProperty(process.env, str);
+        }
+        if (val == null && isOptional !== true) {
             log_warn('<config: obj_interpolate: property not exists in root', str);
-
+        }
         return val;
     });
 };

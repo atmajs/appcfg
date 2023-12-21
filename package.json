@@ -1,6 +1,6 @@
 {
   "name": "appcfg",
-  "version": "0.4.69",
+  "version": "0.4.70",
   "description": "Application Configuration Library for Node.js",
   "repository": {
     "type": "git",
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "atma-class": "^1.1.70",
-    "atma-io": "^1.2.59",
+    "atma-io": "^1.2.68",
     "atma-utils": "^0.1.6"
   },
   "app-bundler": {
