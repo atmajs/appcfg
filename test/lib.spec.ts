@@ -1,5 +1,5 @@
 include
-    .js('../lib/appcfg.js')
+    .js('../lib/umd/node/appcfg.js')
     .done(resp => {
         const Config = resp.appcfg;
 
