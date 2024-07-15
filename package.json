@@ -41,7 +41,8 @@
     "atma-loader-ts": "^1.1.17",
     "atma-logger": "latest",
     "dts-bundle": "^0.7.3",
-    "mongodb": "latest"
+    "mongodb": "latest",
+    "shellbee": "^0.5.29"
   },
   "dependencies": {
     "atma-class": "^1.1.70",
