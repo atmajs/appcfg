@@ -1,6 +1,14 @@
-const alot = require('../../lib/umd/alot.js');
+const AppCfg = require('../../lib/umd/node/appcfg.js');
 
-const max = alot([3, 10]).max(x => x);
-console.log(`Max: ${max}`);
 
-module.exports = max;
+async function main() {
+    const cfg = await AppCfg.fetch([{
+        config: {
+            foo: 125
+        }
+    }]);
+
+    console.log(`Foo: ${ cfg.$get('foo') }`);
+}
+
+main().then(() => console.log('Done.'));

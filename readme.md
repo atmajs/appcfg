@@ -1,6 +1,6 @@
 #### Application Configuration Library for Node.js and Browser
 
-[![Build Status](https://api.travis-ci.com/atmajs/appcfg.svg?branch=master)](https://app.travis-ci.com/github/atmajs/appcfg)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/atmajs/appcfg/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/atmajs/appcfg/tree/master)
 [![NPM version](https://badge.fury.io/js/appcfg.svg)](http://badge.fury.io/js/appcfg)
 
 - [About](#about)

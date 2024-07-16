@@ -7,7 +7,7 @@ UTest({
             cwd: './test/lib/',
             silent: true
         });
-        eq_(std.join('').trim(), 'Max: 5');
+        eq_(std.join('').trim(), 'Foo: 5');
     },
     async 'should load cjs' () {
         let { std } = await Shell.run({
@@ -15,6 +15,6 @@ UTest({
             cwd: './test/lib/',
             silent: true
         });
-        eq_(std.join('').trim(), 'Max: 10');
+        eq_(std.join('').trim(), 'Foo: 125\nDone.');
     }
 })
