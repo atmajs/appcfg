@@ -35,6 +35,7 @@
     "@types/node": "^14.14.22",
     "app-bundler": "^0.2.6",
     "atma": "^0.15.23",
+    "atma-io-middleware-condcomments": "^1.2.8",
     "atma-io-middleware-importer": "^1.1.36",
     "atma-io-middleware-yml": "^1.1.25",
     "atma-loader-babel": "^1.1.30",
