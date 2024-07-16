@@ -39,7 +39,7 @@
     "atma-io-middleware-importer": "^1.1.36",
     "atma-io-middleware-yml": "^1.1.25",
     "atma-loader-babel": "^1.1.30",
-    "atma-loader-ts": "^1.1.17",
+    "atma-loader-ts": "^1.2.6",
     "atma-logger": "latest",
     "dts-bundle": "^0.7.3",
     "mongodb": "latest",
