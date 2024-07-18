@@ -2,7 +2,7 @@ import { env } from 'atma-io'
 import { log_error } from './log';
 import { query_deserialize } from './query';
 
-var rgx_specialFolder = /^%(\w+)%/,
+let rgx_specialFolder = /^%(\w+)%/,
     rgx_dblSlash = /[\/]{2,}/g,
     folders = {}
     ;
@@ -38,8 +38,13 @@ function path_normalize(path) {
 
 function getSpecialFolder(name) {
 
-    var nodeEnv = process.env,
-        path = nodeEnv[name];
+    if (typeof process === 'undefined' || process?.env == null) {
+        // Browser
+        return name;
+    }
+
+    let nodeEnv = process.env;
+    let path = nodeEnv[name];
 
     if (path != null)
         return path;
@@ -64,7 +69,7 @@ function getSpecialFolder(name) {
 }
 
 export function path_getQuery(path: string): { [key: string]: string } {
-    var i = path.indexOf('?');
+    let i = path.indexOf('?');
     if (i === -1) {
         return {};
     }

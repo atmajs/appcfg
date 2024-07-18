@@ -7,11 +7,18 @@ export function cli_arguments() {
     if (cache__ != null) {
         return cache__;
     }
+    if (typeof process === 'undefined' || process?.argv == null) {
+        // Browser
+        return {
+            params: {},
+            args: []
+        };
+    }
 
-    let argv = process.argv,
-        imax = argv.length,
-        params = {},
-        args = [];
+    let argv = process.argv;
+    let imax = argv.length;
+    let params = {};
+    let args = [];
 
     for (let i = 2; i < imax; i++) {
         let x = argv[i];

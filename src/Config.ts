@@ -69,7 +69,6 @@ export class Config<T = any> {
         this.$parallelReads.always(() => dfr.resolve(config));
         this.$cli = cli_arguments();
 
-
         if (this.$sync) {
             sources.loadSync(config);
             onComplete();
