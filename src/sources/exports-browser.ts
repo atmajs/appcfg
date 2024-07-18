@@ -1,6 +1,6 @@
 import './LocalStorageSource'
-import './QuerySource'
 import './EmbeddedSource'
+import './QuerySource'
 import './CustomSource'
 
 export { SourceFactory } from './SourceFactory'

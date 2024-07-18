@@ -43,7 +43,7 @@ export interface IDataLocalStorage {
     localStorage: string
 }
 export interface IDataQuery {
-    query: any
+    query: boolean
 }
 
 export type IConfigParams = IDataDirectory | IDataCustom | IDataEmbedded | IDataFile | IDataFiles | any

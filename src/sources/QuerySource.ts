@@ -5,7 +5,7 @@ import { SourceFactory } from './SourceFactory';
 SourceFactory.register('query', {
 
     canHandle(data: IDataQuery) {
-        return typeof data?.query != null;
+        return data?.query === true;
     },
     create (data: IDataLocalStorage) {
         return new QuerySourceSource (data);
