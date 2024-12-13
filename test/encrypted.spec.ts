@@ -18,9 +18,8 @@ UTest({
 
         let str = await File.readAsync<string>(FILE, { skipHooks: true });
         hasNot_(str, 'baz');
-
-
-        '> read without secret'
+    },
+    async 'read without secret'() {
         let readerWithoutSecret = new Config({
             path: FILE,
             writable: true,
@@ -29,7 +28,8 @@ UTest({
 
         eq_(empty.foo, null);
 
-        '> read with secret'
+    },
+    async '> read with secret' () {
         let reader = new Config({
             path: FILE,
             secret: '123456',
@@ -38,5 +38,19 @@ UTest({
         });
         let cfg = await reader.$read();
         eq_(cfg.foo, 'baz');
+    },
+    async '> read with wrong secret should fail' () {
+        let readerWithWrongPss = new Config({
+            path: FILE,
+            secret: '56789',
+            writable: true,
+            optional: true,
+        });
+        try {
+            let cfg = await readerWithWrongPss.$read();
+            eq_(true, false, 'Not reachable');
+        } catch (e) {
+            has_(e.message, `Invalid secret`);
+        }
     }
 });

@@ -2,7 +2,6 @@ import { Config } from '../../src/ConfigNode';
 
 UTest({
     async 'env'() {
-        console.log(Object.assign({}, process.env));
         process.env['ENV'] = 'LOCAL';
 
         let config = await Config.fetch([{

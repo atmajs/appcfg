@@ -12,43 +12,43 @@ import { type IFileSettings } from 'atma-io/interfaces/IFile';
 declare let include;
 
 export async function file_readSourceAsync(rootConfig: Config, path: string, data: IDataFile) {
-    let file = resolveFile(path, data);
+    let file = prepareFile(resolveFile(path, data), 'read');
     if (file == null) {
         return null;
     }
-    let fileContent: any = await file.readAsync();
+    let fileContent = await file.readAsync<any>();
+    if (data.secret && fileContent == null) {
+        throw new Error(`Invalid secret for file ${file.uri.toLocalFile()}`);
+    }
     if (typeof data.deserializer === 'function') {
         fileContent = await data.deserializer(fileContent);
     }
-    let config = prepairConfig(data, file, fileContent, rootConfig);
+    let config = prepareConfig(data, file, fileContent, rootConfig);
     return config;
 };
 
 
 export async function file_writeSourceAsync(path: string, content, data: IDataFile) {
-    let file = resolveFile(path, data, 'write');
+    let file = prepareFile(resolveFile(path, data, 'write'), 'write');
     await file.writeAsync(content);
 };
 
-export function file_readSourceSync(rootConfig, path, data) {
-    let file = resolveFile(path, data);
+export function file_readSourceSync(rootConfig, path, data: IDataFile) {
+    let file = prepareFile(resolveFile(path, data), 'read');
     if (file == null) {
         return null;
     }
-    let fileContent = file.read();
+    let fileContent = file.read<any>();
+
     if (typeof data.deserializer === 'function') {
         fileContent = data.deserializer(fileContent);
     }
-    return prepairConfig(data, file, fileContent, rootConfig);
+    return prepareConfig(data, file, fileContent, rootConfig);
 };
 
 
 function resolveFile(path: string, data: Pick<IDataFile, 'optional' | 'lookupAncestors' | 'secret'>,  method: 'write' | 'read' = 'read') {
     let uri = new class_Uri(path);
-    if (uri.extension === 'yml') {
-        // ensure we have the middleware
-        File.getHookHandler().register('yml', method, 'atma-io-middleware-yml');
-    }
     let settings:IFileSettings = {
         cached: false
     };
@@ -82,7 +82,18 @@ function resolveFile(path: string, data: Pick<IDataFile, 'optional' | 'lookupAnc
     return null;
 }
 
-function prepairConfig(data: IDataFile , file: InstanceType<typeof File>, fileContent, rootConfig: Config) {
+function prepareFile (file: InstanceType<typeof File>, method: 'write' |'read') {
+    if (file == null) {
+        return null;
+    }
+    if (file.uri.extension === 'yml') {
+        // ensure we have the middleware
+        File.getHookHandler().register('yml', method, 'atma-io-middleware-yml');
+    }
+    return file;
+}
+
+function prepareConfig(data: IDataFile , file: InstanceType<typeof File>, fileContent, rootConfig: Config) {
 
     let config;
     if (typeof fileContent === 'string') {

@@ -75,7 +75,7 @@ export class Config<T = any> {
         } else {
             sources
                 .load(config)
-                .then(onComplete);
+                .then(onComplete, onError);
         }
         function onComplete () {
 
@@ -92,6 +92,9 @@ export class Config<T = any> {
             //#endif
 
             dfr.resolve(config);
+        }
+        function onError (err) {
+            dfr.reject(err);
         }
 
         this.$sources = sources;

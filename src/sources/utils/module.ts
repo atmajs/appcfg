@@ -1,6 +1,6 @@
 import { log_error } from '../../util/log';
 
-export function module_eval (path, code){
+export function module_eval (path: string, code){
 
     var module = {
             exports: {}

@@ -93,7 +93,7 @@ export class Sources {
             if (before) {
                 before(source, rootConfig);
             }
-            let onAlways = $awaits.delegate({ errorable: false });
+            let onAlways = $awaits.delegate({ errorable: true });
             let onComplete = afterDelegate(after, source, rootConfig);
 
             // Backward-compat in-case the source itself is deferable
@@ -115,7 +115,13 @@ export class Sources {
         }
 
         if (i > imax - 1) {
-            $awaits.always(() => this.promise.resolve(this));
+            $awaits.always(error => {
+                if (error && error instanceof Error) {
+                    this.promise.reject(error);
+                    return;
+                }
+                this.promise.resolve(this)
+            });
         }
 
 
