@@ -43,11 +43,6 @@ SourceFactory.register('env', {
             });
         });
 
-        console.log(`FileSources`, fileSources.map(x => x.data.path));
-        console.log(`ENV`, process.env.ENV);
-        console.log(`Foo2`, process.env.FOO2);
-
-
         return [ envSource, ...fileSources ];
 
         function is (flavor: string) {
