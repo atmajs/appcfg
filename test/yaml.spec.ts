@@ -12,6 +12,7 @@ lorem:
   - 123
   - ipsum: one # inline comment
     field: bar
+  - { url: 'foo', size: 100 }
     `,
             json: {
                 foo: 'bar',
@@ -21,6 +22,10 @@ lorem:
                     {
                         ipsum: 'one',
                         field: 'bar'
+                    },
+                    {
+                        url: 'foo',
+                        size: 100
                     }
                 ]
             }

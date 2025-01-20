@@ -133,6 +133,13 @@ export namespace yaml {
             } else if (value.startsWith("[")) {
                 value = value.slice(1, -1);
                 return value.split(",").map((v) => coerce(v.trim()));
+            } else if (value.startsWith("{")) {
+
+                let i = value.lastIndexOf('}');
+                value = value.slice(1, i).trim();
+                // split by comma near the next key
+                value = value.split(/,\s*(?=\w+:)/g).join('\n');
+                return yaml(value);
             } else if (value.startsWith("|")) {
                 return dedent(value.replace("|", "").replace("\n", ""));
             } else {
