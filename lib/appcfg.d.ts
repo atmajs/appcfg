@@ -13,31 +13,43 @@ declare module 'appcfg/ConfigNode' {
 }
 
 declare module 'appcfg/Config' {
-    import { class_Dfr } from 'atma-utils';
     import { IConfigParams } from 'appcfg/sources/ISource';
     import { Sources } from 'appcfg/sources/SourceFactory';
     import { class_Await } from 'appcfg/util/Await';
     export class Config<T = any> {
-        /** Exports */
-        static default: typeof Config;
-        static Config: typeof Config;
-        $cli: any;
-        $data: any;
-        $sources: Sources;
-        $parallelReads: class_Await;
-        $sync: boolean;
-        constructor(data?: any, opts?: any);
-        static fetch<T = {
-            [key: string]: any;
-        }>(arr: IConfigParams | IConfigParams[], opts?: any): Promise<Config & T>;
-        static create(arr: IConfigParams | IConfigParams[]): Config<any>;
-        $get(path: any): unknown;
-        $set(path: any, value: any): void;
-        $extend(config: any): void;
-        $read<T = any>(mix?: any): Promise<Config & T>;
-        $write(config: any, deepExtend?: boolean, setterPath?: string): class_Dfr;
-        $is(name: any): boolean;
-        toJSON(): any;
+            /** Exports */
+            static default: typeof Config;
+            static Config: typeof Config;
+            $cli: any;
+            $data: any;
+            $sources: Sources;
+            $parallelReads: class_Await;
+            $sync: boolean;
+            constructor(data?: IConfigParams | IConfigParams[], opts?: {
+                    sync?: boolean;
+            });
+            static fetch<T = {
+                    [key: string]: any;
+            }>(arr: IConfigParams | IConfigParams[], opts?: any): Promise<Config & T>;
+            static create(arr: IConfigParams | IConfigParams[]): Config<any>;
+            $get(path: any): any;
+            $set(path: any, value: any): void;
+            $extend(config: any): void;
+            $read<T = any>(mix?: any): Promise<Config & T>;
+            /**
+                * @param config any json object
+                * @param deepExtend Otherwise per default shallow copy is used.
+                * @param setterPath
+                * @returns
+                */
+            $write(config?: any, deepExtend?: boolean, setterPath?: string): any;
+            $write(config?: any, opts?: {
+                    deepExtend?: boolean;
+                    setterPath?: string;
+                    sourceName?: string;
+            }): any;
+            $is(name: any): boolean;
+            toJSON(): any;
     }
 }
 
@@ -47,13 +59,22 @@ declare module 'appcfg/sources/ISource' {
         create(data: IConfigParams): ISource | ISource[];
     };
     export interface ISource {
-        data?: any;
-        config: any;
-        read(rootConfig?: any): Promise<this>;
+        name?: string;
+        data?: ISource;
+        config?: any;
+        read?(rootConfig?: any): Promise<this>;
         readSync?(rootConfig?: any): this;
         write?(config: any, deepExtend?: boolean, setterProperty?: string): Promise<this>;
         writable?: boolean;
+        serializer?(config: any): string;
+        deserializer?(content: any): Record<string, any>;
+        beforeRead?(config: any, rootConfig: any): any;
+        afterRead?(config: any, rootConfig: any): any;
         getterProperty?: string;
+        setterProperty?: string;
+        lookupAncestors?: boolean;
+        extendArrays?: boolean;
+        sync?: boolean;
     }
     export interface IDataCustom {
         new (): ISource;
@@ -61,8 +82,10 @@ declare module 'appcfg/sources/ISource' {
     export interface IDataEmbedded {
         config: any;
     }
-    export interface IDataFile {
+    export interface IDataFile extends ISource {
         path: string;
+        secret?: string;
+        optional?: boolean;
     }
     export type IDataFiles = {
         files: string[];
@@ -74,7 +97,7 @@ declare module 'appcfg/sources/ISource' {
         localStorage: string;
     }
     export interface IDataQuery {
-        query: any;
+        query: boolean;
     }
     export type IConfigParams = IDataDirectory | IDataCustom | IDataEmbedded | IDataFile | IDataFiles | any;
 }
@@ -104,7 +127,7 @@ declare module 'appcfg/sources/SourceFactory' {
 declare module 'appcfg/util/Await' {
     import { class_Dfr } from 'atma-utils';
     export class class_Await {
-        promise: class_Dfr;
+        promise: class_Dfr<any>;
         error: any;
         completed: boolean;
         wait: number;
