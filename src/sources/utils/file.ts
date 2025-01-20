@@ -8,6 +8,7 @@ import { cfg_imports } from '../../util/cfg_imports';
 import type { Config } from '../../Config';
 import { IDataFile, ISource } from '../ISource';
 import { type IFileSettings } from 'atma-io/interfaces/IFile';
+import { yaml } from '../../util/yaml';
 
 declare let include;
 
@@ -88,7 +89,29 @@ function prepareFile (file: InstanceType<typeof File>, method: 'write' |'read') 
     }
     if (file.uri.extension === 'yml') {
         // ensure we have the middleware
-        File.getHookHandler().register('yml', method, 'atma-io-middleware-yml');
+        let handler = File.getHookHandler();
+        let hooks = handler.getHooksForPath(file.uri.toString(), 'read');
+        if (hooks.length === 0) {
+            handler.register('yml', 'read', {
+                name: 'appcfg-yaml-parser',
+                read(file, config) {
+                    let content = file.content;
+                    if (typeof content === 'string') {
+                        file.content = yaml.parse(content) as any;
+                    }
+                }
+            });
+            handler.register('yml', 'write', {
+                name: 'appcfg-yaml-serializer',
+                write(file, config) {
+                    let content = file.content;
+                    if (content != null && typeof content === 'object') {
+                        file.content = yaml.serialize(content) as any;
+                    }
+                }
+            });
+        }
+
     }
     return file;
 }

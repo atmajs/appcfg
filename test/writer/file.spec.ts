@@ -54,6 +54,18 @@ UTest({
         });
 
     },
+    async 'should read yaml'() {
+        const handler = File.getHookHandler();
+        handler.hooks = handler.hooks.filter(x => x.regexp.toString().includes('yml') === false);
+
+        let config = new Config({
+            path: 'test/config/foo.yml'
+        });
+
+        let cfg = await config.$read();
+        let json = cfg.toJSON();
+        eq_(json.foo, 'foo');
+    },
     async 'should write yaml'() {
         let config = new Config({
             path: path_YML,
@@ -65,7 +77,6 @@ UTest({
         })
         let txt = File.read(path_YML, { skipHooks: true, cached: false });
         has_(txt, 'foo: baz');
-
     },
     async 'should write json to any generic extension'() {
         let config = new Config({
@@ -84,9 +95,9 @@ UTest({
     }
 })
 
-let path_JSON = 'test/bin/write.json',
-    path_YML = 'test/bin/write.yml',
-    path_TXT = 'test/bin/write.txt'
+let path_JSON = 'test/bin/write.json';
+let path_YML = 'test/bin/write.yml';
+let path_TXT = 'test/bin/write.txt';
 
 function remove() {
     Directory.remove('test/bin/');
