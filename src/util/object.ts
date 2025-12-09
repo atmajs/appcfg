@@ -98,15 +98,15 @@ export function obj_deepExtend(target, source, opts?: {
 
         if (is_Array(val)) {
             const extendArrays = opts?.extendArrays !== false;
-            if (extendArrays || opts?.mergeArrayItems != null) {
+            const idKey = opts?.mergeArrayItems?.[key];
+            if (extendArrays || idKey != null) {
                 if (is_Array(target[key]) === false) {
                     log_warn('<object:deepExtend> type missmatch %s %s %s - Overwrite', key, val, target[key]);
                     target[key] = val;
                     continue;
                 }
 
-                if (opts?.mergeArrayItems != null) {
-                    let idKey = opts.mergeArrayItems[key];
+                if (idKey != null) {
                     mergeArrays(target[key], val, idKey);
                     continue;
                 }
@@ -219,7 +219,7 @@ function getValueOuter (property: string, obj, isOptional: boolean) {
     if (val == null && isOptional !== true) {
         log_warn('<config: obj_interpolate: property not exists in root', property);
     }
-    return val ?? property;
+    return val ?? ('${{' + property + '}}');
 }
 
 function getValue (property: string, obj, isOptional: boolean) {
@@ -239,7 +239,7 @@ function getValue (property: string, obj, isOptional: boolean) {
     if (!isOptional) {
         let defaults = obj.defaults;
         if (defaults != null) {
-            return getValue(property, obj, isOptional);
+            return getValue(property, defaults, isOptional);
         }
     }
     return null;
