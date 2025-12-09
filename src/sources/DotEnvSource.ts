@@ -39,11 +39,10 @@ SourceFactory.register('env', {
         let fileSources = sorted.map(file => {
             return new DotEnvSource({
                 path: file.uri.toString(),
-                sync: data.sync,
+                sync: true,
             });
         });
 
-        console.log(`>ENV sources`, sorted.map(x => x.uri.toString()));
         return [ envSource, ...fileSources ];
 
         function is (flavor: string) {

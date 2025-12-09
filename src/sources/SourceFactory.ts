@@ -134,8 +134,9 @@ export class Sources {
                     , source.data.setterProperty
                     , source.data
                 );
-                if (fn)
+                if (fn) {
                     fn(source, rootConfig);
+                }
             };
         }
         return this.promise as PromiseLike<Sources>;

@@ -65,7 +65,6 @@ export class Config<T = any> {
                 ? this.$sources
                 : SourceFactory.create(mix)
                 ;
-
         this.$parallelReads.always(() => dfr.resolve(config));
         this.$cli = cli_arguments();
 
