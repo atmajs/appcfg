@@ -43,6 +43,7 @@ SourceFactory.register('env', {
             });
         });
 
+        console.log(`>ENV sources`, sorted.map(x => x.uri.toString()));
         return [ envSource, ...fileSources ];
 
         function is (flavor: string) {
