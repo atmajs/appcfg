@@ -31,7 +31,6 @@ SourceFactory.register('directory', {
         if (wildCardIndex === -1) {
             base = path;
         } else {
-
             base = path.substring(0, index + 1);
             pattern = path.substring(index + 1);
         }
@@ -43,7 +42,11 @@ SourceFactory.register('directory', {
         let files = dir
             .files
             .map(file => {
-                return file.uri.toString();
+                const path = file.uri.toString();
+                return {
+                    ...data,
+                    path
+                };
             });
 
         return SourceFactory

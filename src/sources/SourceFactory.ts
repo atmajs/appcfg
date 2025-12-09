@@ -56,7 +56,7 @@ export class Sources {
                 rootConfig
                 , source.config
                 , source.data.setterProperty
-                , source.data.extendArrays
+                , source.data
             );
             if (after) {
                 after(source, rootConfig);
@@ -132,7 +132,7 @@ export class Sources {
                     rootConfig
                     , source.config
                     , source.data.setterProperty
-                    , source.data.extendArrays
+                    , source.data
                 );
                 if (fn)
                     fn(source, rootConfig);

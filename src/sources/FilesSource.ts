@@ -10,7 +10,8 @@ SourceFactory.register('files', {
     },
     create (data: IDataFiles) {
         return data.files.map(function(file){
-            return SourceFactory.create({ path: file }).toArray();
+            let info = typeof file === 'string' ? { path: file } : file;
+            return SourceFactory.create(info).toArray();
         }).reduce((aggr, arr) => aggr.concat(arr), []);
     }
 });

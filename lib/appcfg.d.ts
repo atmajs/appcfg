@@ -74,6 +74,7 @@ declare module 'appcfg/sources/ISource' {
         setterProperty?: string;
         lookupAncestors?: boolean;
         extendArrays?: boolean;
+        mergeArrayItems?: Record<string, string>;
         sync?: boolean;
     }
     export interface IDataCustom {
@@ -88,7 +89,7 @@ declare module 'appcfg/sources/ISource' {
         optional?: boolean;
     }
     export type IDataFiles = {
-        files: string[];
+        files: (string | IDataFile)[];
     };
     export type IDataDirectory = {
         path: string;

@@ -47,7 +47,10 @@ export function obj_extend(target, source) {
     }
     return target;
 };
-export function obj_deepExtend(target, source, opts?: { extendArrays: boolean }) {
+export function obj_deepExtend(target, source, opts?: {
+    extendArrays?: boolean
+    mergeArrayItems?: Record<string, string>
+ }) {
     if (target == null) {
         target = {};
     }
@@ -94,17 +97,27 @@ export function obj_deepExtend(target, source, opts?: { extendArrays: boolean })
         }
 
         if (is_Array(val)) {
-            if (opts?.extendArrays === true) {
+            const extendArrays = opts?.extendArrays !== false;
+            if (extendArrays || opts?.mergeArrayItems != null) {
                 if (is_Array(target[key]) === false) {
                     log_warn('<object:deepExtend> type missmatch %s %s %s - Overwrite', key, val, target[key]);
-
                     target[key] = val;
                     continue;
                 }
-                obj_deepExtend(target[key], val, opts);
-            } else {
-                target[key] = val;
+
+                if (opts?.mergeArrayItems != null) {
+                    let idKey = opts.mergeArrayItems[key];
+                    mergeArrays(target[key], val, idKey);
+                    continue;
+                }
+
+                if (extendArrays) {
+                    obj_deepExtend(target[key], val, opts);
+                    continue;
+                }
             }
+
+            target[key] = val;
             continue;
         }
 
@@ -118,6 +131,37 @@ export function obj_deepExtend(target, source, opts?: { extendArrays: boolean })
 
     return target;
 };
+
+function mergeArrays (targetArr, sourceArr, idKey) {
+    let targetDict = targetArr.reduce((dict, item) => {
+        dict[item[idKey]] = item;
+        return dict;
+    }, {});
+    let sourceDict = sourceArr.reduce((dict, item) => {
+        dict[item[idKey]] = item;
+        return dict;
+    }, {});
+    for (let i = 0; i < targetArr.length; i++) {
+        let target = targetArr[i];
+        let source = sourceDict[target[idKey]];
+        if (source != null) {
+            targetArr[i] = {
+               ...target,
+               ...source
+            };
+        }
+    }
+
+    for (let i = 0; i < sourceArr.length; i++) {
+        let source = sourceArr[i];
+        let target = targetDict[source[idKey]];
+        if (target == null) {
+            targetArr.push(source);
+        }
+    }
+    return targetArr;
+}
+
 export function obj_ensureProperty(obj, property, defaultVal) {
 
     let current = obj_getProperty(obj, property);
@@ -141,36 +185,65 @@ export function obj_ensureProperty(obj, property, defaultVal) {
 export function obj_interpolate(obj, root?: Config, isOptional?: boolean) {
     root = root || obj;
 
+    // Interpolate strings like: ${foo} or ${bar.baz}
+    // Also duble curly braces are supported, like ${{foo}}
+
     obj_visitStrings(obj, function (str, key, parent) {
-        str = str.trim();
-        let c0 = str.charCodeAt(0);
-        let c1 = str.charCodeAt(1);
-        let has = false;
 
-        if (c0 === 35 && c1 === 91) {
-            // #[
-            log_warn('<APPCFG: OBSOLETE: config interpolation will be changed to ${}', str);
-            has = true;
+        let arr = str.split(/\$\{\{?/g);
+        if (arr.length === 1) {
+            return str;
         }
-        if (c0 === 36 && c1 === 123) {
-            // ${
-            has = true;
-        }
-        if (has === false) {
-            return null;
-        }
+        let out = arr[0];
+        for (let i = 1; i < arr.length; i++) {
+            let slug = arr[i];
+            let endIdx = slug.indexOf('}');
+            if (endIdx === -1) {
+                return str;
+            }
+            let property = slug.substring(0, endIdx).trim();
+            let value = getValueOuter(property, obj, isOptional);
 
-        str = str.substring(2, str.length - 1).trim();
-        let val = obj_getProperty(root, str);
-        if (val == null && typeof process !== 'undefined' && process.env != null) {
-            val = obj_getProperty(process.env, str);
+            let rest = slug.substring(endIdx + 1).trim();
+            if (rest[0] === '}') {
+                rest = rest.substring(1);
+            }
+            out += value + rest;
         }
-        if (val == null && isOptional !== true) {
-            log_warn('<config: obj_interpolate: property not exists in root', str);
-        }
-        return val;
+        return out;
     });
 };
+
+function getValueOuter (property: string, obj, isOptional: boolean) {
+    let val = getValue(property, obj, isOptional);
+    if (val == null && isOptional !== true) {
+        log_warn('<config: obj_interpolate: property not exists in root', property);
+    }
+    return val ?? property;
+}
+
+function getValue (property: string, obj, isOptional: boolean) {
+    if (obj == null) {
+        return null;
+    }
+    if (typeof process !== 'undefined' && process.env != null) {
+        let val = obj_getProperty(process.env, property);
+        if (val != null) {
+            return val;
+        }
+    }
+    let val = obj_getProperty(obj, property);
+    if (val != null) {
+        return val;
+    }
+    if (!isOptional) {
+        let defaults = obj.defaults;
+        if (defaults != null) {
+            return getValue(property, obj, isOptional);
+        }
+    }
+    return null;
+}
 
 // deep clone object and arrays
 export function obj_clone(obj) {

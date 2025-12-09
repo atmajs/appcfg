@@ -53,5 +53,31 @@ UTest({
         has_(config.toJSON(), {
             plugins: ['arr1', 'arr2']
         });
+    },
+    async 'should ignore arrays merge'() {
+        const config = await Config.fetch([
+            { path: 'test/config/array1.yml' },
+            { path: 'test/config/array2.yml', extendArrays: false, mergeArrayItems: { some: 'foo' } }
+        ], { sync: true });
+        deepEq_(config.toJSON().plugins, ['arr2']);
+    },
+    async '!should merge array by key'() {
+        const config = await Config.fetch([
+            { path: 'test/config/arr/array1.yml' },
+            { path: 'test/config/arr/array2.yml', mergeArrayItems: { users: 'id' } }
+        ], { sync: true });
+        deepEq_(config.toJSON().users, [
+            {
+                id: 1,
+                name: 'Foo',
+                age: 50
+            },
+            {
+                id: 2,
+                name: 'Bar',
+                age: 100
+            }
+        ]);
     }
+
 });

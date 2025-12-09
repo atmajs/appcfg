@@ -1,0 +1,5 @@
+users:
+  - name: Foo
+    id: 1
+  - name: Bar
+    id: 2

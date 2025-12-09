@@ -21,6 +21,9 @@ export interface ISource {
     setterProperty?: string
     lookupAncestors?: boolean
     extendArrays?: boolean
+
+    // arrayKey: itemIdKey
+    mergeArrayItems?: Record<string, string>
     sync?: boolean
 }
 
@@ -35,7 +38,9 @@ export interface IDataFile extends ISource {
     secret?: string
     optional?: boolean
 }
-export type IDataFiles = { files: string[] }
+export type IDataFiles = {
+    files: (string | IDataFile) []
+}
 
 export type IDataDirectory = { path: string };
 
