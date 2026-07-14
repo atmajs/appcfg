@@ -1,6 +1,6 @@
 {
   "name": "appcfg",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "description": "Application Configuration Library for Node.js",
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
     "test": "atma test",
     "build": "app-bundler",
     "build-dts": "tsc -p tsconfig-build.json && atma run tools/build-dts",
-    "release": "atma bump && npm run build && npm run build-dts && git add -A && git commit -am \"bump\" && npm publish && git push"
+    "release": "atma bump && npm run build && git add -A && git commit -am 'bump' && git push && git push origin master:release"
   },
   "keywords": [
     "config",
