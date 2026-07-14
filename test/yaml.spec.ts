@@ -1,7 +1,7 @@
-import { yaml } from '../src/util/yaml';
+import { yaml } from '../src/util/yamlV0';
 
 UTest({
-    'parse yaml' () {
+    'parse yaml v0' () {
         [
             {
                 yaml: `

@@ -8,7 +8,7 @@ import { cfg_imports } from '../../util/cfg_imports';
 import type { Config } from '../../Config';
 import { IDataFile, ISource } from '../ISource';
 import { type IFileSettings } from 'atma-io/interfaces/IFile';
-import { yaml } from '../../util/yaml';
+import { yaml } from '../../util/yamlV0';
 
 declare let include;
 
